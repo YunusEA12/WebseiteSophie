@@ -522,11 +522,15 @@
         mx = Input.x;
         my = Input.y + window.scrollY;
       } else if (!fine) {
-        // nobody is touching: let the vine lean with the scroll and the tilt,
-        // so the page keeps moving while it is only being read
-        var lean = Math.max(-1, Math.min(1, Input.scrollV / 26));
-        mx = W * (0.5 + Input.tiltX * 0.28 + lean * 0.18);
-        my = window.scrollY + innerHeight * (0.45 + Input.tiltY * 0.15);
+        // Nobody is touching. A fixed target would make the vine settle and stop,
+        // so drive it with a slow clock: the bend keeps travelling on its own and
+        // the scroll speed and tilt ride on top of it.
+        var t = Date.now() / 1000;
+        var lean = Math.max(-1, Math.min(1, Input.scrollV / 22));
+        var driftX = Math.sin(t * 0.55) * 0.30 + Math.sin(t * 0.23) * 0.16;
+        var driftY = Math.cos(t * 0.41) * 0.18;
+        mx = W * (0.5 + driftX + Input.tiltX * 0.26 + lean * 0.22);
+        my = window.scrollY + innerHeight * (0.45 + driftY + Input.tiltY * 0.14);
       } else {
         mx = -9999; my = -9999;
       }
@@ -637,9 +641,12 @@
       px = Input.active ? Input.x : -9999;
       py = Input.active ? Input.y : -9999;
 
-      // scrolling blows the petals along, tilt makes them drift sideways
+      // scrolling blows the petals along, tilt makes them drift sideways, and a
+      // slow breeze keeps them moving when the phone is just lying there
+      var now = Date.now() / 1000;
       var gust = Math.max(-3, Math.min(3, Input.scrollV * 0.06));
-      var sway = Input.tiltX * 0.35;
+      var breeze = fine ? 0 : (Math.sin(now * 0.4) * 0.5 + Math.sin(now * 0.17) * 0.3);
+      var sway = Input.tiltX * 0.35 + breeze;
 
       ctx.clearRect(0, 0, w, h);
       for (var i = 0; i < ps.length; i++) {
