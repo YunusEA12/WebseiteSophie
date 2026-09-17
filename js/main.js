@@ -1274,6 +1274,35 @@
     }).observe(consent, { attributes: true, attributeFilter: ['class'] });
   }
 
+  /* Am Desktop steht die Slideshow besser unten bei "Let's do your nails",
+     wo sie das feste Bild ersetzt. Auf dem Handy bleibt sie oben, wo sie
+     randlos wirkt. Der Knoten wandert, statt ihn doppelt anzulegen - so
+     laeuft dieselbe Slideshow weiter, ohne Zustand zu verlieren. */
+  function initShowcasePlacement() {
+    var sec = document.getElementById('showcase');
+    var home = document.getElementById('showcaseHome');
+    var slot = document.getElementById('kontaktShow');
+    var still = document.getElementById('kontaktStill');
+    if (!sec || !home || !slot) return;
+
+    function place() {
+      var desktop = window.matchMedia('(min-width: 1024px)').matches;
+      if (desktop) {
+        if (sec.parentElement !== slot) slot.appendChild(sec);
+        if (still) still.style.display = 'none';
+      } else {
+        if (sec.previousElementSibling !== home) {
+          home.parentNode.insertBefore(sec, home.nextSibling);
+        }
+        if (still) still.style.display = '';
+      }
+    }
+
+    place();
+    var t;
+    addEventListener('resize', function () { clearTimeout(t); t = setTimeout(place, 200); });
+  }
+
   function initAll() {
     // Each feature is started on its own. If one throws, the rest still come up.
     function start(name, fn) {
@@ -1285,7 +1314,7 @@
       ['Consent', initConsentAndDialogs], ['Menue', initMobileMenu],
       ['TextReveal', initTextReveal], ['Preloader', initPreloader],
       ['Cursor', initCustomCursor], ['ServicePeek', initServicePeek],
-      ['HeroShow', initHeroShow], ['Lightbox', initLightbox],
+      ['HeroShow', initHeroShow], ['ShowcaseOrt', initShowcasePlacement], ['Lightbox', initLightbox],
       ['ServiceThumbs', initServiceThumbs], ['Marquee', initMarqueeAndParallax],
       ['Vine', initLivingVine], ['Petals', initFloatingPetals],
       ['Rechner', initPriceCalculator], ['Preisleiste', initPriceBar]

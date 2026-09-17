@@ -2202,3 +2202,22 @@ main > section:first-of-type {
 }
 
 #pricebar .amount span { color: #E8447F; font-size: 1.05rem; }
+
+
+/* Im Kontaktbereich braucht die Slideshow keinen eigenen Abschnittsrahmen
+   mehr - sie sitzt dort als Karte neben dem Text. */
+@media (min-width: 1024px) {
+  #kontaktShow #showcase {
+    padding: 0;
+    display: block;
+  }
+
+  #kontaktShow #showcase #heroShow {
+    width: 100%;
+    max-width: none;
+    aspect-ratio: 4 / 5;
+  }
+
+  #kontaktShow .showcase-backdrop { display: none; }
+  #kontaktShow #showcase::before { display: none; }
+}
