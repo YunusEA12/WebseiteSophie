@@ -648,7 +648,7 @@
         use.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', '#bloom');
         g.appendChild(use);
         g.style.setProperty('--pf', k % 2 ? 'url(#gAqua)' : 'url(#gPink)');
-        g.style.setProperty('--pc', k % 2 ? '#0E3330' : '#4A0D26');
+        g.style.setProperty('--pc', k % 2 ? '#07201E' : '#3A0A1E');
         g.setAttribute('opacity', '0');
         svg.appendChild(g);
         return { idx: idx, el: g, seed: k * 1.7, scale: 0, spin: 0, shown: false };
@@ -903,7 +903,7 @@
         ctx.translate(p.x, p.y);
         ctx.rotate(p.a);
         ctx.globalAlpha = p.o;
-        ctx.fillStyle = p.pink ? '#C8974F' : '#12968D';
+        ctx.fillStyle = p.pink ? '#D8A860' : '#4FD8CC';
         ctx.beginPath();
         ctx.moveTo(0, p.r);
         ctx.bezierCurveTo(-p.r * 0.9, p.r * 0.25, -p.r * 0.62, -p.r * 0.85, 0, -p.r);
