@@ -482,9 +482,11 @@
           var el = Math.sqrt(ex * ex + ey * ey);
           near = el < 320 ? 1 - el / 320 : 0;
         }
-        bl.scale = lerp(bl.scale, reached ? (0.28 + near * 0.3) : 0, 0.08);
+        var narrow = W < 760;
+        var restScale = narrow ? 0.17 : 0.28;
+        bl.scale = lerp(bl.scale, reached ? (restScale + near * 0.3) : 0, 0.08);
         bl.spin += 0.1 + near * 0.5;
-        bl.el.setAttribute('opacity', reached ? (0.6 + near * 0.4).toFixed(3) : '0');
+        bl.el.setAttribute('opacity', reached ? ((narrow ? 0.38 : 0.6) + near * 0.4).toFixed(3) : '0');
         bl.el.setAttribute('transform',
           'translate(' + n.x.toFixed(1) + ',' + n.y.toFixed(1) + ') rotate(' +
           (bl.spin * 0.3 + bl.seed * 40).toFixed(1) + ') scale(' + bl.scale.toFixed(3) + ')');
