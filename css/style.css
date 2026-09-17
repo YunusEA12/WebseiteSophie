@@ -39,7 +39,7 @@ body {
   color: #1F1418;
   font-family: Inter, system-ui, sans-serif;
   line-height: 1.7;
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 ::selection {
@@ -915,5 +915,74 @@ a.tile:focus-visible .media {
   }
   html {
     scroll-behavior: auto;
+  }
+}
+
+
+/* ==========================================================================
+   SOFT SECTION EDGES
+   Textured areas used to stop at a hard line. They now dissolve into the
+   page colour at both ends, so one section flows into the next.
+   ========================================================================== */
+
+/* the leopard marquee: photo fades to the page colour top and bottom */
+.band-fade::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(to bottom,
+      #FAF4EE 0,
+      rgba(250, 244, 238, .45) 10px,
+      rgba(250, 244, 238, 0) 22px,
+      rgba(250, 244, 238, 0) calc(100% - 22px),
+      rgba(250, 244, 238, .45) calc(100% - 10px),
+      #FAF4EE 100%);
+}
+
+.band-fade > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* the run-up to the footer: a tall dissolve instead of a 12px rule */
+.foot-fade {
+  height: 5.5rem;
+  position: relative;
+}
+
+.foot-fade::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(to bottom,
+    #FAF4EE 0%,
+    rgba(250, 244, 238, .55) 40%,
+    rgba(250, 244, 238, .8) 78%,
+    #FAF4EE 100%);
+}
+
+/* textured sections: keep the veil light in the middle, opaque at the seams */
+.leo-soft::before {
+  background: linear-gradient(180deg,
+    #FAF4EE 0%,
+    rgba(250, 244, 238, .9) 9%,
+    rgba(250, 244, 238, .8) 26%,
+    rgba(250, 244, 238, .8) 74%,
+    rgba(250, 244, 238, .9) 91%,
+    #FAF4EE 100%);
+}
+
+/* the contact block ran long before the footer on a phone */
+@media (max-width: 640px) {
+  #kontakt {
+    padding-bottom: 2.5rem;
+  }
+
+  .foot-fade {
+    height: 4rem;
   }
 }

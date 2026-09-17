@@ -9,6 +9,90 @@
   // Environment & Accessibility detection
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var fine = window.matchMedia('(hover:hover) and (pointer:fine)').matches;
+
+  /* ------------------------------------------------------------------
+     Shared input. On a desktop this follows the mouse. On a phone there is
+     no hover, so it follows the finger, and when nothing is being touched
+     it drifts with how fast the page is scrolling and how the device is
+     tilted — that way the page still breathes while someone just reads.
+     ------------------------------------------------------------------ */
+  var Input = (function () {
+    var x = -9999, y = -9999;      // viewport coords, -9999 = no input
+    var active = false;
+    var tiltX = 0, tiltY = 0;      // -1..1 from the gyroscope
+    var scrollV = 0;               // smoothed scroll velocity in px/frame
+    var lastY = window.scrollY;
+    var idleT = 0;
+
+    function set(cx, cy) { x = cx; y = cy; active = true; }
+    function clear() { x = -9999; y = -9999; active = false; }
+
+    addEventListener('mousemove', function (e) { set(e.clientX, e.clientY); }, { passive: true });
+    addEventListener('mouseleave', clear, { passive: true });
+
+    // a finger counts as the pointer; passive so scrolling is never held up
+    function fromTouch(e) {
+      if (!e.touches || !e.touches.length) return;
+      set(e.touches[0].clientX, e.touches[0].clientY);
+      idleT = 0;
+    }
+    addEventListener('touchstart', fromTouch, { passive: true });
+    addEventListener('touchmove', fromTouch, { passive: true });
+    addEventListener('touchend', function () { idleT = 0; }, { passive: true });
+
+    addEventListener('scroll', function () {
+      var d = window.scrollY - lastY;
+      lastY = window.scrollY;
+      scrollV = scrollV * 0.8 + d * 0.2;
+      idleT = 0;
+    }, { passive: true });
+
+    // tilt is opt-in on iOS; ask once after the first real interaction
+    var tiltOn = false;
+    function listenTilt() {
+      if (tiltOn) return;
+      tiltOn = true;
+      addEventListener('deviceorientation', function (e) {
+        if (e.gamma === null || e.beta === null) return;
+        tiltX = Math.max(-1, Math.min(1, e.gamma / 35));
+        tiltY = Math.max(-1, Math.min(1, (e.beta - 45) / 35));
+      }, { passive: true });
+    }
+    function askTilt() {
+      var D = window.DeviceOrientationEvent;
+      if (!D) return;
+      if (typeof D.requestPermission === 'function') {
+        D.requestPermission().then(function (r) { if (r === 'granted') listenTilt(); }).catch(function () {});
+      } else {
+        listenTilt();
+      }
+    }
+    if (!fine) {
+      addEventListener('touchend', function once() {
+        removeEventListener('touchend', once);
+        askTilt();
+      }, { passive: true });
+    }
+
+    return {
+      // where the interaction is, in viewport coords
+      get x() { return x; },
+      get y() { return y; },
+      get active() { return active; },
+      get scrollV() { return scrollV; },
+      get tiltX() { return tiltX; },
+      get tiltY() { return tiltY; },
+      // called once per frame by the animation loops
+      tick: function () {
+        scrollV *= 0.94;
+        if (active && !fine) {
+          // a finger lifts off without a mouseleave, so let it fade out
+          idleT += 1;
+          if (idleT > 90) clear();
+        }
+      }
+    };
+  })();
   var lerp = function (a, b, n) { return a + (b - a) * n; };
 
   // Initialize dynamic copyright year
@@ -419,17 +503,7 @@
       return out;
     }
 
-    var mx = -9999, my = -9999;
-    if (fine) {
-      addEventListener('mousemove', function (e) {
-        mx = e.clientX;
-        my = e.clientY + window.scrollY;
-      });
-      addEventListener('mouseleave', function () {
-        mx = -9999;
-        my = -9999;
-      });
-    }
+    var mx = -9999, my = -9999;   // document coords the vine bends toward
 
     build();
     var rt;
@@ -442,7 +516,22 @@
     });
 
     (function tick() {
-      var reach = 340, pull = 0.55;
+      Input.tick();
+
+      if (Input.active) {
+        mx = Input.x;
+        my = Input.y + window.scrollY;
+      } else if (!fine) {
+        // nobody is touching: let the vine lean with the scroll and the tilt,
+        // so the page keeps moving while it is only being read
+        var lean = Math.max(-1, Math.min(1, Input.scrollV / 26));
+        mx = W * (0.5 + Input.tiltX * 0.28 + lean * 0.18);
+        my = window.scrollY + innerHeight * (0.45 + Input.tiltY * 0.15);
+      } else {
+        mx = -9999; my = -9999;
+      }
+
+      var reach = fine ? 340 : 420, pull = fine ? 0.55 : 0.4;
 
       for (var i = 0; i < pts.length; i++) {
         var q = pts[i], tx = q.bx, ty = q.by;
@@ -542,19 +631,16 @@
       rt2 = setTimeout(function () { size(); seed(); }, 180);
     });
 
-    var px = -9999, py = -9999;
-    if (fine) {
-      addEventListener('mousemove', function (e) {
-        px = e.clientX;
-        py = e.clientY;
-      });
-      addEventListener('mouseleave', function () {
-        px = -9999;
-        py = -9999;
-      });
-    }
+    var px = -9999, py = -9999;   // fed from the shared input each frame
 
     (function draw() {
+      px = Input.active ? Input.x : -9999;
+      py = Input.active ? Input.y : -9999;
+
+      // scrolling blows the petals along, tilt makes them drift sideways
+      var gust = Math.max(-3, Math.min(3, Input.scrollV * 0.06));
+      var sway = Input.tiltX * 0.35;
+
       ctx.clearRect(0, 0, w, h);
       for (var i = 0; i < ps.length; i++) {
         var p = ps[i];
@@ -569,12 +655,12 @@
           }
         }
 
-        p.vx = p.vx * 0.96 + (Math.random() - 0.5) * 0.02;
+        p.vx = p.vx * 0.96 + (Math.random() - 0.5) * 0.02 + sway * 0.04;
         p.vy = p.vy * 0.96 + 0.012;
         if (p.vy < 0.12) p.vy = 0.12;
         p.x += p.vx;
-        p.y += p.vy;
-        p.a += p.spin;
+        p.y += p.vy + gust;
+        p.a += p.spin + gust * 0.004;
 
         if (p.y - p.r > h) {
           p.y = -p.r;
