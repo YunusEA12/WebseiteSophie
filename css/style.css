@@ -1980,3 +1980,112 @@ main > section:first-of-type {
 @media (prefers-reduced-motion: reduce) {
   .service-bloom { animation: none; }
 }
+
+
+/* ==========================================================================
+   BREITE BILDSCHIRME
+   ========================================================================== */
+
+/* Das Fellbild war auf drei Viertel der Breite begrenzt und endete dadurch
+   mit einer sichtbaren Kante. Jetzt deckt es die volle Breite und loest sich
+   nach rechts weich auf, statt abzubrechen. */
+@media (min-width: 1024px) {
+  main > section:first-of-type .pointer-events-none.absolute.left-0.top-0 {
+    width: 100% !important;
+    -webkit-mask-image: linear-gradient(to right, #000 0%, #000 52%, rgba(0,0,0,.55) 74%, rgba(0,0,0,0) 96%);
+            mask-image: linear-gradient(to right, #000 0%, #000 52%, rgba(0,0,0,.55) 74%, rgba(0,0,0,0) 96%);
+  }
+}
+
+/* Die Bluete passt am Desktop nicht in die Hero-Ecke - dort gehoert dem
+   Schriftzug die Buehne. Auf dem Handy bleibt sie, dort wirkt sie. */
+@media (min-width: 1024px) {
+  .showcase-bloom { display: none; }
+}
+
+
+/* ==========================================================================
+   SHOWCASE AM DESKTOP
+   Die Aufnahmen sind Hochformat (481x640). In einem randlosen 21:9-Band auf
+   2560px werden sie auf ein Vielfaches hochgezogen und bis auf einen Finger
+   beschnitten. Am Desktop bekommen sie deshalb einen eigenen Rahmen im
+   Format der Vorlage; randlos bleibt es nur auf dem Handy, wo der Bildschirm
+   selbst hochkant ist.
+   ========================================================================== */
+@media (min-width: 1024px) {
+  #showcase {
+    padding: 4.5rem 2rem 5rem;
+    display: flex;
+    justify-content: center;
+  }
+
+  #showcase #heroShow {
+    width: min(30rem, 42vw);
+    aspect-ratio: 4 / 5;
+    max-height: none;
+    border-radius: 28px;
+    overflow: hidden;
+    box-shadow: 0 40px 90px -30px rgba(0,0,0,.85),
+                0 0 0 1px rgba(216,168,96,.18);
+  }
+
+  /* der Verlauf darf die Bildunterschrift tragen, aber nicht das Bild fressen */
+  #showcase #heroShow > .absolute.inset-0 {
+    background: linear-gradient(to top, rgba(0,0,0,.72) 0%, rgba(0,0,0,.1) 42%, rgba(0,0,0,0) 65%);
+  }
+
+  /* die weichen Kanten nach oben und unten braucht nur das randlose Handy */
+  #showcase #heroShow > .absolute.inset-x-0.top-0,
+  #showcase #heroShow > .absolute.inset-x-0.bottom-0.h-20 {
+    display: none;
+  }
+
+  /* ein ruhiger Schein hinter dem Rahmen fuellt die Breite */
+  #showcase::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(60% 70% at 50% 45%, rgba(216,168,96,.10) 0%, rgba(216,168,96,0) 70%);
+  }
+}
+
+
+/* Die unscharfe Kopie fuellt am Desktop die Flaeche neben dem Rahmen.
+   Auf dem Handy ist die Slideshow randlos, dort waere sie ueberfluessig. */
+.showcase-backdrop { display: none; }
+
+@media (min-width: 1024px) {
+  .showcase-backdrop {
+    display: block;
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .showcase-backdrop img {
+    position: absolute;
+    inset: -8%;
+    width: 116%;
+    height: 116%;
+    object-fit: cover;
+    opacity: 0;
+    filter: blur(46px) saturate(1.15) brightness(.42);
+    transition: opacity .9s ease;
+  }
+
+  .showcase-backdrop img.is-on { opacity: 1; }
+
+  /* der Rahmen muss ueber der Fuellung liegen */
+  #showcase #heroShow { position: relative; z-index: 1; }
+
+  /* Raender weich auslaufen lassen, damit die Fuellung in die Seite uebergeht */
+  .showcase-backdrop::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, #17130F 0%, rgba(23,19,15,.35) 22%, rgba(23,19,15,.35) 78%, #17130F 100%);
+  }
+}

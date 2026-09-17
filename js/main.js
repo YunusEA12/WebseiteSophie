@@ -510,6 +510,29 @@
     var box = document.getElementById('heroShow');
     if (!box) return;
     var slides = [].slice.call(box.querySelectorAll('.hero-slide'));
+
+    /* Am Desktop steht das Hochformat in einem Rahmen, links und rechts bliebe
+       sonst tote Flaeche. Eine unscharfe Kopie desselben Bildes fuellt sie und
+       traegt die Stimmung der Aufnahme in die Breite. */
+    var backdrop = null;
+    var backdropImgs = [];
+    var sec = document.getElementById('showcase');
+    if (sec && slides.length) {
+      backdrop = document.createElement('div');
+      backdrop.className = 'showcase-backdrop';
+      backdrop.setAttribute('aria-hidden', 'true');
+      slides.forEach(function (im, i) {
+        var c = document.createElement('img');
+        c.src = im.getAttribute('src');
+        c.alt = '';
+        c.loading = 'lazy';
+        c.decoding = 'async';
+        if (i === 0) c.className = 'is-on';
+        backdrop.appendChild(c);
+        backdropImgs.push(c);
+      });
+      sec.insertBefore(backdrop, sec.firstChild);
+    }
     var caps = [].slice.call(box.querySelectorAll('.hero-cap'));
     var dots = [].slice.call(box.querySelectorAll('.hero-dot'));
     if (slides.length < 2) return;
@@ -520,6 +543,7 @@
       slides.forEach(function (el, i) { el.classList.toggle('is-on', i === at); });
       caps.forEach(function (el, i) { el.classList.toggle('is-on', i === at); });
       dots.forEach(function (el, i) { el.classList.toggle('is-on', i === at); });
+      backdropImgs.forEach(function (el, i) { el.classList.toggle('is-on', i === at); });
     }
 
     function play() {
