@@ -145,6 +145,15 @@
       });
     }
 
+    // a permanent way back to the choice, from the footer
+    var footerBtn = document.getElementById('cookie-settings');
+    if (footerBtn) footerBtn.addEventListener('click', function () {
+      try { localStorage.removeItem(KEY); } catch (e) {}
+      var open = document.querySelector('dialog.sheet[open]');
+      if (open) open.close();
+      show();
+    });
+
     var reset = document.getElementById('consent-reset');
     if (reset) {
       reset.addEventListener('click', function () {
@@ -599,12 +608,9 @@
       W = document.documentElement.clientWidth;
       VH = window.innerHeight;
 
-      // On mobile screens, the vine is disabled per client request
-      if (W < 768) {
-        svg.style.display = 'none';
-        while (svg.firstChild) svg.removeChild(svg.firstChild);
-        return;
-      }
+      // The vine was switched off here while it still repainted the whole page
+      // every frame. It now draws only the slice on screen, so a phone can carry
+      // it again - and without it the mobile page felt static.
       svg.style.display = '';
 
       // measure the page with the vine hidden so it cannot inflate its own height
@@ -714,6 +720,12 @@
     var lastD = '';
 
     (function tick() {
+      // build() returns early below 768px, so there is no path to drive. Without
+      // this guard the loop threw on the first frame and the exception escaped
+      // initAll(), which silently killed everything registered after the vine -
+      // including the price calculator.
+      if (!path) return;
+
       Input.tick();
 
       if (Input.active) {
@@ -1147,6 +1159,23 @@
      INITIALIZATION ON DOM CONTENT LOADED
      ========================================================================== */
   function initAll() {
+    // Each feature is started on its own. If one throws, the rest still come up.
+    function start(name, fn) {
+      try { fn(); }
+      catch (err) { if (window.console) console.error('[gerberxnails] ' + name + ':', err); }
+    }
+    [
+      ['Consent', initConsentAndDialogs], ['Menue', initMobileMenu],
+      ['TextReveal', initTextReveal], ['Preloader', initPreloader],
+      ['Cursor', initCustomCursor], ['ServicePeek', initServicePeek],
+      ['HeroShow', initHeroShow], ['Lightbox', initLightbox],
+      ['ServiceThumbs', initServiceThumbs], ['Marquee', initMarqueeAndParallax],
+      ['Vine', initLivingVine], ['Petals', initFloatingPetals],
+      ['Rechner', initPriceCalculator]
+    ].forEach(function (pair) { start(pair[0], pair[1]); });
+  }
+
+  function initAllLegacy() {
     initConsentAndDialogs();
     initMobileMenu();
     initTextReveal();
