@@ -1661,3 +1661,168 @@ dialog.sheet p, dialog.sheet li {
   letter-spacing: -.01em;
 }
 
+
+
+/* ==========================================================================
+   ROUND 6
+   ========================================================================== */
+
+/* --- 1. Leopard wieder abdunkeln -------------------------------------------
+   Eine spaetere Fassung hat den Blendmodus verloren, dadurch leuchtete das
+   Fell im hellen Original mitten im Dark Mode. */
+.leo-tex,
+#band,
+#kontakt {
+  background-color: #3B3026;
+  background-blend-mode: multiply;
+}
+
+/* --- 2. Kopfleiste ---------------------------------------------------------
+   Ueber dem Hero verschwindet sie fast, damit der erste Eindruck ihr gehoert.
+   Sobald gescrollt wird, legt sie sich als ruhige Leiste darueber. */
+.header-pill {
+  background: transparent !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  transition: background-color .45s ease, border-color .45s ease,
+              box-shadow .45s ease, backdrop-filter .45s ease;
+}
+
+header.is-stuck .header-pill {
+  background: rgba(20, 16, 13, .82) !important;
+  border-color: rgba(216, 168, 96, .18) !important;
+  box-shadow: 0 10px 30px -12px rgba(0, 0, 0, .8) !important;
+  backdrop-filter: blur(20px) saturate(1.2);
+  -webkit-backdrop-filter: blur(20px) saturate(1.2);
+}
+
+/* der Schriftzug darf oben groesser auftreten und schrumpft beim Scrollen */
+header .t-script {
+  font-size: 1.7rem;
+  transition: font-size .45s ease;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, .55);
+}
+
+header.is-stuck .t-script {
+  font-size: 1.35rem;
+  text-shadow: none;
+}
+
+/* --- 3. Menue --------------------------------------------------------------
+   Die Karte schwebte in der Bildmitte und liess oben wie unten tote Flaeche.
+   Jetzt fuellt das Menue den Bildschirm und bekommt einen klaren Rhythmus. */
+#menu {
+  align-items: stretch;
+  padding: 0;
+}
+
+.menu-card {
+  width: 100%;
+  max-width: none;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: .4rem;
+  padding: calc(env(safe-area-inset-top) + 4.5rem) 1.5rem calc(env(safe-area-inset-bottom) + 2rem);
+}
+
+#menu-close-btn {
+  position: fixed !important;
+  top: max(1rem, env(safe-area-inset-top));
+  right: 1rem;
+  width: 2.75rem !important;
+  height: 2.75rem !important;
+  font-size: 1.35rem;
+  z-index: 2;
+}
+
+#menu nav {
+  gap: .15rem !important;
+  margin: 1.6rem 0 !important;
+}
+
+#menu .menu-link {
+  font-size: 1.85rem !important;
+  padding: .55rem 0 !important;
+  line-height: 1.15;
+}
+
+/* die Handlungsaufforderung braucht Abstand zur letzten Zeile */
+#menu .btn {
+  margin-top: 1.4rem;
+}
+
+/* --- 4. Erster Eindruck ----------------------------------------------------
+   Das Einwilligungsband nahm auf dem Handy ein Drittel der ersten Ansicht.
+   Als schmale Leiste bleibt der Hero sichtbar, der Hinweis aber bestehen. */
+@media (max-width: 640px) {
+  #consent {
+    padding: .5rem;
+  }
+
+  #consent > div {
+    padding: .7rem .85rem !important;
+    gap: .55rem !important;
+    border-radius: 14px !important;
+  }
+
+  #consent p:first-child {
+    font-size: .8rem;
+  }
+
+  #consent p:nth-child(2) {
+    font-size: .72rem;
+    line-height: 1.4;
+  }
+
+  #consent .btn {
+    padding: .5rem .75rem !important;
+    font-size: .76rem !important;
+  }
+}
+
+/* der Name tritt beim Laden auf, statt einfach dazustehen */
+@keyframes markIn {
+  from { opacity: 0; transform: translate3d(0, 14px, 0); letter-spacing: .06em; }
+  to   { opacity: 1; transform: none; letter-spacing: normal; }
+}
+
+.hero-mark {
+  animation: markIn 1.1s cubic-bezier(.22, 1, .36, 1) both;
+  animation-delay: .15s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-mark { animation: none; }
+}
+
+
+/* Die Kopfleiste ist ueber dem Hero durchsichtig, also muss der Inhalt aktiv
+   unter ihr beginnen - vorher lag er darunter und war nur verdeckt. */
+main > section:first-of-type {
+  padding-top: 5.25rem;
+}
+
+@media (min-width: 641px) {
+  main > section:first-of-type {
+    padding-top: 6.5rem;
+  }
+}
+
+
+/* Die goldene Schreibschrift steht auf einem Fellfoto; ohne Abhebung
+   verschwimmt sie darin. */
+main > section:first-of-type .t-script {
+  text-shadow: 0 2px 16px rgba(0, 0, 0, .65), 0 0 2px rgba(0, 0, 0, .4);
+}
+
+/* etwas mehr Luft zwischen Text und Handlungsaufforderung */
+@media (max-width: 640px) {
+  main > section:first-of-type p.rv { margin-bottom: .25rem; }
+}

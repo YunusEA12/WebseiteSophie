@@ -1197,6 +1197,20 @@
   /* ==========================================================================
      INITIALIZATION ON DOM CONTENT LOADED
      ========================================================================== */
+  /* The bar stays out of the way over the hero and only takes on a surface
+     once the page has moved - the opening screen belongs to the brand. */
+  function initHeaderState() {
+    var head = document.querySelector('header');
+    if (!head) return;
+    var on = false;
+    function check() {
+      var should = window.scrollY > 40;
+      if (should !== on) { on = should; head.classList.toggle('is-stuck', on); }
+    }
+    addEventListener('scroll', check, { passive: true });
+    check();
+  }
+
   function initAll() {
     // Each feature is started on its own. If one throws, the rest still come up.
     function start(name, fn) {
@@ -1204,6 +1218,7 @@
       catch (err) { if (window.console) console.error('[gerberxnails] ' + name + ':', err); }
     }
     [
+      ['Header', initHeaderState],
       ['Consent', initConsentAndDialogs], ['Menue', initMobileMenu],
       ['TextReveal', initTextReveal], ['Preloader', initPreloader],
       ['Cursor', initCustomCursor], ['ServicePeek', initServicePeek],
