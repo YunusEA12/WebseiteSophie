@@ -114,8 +114,8 @@ h1, h2, h3 {
   position: fixed;
   inset: 0;
   z-index: 100;
-  background: #FAF6F1;
-  color: #1E1611;
+  background: #17130F;
+  color: #EFE3D2;
   display: grid;
   place-items: center;
   gap: 0;
@@ -1825,4 +1825,64 @@ main > section:first-of-type .t-script {
 /* etwas mehr Luft zwischen Text und Handlungsaufforderung */
 @media (max-width: 640px) {
   main > section:first-of-type p.rv { margin-bottom: .25rem; }
+}
+
+
+/* ==========================================================================
+   ROUND 7
+   ========================================================================== */
+
+/* Die Arbeiten wirkten noch kantig - weichere Ecken passen zu den Karten. */
+.media {
+  border-radius: 22px;
+}
+
+@media (max-width: 640px) {
+  .media { border-radius: 20px; }
+}
+
+/* Der Hero traegt jetzt nur noch Text. Er soll die erste Ansicht allein
+   fuellen, damit darunter noch nichts hervorlugt. */
+main > section:first-of-type {
+  min-height: 100svh;
+  justify-content: center;
+}
+
+@media (max-width: 640px) {
+  main > section:first-of-type {
+    padding-bottom: 7rem;
+  }
+}
+
+/* Der randlose Showcase braucht keinen Rahmen, nur weiche Kanten nach
+   oben und unten, damit er in die Seite uebergeht. */
+#showcase .hero-slide {
+  border-radius: 0;
+}
+
+#showcase .hero-cap {
+  left: 0;
+  bottom: 0;
+}
+
+/* Policy-Karten an das dunkle Theme angeglichen */
+#policy .rounded-2xl {
+  border-color: rgba(216, 168, 96, .22);
+  box-shadow: 0 12px 30px -14px rgba(0, 0, 0, .75);
+}
+
+
+/* Der Ladebildschirm war noch cremeweiss aus der hellen Fassung - mit
+   cremefarbener Zahl darauf war der Zaehler praktisch unsichtbar. */
+#loader {
+  background: radial-gradient(120% 80% at 50% 18%, #241C15 0%, #17130F 62%) !important;
+}
+
+#loadname {
+  color: #D8A860;
+}
+
+#count {
+  color: #EFE3D2;
+  text-shadow: 0 2px 18px rgba(0, 0, 0, .6);
 }

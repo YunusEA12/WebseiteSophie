@@ -25,8 +25,8 @@
 <meta name="twitter:image" content="share.jpg">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2317130F'/%3E%3Ccircle cx='16' cy='16' r='7' fill='%23FF3D82'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="css/tailwind-base.css?v=af7c1978">
-<link rel="stylesheet" href="css/style.css?v=545600d9">
-<link rel="stylesheet" href="css/tailwind-utils.css?v=46086233">
+<link rel="stylesheet" href="css/style.css?v=4949e627">
+<link rel="stylesheet" href="css/tailwind-utils.css?v=2cb7d54a">
 </head>
 <body class="antialiased">
 
@@ -221,7 +221,7 @@
   </div>
 
   <div class="js-rv is-in mx-auto w-full max-w-[88rem] relative z-10 my-auto">
-    <div class="grid lg:grid-cols-[1.15fr_0.85fr] gap-8 lg:gap-14 items-center">
+    <div class="grid gap-8 items-center">
       
       <!-- Left: Typography & Actions -->
       <div>
@@ -255,59 +255,6 @@
         </div>
       </div>
 
-      <!-- Right: Real Instagram Feature Card + Ambient Luxury Glow + Hibiscus Bloom -->
-      <div class="relative mx-auto lg:mx-0 w-full max-w-[20rem] sm:max-w-[24rem] lg:max-w-[26rem] mt-6 lg:mt-0">
-        <!-- Ambient Halo Glow -->
-        <div class="absolute -inset-3 rounded-[2.5rem] bg-gradient-to-tr from-neon-pink/25 via-sand-gold/25 to-transparent blur-2xl pointer-events-none opacity-75"></div>
-
-        <div id="heroShow" class="relative rounded-3xl overflow-hidden shadow-[0_24px_60px_-15px_rgba(74,45,26,0.22)] border border-sand-gold/30 bg-white">
-          <div class="relative aspect-[4/5]">
-            <img src="brand_assets/nail_post_2.jpg" alt="Signature Set von Sophie Gerber" class="hero-slide is-on" loading="eager" decoding="async" width="700" height="875">
-            <img src="brand_assets/nail_post_1.jpg" alt="Leo Gold von Sophie Gerber" class="hero-slide" loading="lazy" decoding="async" width="700" height="875">
-            <img src="brand_assets/nail_post_5.jpg" alt="Chrome von Sophie Gerber" class="hero-slide" loading="lazy" decoding="async" width="700" height="875">
-            <img src="brand_assets/nail_post_3.jpg" alt="Clean French von Sophie Gerber" class="hero-slide" loading="lazy" decoding="async" width="700" height="875">
-            <img src="brand_assets/nail_post_8.jpg" alt="Cat Eye von Sophie Gerber" class="hero-slide" loading="lazy" decoding="async" width="700" height="875">
-          </div>
-          <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent pointer-events-none"></div>
-
-          <div class="absolute bottom-4 inset-x-4 flex items-end justify-between gap-3 text-white">
-            <div class="relative min-h-[2.6rem] flex-1">
-              <div class="hero-cap is-on">
-                <p class="t-editorial text-[.68rem] uppercase tracking-[.22em] text-white/80">Signature Set</p>
-                <p class="t-display font-semibold text-sm">Hibiskus &bull; Leo Art &bull; Manicure</p>
-              </div>
-              <div class="hero-cap">
-                <p class="t-editorial text-[.68rem] uppercase tracking-[.22em] text-white/80">Leo &amp; Gold</p>
-                <p class="t-display font-semibold text-sm">Extra Lang &bull; Level 4</p>
-              </div>
-              <div class="hero-cap">
-                <p class="t-editorial text-[.68rem] uppercase tracking-[.22em] text-white/80">Chrome</p>
-                <p class="t-display font-semibold text-sm">Medium &bull; Level 3</p>
-              </div>
-              <div class="hero-cap">
-                <p class="t-editorial text-[.68rem] uppercase tracking-[.22em] text-white/80">Clean French</p>
-                <p class="t-display font-semibold text-sm">Kurz &bull; Level 1</p>
-              </div>
-              <div class="hero-cap">
-                <p class="t-editorial text-[.68rem] uppercase tracking-[.22em] text-white/80">Cat Eye</p>
-                <p class="t-display font-semibold text-sm">Lang &bull; Level 2</p>
-              </div>
-            </div>
-            <div class="flex gap-1.5 shrink-0 pb-1">
-            <button type="button" class="hero-dot is-on" data-go="0" aria-label="Bild 1 von 5"></button>
-            <button type="button" class="hero-dot" data-go="1" aria-label="Bild 2 von 5"></button>
-            <button type="button" class="hero-dot" data-go="2" aria-label="Bild 3 von 5"></button>
-            <button type="button" class="hero-dot" data-go="3" aria-label="Bild 4 von 5"></button>
-            <button type="button" class="hero-dot" data-go="4" aria-label="Bild 5 von 5"></button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Realistic Pink Tropical Hibiscus Bloom from Moodboard -->
-        <div class="absolute -top-7 -right-5 sm:-top-9 sm:-right-8 w-24 sm:w-32 aspect-square pointer-events-none drop-shadow-[0_14px_28px_rgba(229,20,95,0.35)] z-20">
-          <img src="brand_assets/hibiscus_pink.webp" alt="Pinke Hibiskusblüte" class="w-full h-full object-contain flower-bloom">
-        </div>
-      </div>
 
     </div>
   </div>
@@ -339,6 +286,55 @@
 </section>
 
 <!-- ============ MARQUEE ============ -->
+<!-- ============ SHOWCASE: die Arbeiten laufen randlos durch ============ -->
+<section id="showcase" class="relative overflow-hidden" aria-label="Arbeiten im Wechsel">
+  <div id="heroShow" class="relative w-full aspect-[4/5] sm:aspect-[16/10] lg:aspect-[21/9]">
+    <img src="brand_assets/nail_post_2.jpg" alt="Signature Set von Sophie Gerber" class="hero-slide is-on" loading="eager" decoding="async" width="700" height="875">
+    <img src="brand_assets/nail_post_1.jpg" alt="Leo Gold von Sophie Gerber" class="hero-slide" loading="lazy" decoding="async" width="700" height="875">
+    <img src="brand_assets/nail_post_5.jpg" alt="Chrome von Sophie Gerber" class="hero-slide" loading="lazy" decoding="async" width="700" height="875">
+    <img src="brand_assets/nail_post_3.jpg" alt="Clean French von Sophie Gerber" class="hero-slide" loading="lazy" decoding="async" width="700" height="875">
+    <img src="brand_assets/nail_post_8.jpg" alt="Cat Eye von Sophie Gerber" class="hero-slide" loading="lazy" decoding="async" width="700" height="875">
+    <div class="absolute inset-0 pointer-events-none bg-gradient-to-t from-black/80 via-black/20 to-black/30"></div>
+    <div class="absolute inset-x-0 top-0 h-16 pointer-events-none bg-gradient-to-b from-void to-transparent"></div>
+    <div class="absolute inset-x-0 bottom-0 h-20 pointer-events-none bg-gradient-to-t from-void to-transparent"></div>
+
+    <div class="absolute inset-x-0 bottom-0 px-5 sm:px-8 pb-6 sm:pb-8 flex items-end justify-between gap-4 text-white">
+      <div class="relative min-h-[3.1rem] flex-1">
+        <div class="hero-cap is-on">
+                        <p class="t-editorial text-[.68rem] uppercase tracking-[.22em] text-white/80">Signature Set</p>
+                        <p class="t-display font-semibold text-sm">Hibiskus &bull; Leo Art &bull; Manicure</p>
+                      </div>
+        <div class="hero-cap">
+                        <p class="t-editorial text-[.68rem] uppercase tracking-[.22em] text-white/80">Leo &amp; Gold</p>
+                        <p class="t-display font-semibold text-sm">Extra Lang &bull; Level 4</p>
+                      </div>
+        <div class="hero-cap">
+                        <p class="t-editorial text-[.68rem] uppercase tracking-[.22em] text-white/80">Chrome</p>
+                        <p class="t-display font-semibold text-sm">Medium &bull; Level 3</p>
+                      </div>
+        <div class="hero-cap">
+                        <p class="t-editorial text-[.68rem] uppercase tracking-[.22em] text-white/80">Clean French</p>
+                        <p class="t-display font-semibold text-sm">Kurz &bull; Level 1</p>
+                      </div>
+        <div class="hero-cap">
+                        <p class="t-editorial text-[.68rem] uppercase tracking-[.22em] text-white/80">Cat Eye</p>
+                        <p class="t-display font-semibold text-sm">Lang &bull; Level 2</p>
+                      </div>
+      </div>
+      <div class="flex gap-1.5 shrink-0 pb-1">
+        <button type="button" class="hero-dot is-on" data-go="0" aria-label="Bild 1 von 5"></button>
+        <button type="button" class="hero-dot" data-go="1" aria-label="Bild 2 von 5"></button>
+        <button type="button" class="hero-dot" data-go="2" aria-label="Bild 3 von 5"></button>
+        <button type="button" class="hero-dot" data-go="3" aria-label="Bild 4 von 5"></button>
+        <button type="button" class="hero-dot" data-go="4" aria-label="Bild 5 von 5"></button>
+      </div>
+    </div>
+  </div>
+  <div class="absolute z-10 -top-7 -right-5 sm:-top-9 sm:-right-8 w-24 sm:w-32 aspect-square pointer-events-none drop-shadow-[0_14px_28px_rgba(229,20,95,0.35)] z-20">
+            <img src="brand_assets/hibiscus_pink.webp" alt="Pinke Hibiskusblüte" class="w-full h-full object-contain flower-bloom">
+          </div>
+</section>
+
 <section id="band" class="band-fade relative py-11 sm:py-12 overflow-hidden" style="background: url('brand_assets/leo_fur.jpg') center/cover;" aria-hidden="true">
   <div class="absolute inset-0 bg-void/30 backdrop-blur-[0.5px] pointer-events-none"></div>
   <div class="absolute inset-0 bg-gradient-to-r from-void via-transparent to-void pointer-events-none"></div>
@@ -630,7 +626,7 @@
     </div>
 
     <div class="js-rv rv grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-      <div class="rounded-2xl border border-sand-gold/25 bg-white/85 backdrop-blur-md p-5 sm:p-6 flex flex-col justify-between shadow-[0_10px_24px_-6px_rgba(70,45,20,0.06)] hover:border-sand-gold/50 transition-colors">
+      <div class="rounded-2xl border border-sand-gold/25 bg-surf-1/75 backdrop-blur-md p-5 sm:p-6 flex flex-col justify-between shadow-[0_10px_24px_-6px_rgba(70,45,20,0.06)] hover:border-sand-gold/50 transition-colors">
         <div>
           <span class="t-display text-[1.6rem] text-sand-gold font-bold">24h</span>
           <h3 class="t-display text-[1.05rem] mt-2 font-semibold text-chalk">Absage &amp; Storno</h3>
@@ -641,7 +637,7 @@
         <span class="text-[.72rem] uppercase tracking-wider text-chalk-mute mt-4 pt-2">Fairness &bull; Respekt</span>
       </div>
 
-      <div class="rounded-2xl border border-sand-gold/25 bg-white/85 backdrop-blur-md p-5 sm:p-6 flex flex-col justify-between shadow-[0_10px_24px_-6px_rgba(70,45,20,0.06)] hover:border-sand-gold/50 transition-colors">
+      <div class="rounded-2xl border border-sand-gold/25 bg-surf-1/75 backdrop-blur-md p-5 sm:p-6 flex flex-col justify-between shadow-[0_10px_24px_-6px_rgba(70,45,20,0.06)] hover:border-sand-gold/50 transition-colors">
         <div>
           <span class="t-display text-[1.6rem] text-sand-gold font-bold">Pünktlich</span>
           <h3 class="t-display text-[1.05rem] mt-2 font-semibold text-chalk">Time Management</h3>
@@ -652,7 +648,7 @@
         <span class="text-[.72rem] uppercase tracking-wider text-chalk-mute mt-4 pt-2">Quality &bull; Timing</span>
       </div>
 
-      <div class="rounded-2xl border border-sand-gold/25 bg-white/85 backdrop-blur-md p-5 sm:p-6 flex flex-col justify-between shadow-[0_10px_24px_-6px_rgba(70,45,20,0.06)] hover:border-sand-gold/50 transition-colors">
+      <div class="rounded-2xl border border-sand-gold/25 bg-surf-1/75 backdrop-blur-md p-5 sm:p-6 flex flex-col justify-between shadow-[0_10px_24px_-6px_rgba(70,45,20,0.06)] hover:border-sand-gold/50 transition-colors">
         <div>
           <span class="t-display text-[1.6rem] text-sand-gold font-bold">Care</span>
           <h3 class="t-display text-[1.05rem] mt-2 font-semibold text-chalk">Nagelgesundheit</h3>
@@ -663,7 +659,7 @@
         <span class="text-[.72rem] uppercase tracking-wider text-chalk-mute mt-4 pt-2">Hygiene &bull; Safe</span>
       </div>
 
-      <div class="rounded-2xl border border-sand-gold/25 bg-white/85 backdrop-blur-md p-5 sm:p-6 flex flex-col justify-between shadow-[0_10px_24px_-6px_rgba(70,45,20,0.06)] hover:border-sand-gold/50 transition-colors">
+      <div class="rounded-2xl border border-sand-gold/25 bg-surf-1/75 backdrop-blur-md p-5 sm:p-6 flex flex-col justify-between shadow-[0_10px_24px_-6px_rgba(70,45,20,0.06)] hover:border-sand-gold/50 transition-colors">
         <div>
           <span class="t-display text-[1.6rem] text-neon-pink font-bold">7 Tage</span>
           <h3 class="t-display text-[1.05rem] mt-2 font-semibold text-chalk">Garantie &bull; Repair</h3>
@@ -680,7 +676,7 @@
 <!-- ============ KONTAKT ============ -->
 <section id="kontakt" class="relative px-5 sm:px-8 py-[clamp(5rem,14vw,11rem)] scroll-mt-20 overflow-hidden" style="background: url('brand_assets/leo_fur.jpg') center/cover;">
   <!-- Soft Warm Silk Ivory Overlay for maximum readability with bright plush fur atmosphere -->
-  <div class="absolute inset-0 bg-gradient-to-b from-[#FAF6F1]/88 via-[#FAF6F1]/78 to-[#FAF6F1]/92 backdrop-blur-[0.5px] pointer-events-none"></div>
+  <div class="absolute inset-0 bg-gradient-to-b from-void/88 via-void/78 to-void/92 backdrop-blur-[0.5px] pointer-events-none"></div>
 
   <div class="mx-auto max-w-[88rem] relative z-10">
     <div class="grid lg:grid-cols-[1.1fr_0.9fr] gap-12 items-center">
@@ -713,7 +709,7 @@
         <div class="rv mt-6 flex items-center gap-3.5">
           <img src="brand_assets/sophie.jpg" alt="Sophie Gerber" width="150" height="150" loading="eager" decoding="async"
                class="w-14 h-14 sm:w-16 sm:h-16 rounded-full object-cover shrink-0
-                      ring-2 ring-sand-gold/70 ring-offset-2 ring-offset-[#FAF6F1]
+                      ring-2 ring-sand-gold/70 ring-offset-2 ring-offset-void
                       shadow-[0_8px_20px_-8px_rgba(74,45,26,.45)]">
           <div class="leading-tight">
             <p class="t-script text-[1.7rem] sm:text-[2rem] text-chalk leading-none pt-1">Sophie Gerber</p>
