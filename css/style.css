@@ -1886,3 +1886,97 @@ main > section:first-of-type {
   color: #EFE3D2;
   text-shadow: 0 2px 18px rgba(0, 0, 0, .6);
 }
+
+
+/* Die Bluete liegt auf dem Foto, nicht daneben: ein weicher Schein darunter
+   bindet sie ins Bild ein, statt sie wie einen Aufkleber wirken zu lassen. */
+.showcase-bloom::before {
+  content: "";
+  position: absolute;
+  inset: -22%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(229,20,95,.28) 0%, rgba(229,20,95,0) 68%);
+  pointer-events: none;
+  z-index: -1;
+}
+
+.showcase-bloom {
+  animation: bloomFloat 9s ease-in-out infinite;
+}
+
+@keyframes bloomFloat {
+  0%, 100% { transform: translate3d(0,0,0) rotate(0deg); }
+  50%      { transform: translate3d(0,-10px,0) rotate(-4deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .showcase-bloom { animation: none; }
+}
+
+
+/* ==========================================================================
+   DESKTOP
+   Seit die Slideshow einen eigenen Abschnitt hat, stand der Hero-Text in der
+   linken Haelfte und rechts blieb alles leer. Als zentrierte Titelkarte
+   traegt er die Breite, und der randlose Showcase darunter setzt fort.
+   ========================================================================== */
+@media (min-width: 1024px) {
+  main > section:first-of-type .js-rv > .grid {
+    max-width: 62rem;
+    margin-inline: auto;
+    text-align: center;
+    justify-items: center;
+  }
+
+  main > section:first-of-type .js-rv > .grid p,
+  main > section:first-of-type .js-rv > .grid h1,
+  main > section:first-of-type .js-rv > .grid h2 {
+    margin-inline: auto;
+  }
+
+  /* Knoepfe mittig statt linksbuendig */
+  main > section:first-of-type .js-rv > .grid .flex-wrap {
+    justify-content: center;
+  }
+
+  /* die Kennzahlenreihe darunter ebenfalls mittig ausrichten */
+  main > section:first-of-type .js-rv ~ div,
+  main > section:first-of-type > div:last-child {
+    justify-content: center;
+  }
+}
+
+/* Auf grossen Schirmen darf der Showcase nicht zu flach werden */
+@media (min-width: 1280px) {
+  #showcase #heroShow {
+    max-height: 78vh;
+  }
+}
+
+
+/* Die Bluete in den Leistungen greift jetzt auf die Karte darunter ueber.
+   Der weiche Schein bindet sie ein, damit sie nicht wie aufgeklebt wirkt. */
+.service-bloom {
+  z-index: 20;
+  animation: bloomFloat 11s ease-in-out infinite;
+}
+
+.service-bloom::before {
+  content: "";
+  position: absolute;
+  inset: -20%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(229,20,95,.22) 0%, rgba(229,20,95,0) 66%);
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Der Showcase darf nicht mehr beschneiden, die Bilder bleiben aber in Form. */
+#showcase #heroShow {
+  overflow: hidden;
+  border-radius: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .service-bloom { animation: none; }
+}
