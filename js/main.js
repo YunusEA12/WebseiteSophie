@@ -239,6 +239,15 @@
       e.stopPropagation();
       set(!open);
     });
+
+    var closeBtn = document.getElementById('menu-close-btn');
+    if (closeBtn) {
+      closeBtn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        set(false);
+      });
+    }
+
     menu.addEventListener('click', function (e) {
       if (e.target.closest('a') || e.target === menu) {
         set(false);
