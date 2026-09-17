@@ -31,15 +31,21 @@
    ========================================================================== */
 html {
   -webkit-text-size-adjust: 100%;
-  background: #17130F;
+  background: #FAF6F1;
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100%;
 }
 
 body {
-  background: transparent;
-  color: #EFE3D2;
+  background: #FAF6F1;
+  color: #1E1611;
   font-family: Inter, system-ui, sans-serif;
   line-height: 1.7;
-  overflow-x: clip;
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100vw;
+  position: relative;
 }
 
 ::selection {
@@ -108,7 +114,8 @@ h1, h2, h3 {
   position: fixed;
   inset: 0;
   z-index: 100;
-  background: #17130F;
+  background: #FAF6F1;
+  color: #1E1611;
   display: grid;
   place-items: center;
   gap: 0;
@@ -397,45 +404,58 @@ dialog.sheet[open] {
 #menu {
   position: fixed;
   inset: 0;
-  z-index: 72;
-  background: #17130F;
-  transform: translate3d(0, -100%, 0);
+  z-index: 79;
+  background: rgba(250, 246, 241, 0.98);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
   visibility: hidden;
-  transition: transform .8s var(--ease-out), visibility 0s linear .8s;
+  pointer-events: none;
+  transition: opacity .35s var(--ease-out), visibility 0s linear .35s;
 }
 
 #menu.open {
-  transform: translate3d(0, 0, 0);
+  opacity: 1;
   visibility: visible;
+  pointer-events: auto;
   transition-delay: 0s, 0s;
 }
 
-#menu a {
-  display: block;
-  opacity: 0;
-  transform: translate3d(0, 40px, 0);
-  transition: opacity .5s var(--ease-out), transform .7s var(--ease-spring), color .3s var(--ease-out);
+#menu nav {
+  transform: translate3d(0, 16px, 0) scale(0.98);
+  transition: transform .45s var(--ease-spring);
 }
 
-#menu.open a {
+#menu.open nav {
+  transform: translate3d(0, 0, 0) scale(1);
+}
+
+#menu .menu-link {
+  display: block;
+  opacity: 0;
+  color: #1E1611;
+  transform: translate3d(0, 14px, 0);
+  transition: opacity .35s var(--ease-out), transform .45s var(--ease-spring), color .2s var(--ease-out);
+}
+
+#menu.open .menu-link {
   opacity: 1;
   transform: translate3d(0, 0, 0);
 }
 
-#menu.open a:nth-child(1) { transition-delay: .22s; }
-#menu.open a:nth-child(2) { transition-delay: .29s; }
-#menu.open a:nth-child(3) { transition-delay: .36s; }
-#menu.open a:nth-child(4) { transition-delay: .43s; }
-#menu.open a:nth-child(5) { transition-delay: .5s; }
-#menu.open a:nth-child(6) { transition-delay: .57s; }
+#menu.open .menu-link:nth-of-type(1) { transition-delay: .08s; }
+#menu.open .menu-link:nth-of-type(2) { transition-delay: .13s; }
+#menu.open .menu-link:nth-of-type(3) { transition-delay: .18s; }
+#menu.open .menu-link:nth-of-type(4) { transition-delay: .23s; }
+#menu.open .menu-link:nth-of-type(5) { transition-delay: .28s; }
 
-#menu a:hover {
-  color: #FF4D86;
-}
-
-#menu a:focus-visible {
+#menu .menu-link:hover,
+#menu .menu-link:focus-visible {
   outline: none;
-  color: #FF4D86;
+  color: #E5145F;
 }
 
 /* Absolute centring keeps the cross exact regardless of how row boxes resolve */
@@ -443,8 +463,8 @@ dialog.sheet[open] {
   position: absolute;
   left: 50%;
   top: 50%;
-  height: 1.5px;
-  background: #EFE3D2;
+  height: 2px;
+  background: #1E1611;
   border-radius: 2px;
   transition: transform .45s var(--ease-spring), width .45s var(--ease-spring);
 }
@@ -483,9 +503,17 @@ dialog.sheet[open] {
   letter-spacing: -.01em;
   border-radius: 999px;
   white-space: nowrap;
+  max-width: 100%;
   overflow: hidden;
   transition: transform .5s var(--ease-spring), box-shadow .5s var(--ease-out), color .35s var(--ease-out);
   will-change: transform;
+}
+
+@media (max-width: 640px) {
+  .btn {
+    white-space: normal;
+    text-align: center;
+  }
 }
 
 .btn > * {
@@ -1371,36 +1399,64 @@ button.tile {
 }
 
 /* ==========================================================================
-   3. A CALMER HEADER
-   The vine used to show through the translucent bar and cut across the logo.
+   3. FLOATING LUXURY PILL HEADER
    ========================================================================== */
 header {
-  background: rgba(23, 19, 15, .96) !important;
-  box-shadow: 0 1px 0 rgba(239, 227, 210, .07);
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+  padding: .6rem .75rem !important;
+  z-index: 80 !important;
+  pointer-events: none !important;
 }
 
+.header-pill {
+  pointer-events: auto !important;
+  background: rgba(255, 255, 255, 0.92) !important;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(210, 175, 130, 0.35) !important;
+  box-shadow: 0 8px 30px -6px rgba(60, 35, 15, 0.09) !important;
+  border-radius: 9999px !important;
+}
+
+#burger {
+  pointer-events: auto !important;
+  cursor: pointer !important;
+  position: relative !important;
+  z-index: 82 !important;
+}
+
+/* High-contrast typography on bright plush fur */
+.text-chalk { color: #1E1611 !important; }
+.text-chalk-dim { color: #4A3C33 !important; }
+.text-chalk-mute { color: #7B685B !important; }
+.text-sand-gold { color: #A46F28 !important; }
+.text-sand-bronze { color: #8C5819 !important; }
+
+/* Surfaces & Frosted Silk Cards */
+.bg-surf-1 { background-color: rgba(255, 255, 255, 0.86) !important; }
+.bg-surf-1\/50 { background-color: rgba(255, 255, 255, 0.62) !important; }
+.bg-surf-1\/80 { background-color: rgba(255, 255, 255, 0.82) !important; }
+.bg-surf-1\/90 { background-color: rgba(255, 255, 255, 0.9) !important; }
+.bg-surf-1\/95 { background-color: rgba(255, 255, 255, 0.95) !important; }
+.border-chalk\/8,
+.border-chalk\/10,
+.border-chalk\/12,
+.border-chalk\/20 { border-color: rgba(190, 150, 110, 0.22) !important; }
 
 /* ==========================================================================
-   DARK MODE
-   The leopard photographs are bright by nature. Rather than swapping them,
-   they are dimmed in place so the print reads as an embossed texture on the
-   dark ground instead of a lit photograph.
+   BRIGHT, PLUSH LEOPARD FUR LUXURY ATMOSPHERE
+   Natural blonde & honey leopard fur with soft, luminous highlights.
    ========================================================================== */
 #band,
 #kontakt,
 .leo-tex {
   position: relative;
-}
-
-#band::after,
-#kontakt::after,
-.leo-tex::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-  background: rgba(16, 12, 9, .78);
 }
 
 #band > *,
@@ -1410,136 +1466,139 @@ header {
   z-index: 1;
 }
 
-/* the tiny leopard dots in the eyebrows would glare at full brightness */
-span[style*="leo_fur"] {
-  filter: brightness(.55) saturate(.85);
+.leo-tex {
+  background-color: #FAF6F1 !important;
 }
 
-/* the veil over the textured sections now has to darken, not lighten */
+#band {
+  background: linear-gradient(90deg, #FAF6F1 0%, rgba(250, 246, 241, 0.3) 15%, rgba(250, 246, 241, 0.3) 85%, #FAF6F1 100%),
+              linear-gradient(180deg, rgba(250, 246, 241, 0.7) 0%, rgba(250, 246, 241, 0.15) 50%, rgba(250, 246, 241, 0.7) 100%),
+              url('../brand_assets/leo_fur.jpg') center/cover !important;
+  color: #1E1611 !important;
+}
+
+#kontakt {
+  background: linear-gradient(180deg, #FAF6F1 0%, rgba(250, 246, 241, 0.7) 20%, rgba(250, 246, 241, 0.88) 80%, #FAF6F1 100%),
+              url('../brand_assets/leo_fur.jpg') center/cover !important;
+}
+
 .leo-soft::before {
   background: linear-gradient(180deg,
-    #17130F 0%,
-    rgba(23, 19, 15, .96) 5%,
-    rgba(23, 19, 15, .86) 14%,
-    rgba(23, 19, 15, .78) 30%,
-    rgba(23, 19, 15, .78) 70%,
-    rgba(23, 19, 15, .86) 86%,
-    rgba(23, 19, 15, .96) 95%,
-    #17130F 100%);
-}
-
-.band-fade::before {
-  background: linear-gradient(to bottom,
-    #17130F 0,
-    rgba(23, 19, 15, .45) 10px,
-    rgba(23, 19, 15, 0) 22px,
-    rgba(23, 19, 15, 0) calc(100% - 22px),
-    rgba(23, 19, 15, .45) calc(100% - 10px),
-    #17130F 100%);
-}
-
-.foot-fade::before {
-  background: linear-gradient(to bottom,
-    #17130F 0%,
-    rgba(23, 19, 15, .55) 40%,
-    rgba(23, 19, 15, .8) 78%,
-    #17130F 100%);
+    #FAF6F1 0%,
+    rgba(250, 246, 241, .92) 8%,
+    rgba(250, 246, 241, .45) 30%,
+    rgba(250, 246, 241, .45) 70%,
+    rgba(250, 246, 241, .92) 92%,
+    #FAF6F1 100%) !important;
 }
 
 .seam::before {
-  background: linear-gradient(to bottom, #17130F, rgba(23, 19, 15, 0));
+  background: linear-gradient(to bottom, #FAF6F1, rgba(250, 246, 241, 0)) !important;
 }
 
 .seam::after {
-  background: linear-gradient(to top, #17130F, rgba(23, 19, 15, 0));
+  background: linear-gradient(to top, #FAF6F1, rgba(250, 246, 241, 0)) !important;
 }
 
-/* header sits on the dark ground now */
-header {
-  background: rgba(23, 19, 15, .94) !important;
-  box-shadow: 0 1px 0 rgba(239, 227, 210, .07);
-}
-
-/* the espresso service cards need to separate from a dark page */
+/* Service cards */
 .card-espresso {
-  background: #2A221C;
-  border-color: rgba(216, 168, 96, .3);
-  box-shadow: 0 12px 30px -12px rgba(0, 0, 0, .7);
+  background: rgba(255, 255, 255, 0.86) !important;
+  border-color: rgba(210, 175, 130, 0.35) !important;
+  box-shadow: 0 14px 35px -10px rgba(70, 45, 20, 0.08) !important;
 }
 
-.card-leo::before {
-  opacity: .09;
-}
-
-/* photographs pop against dark; take the hard white frame off */
-.hero-slide,
-.media img {
-  filter: saturate(1.03);
-}
-
-/* a warm rule instead of a dark one */
-.rule {
-  background: linear-gradient(90deg,
-    rgba(216, 168, 96, 0),
-    rgba(216, 168, 96, .5) 20%,
-    rgba(79, 216, 204, .45) 80%,
-    rgba(79, 216, 204, 0));
-}
-
-/* the vine now glows rather than sits on the surface */
-#vine path {
-  filter: drop-shadow(0 0 6px rgba(216, 168, 96, .45));
-}
-
-
-/* labels have to win against the print behind them */
 .card-espresso .t-display {
-  color: #F3E8D8;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, .75);
+  color: #1E1611 !important;
+  text-shadow: none !important;
 }
 
 .card-espresso span:last-child {
-  color: rgba(226, 211, 189, .8);
-  text-shadow: 0 1px 3px rgba(0, 0, 0, .7);
+  color: #6B584C !important;
+  text-shadow: none !important;
 }
 
 .card-espresso .text-sand-gold,
 .card-espresso svg {
-  color: #E8BE7C;
+  color: #A46F28 !important;
 }
 
-/* a hot neon pink fights the warm palette; this reads rich instead */
-.btn-solid { background: #E8447F; }
+.card-leo::before {
+  opacity: .15 !important;
+}
+
+/* Soft gold divider */
+.rule {
+  background: linear-gradient(90deg,
+    transparent,
+    rgba(216, 168, 96, .35) 20%,
+    rgba(229, 20, 95, .3) 80%,
+    transparent) !important;
+}
+
+/* Buttons & Selectors */
+.btn-solid {
+  background: linear-gradient(135deg, #FF4D86 0%, #E5145F 100%) !important;
+  color: #fff !important;
+  box-shadow: 0 8px 24px -4px rgba(229, 20, 95, .38) !important;
+}
+
+.btn-line {
+  background: rgba(255, 255, 255, 0.82) !important;
+  border: 1px solid rgba(190, 150, 100, 0.35) !important;
+  color: #1E1611 !important;
+}
+
+.btn-line:hover {
+  background: #ffffff !important;
+  border-color: #E5145F !important;
+  color: #E5145F !important;
+}
+
+.opt {
+  background: rgba(255, 255, 255, 0.85) !important;
+  border: 1px solid rgba(190, 150, 100, 0.28) !important;
+  color: #1E1611 !important;
+}
+
+.opt:hover {
+  border-color: rgba(229, 20, 95, 0.45) !important;
+}
+
 .opt[aria-pressed="true"],
-.opt[aria-checked="true"] { border-color: #E8447F; background: #E8447F; }
-
-
-/* ==========================================================================
-   PLUSH LEOPARD FUR ATMOSPHERE (Y2K / LUXURY EDITORIAL GLAM)
-   We preserve the soft, fluffy texture of the genuine leopard fur from
-   Sophie's moodboard, while maintaining high-contrast readability through
-   layered, warm espresso-gold vignettes.
-   ========================================================================== */
-.leo-tex {
-  background-color: #261E18;
-  background-blend-mode: normal;
+.opt[aria-checked="true"] {
+  border-color: #E5145F !important;
+  background: linear-gradient(135deg, #FF4D86 0%, #E5145F 100%) !important;
+  color: #ffffff !important;
 }
 
-#band {
-  background: linear-gradient(90deg, #17130F 0%, rgba(23, 19, 15, 0.45) 15%, rgba(23, 19, 15, 0.45) 85%, #17130F 100%),
-              linear-gradient(180deg, rgba(23, 19, 15, 0.72) 0%, rgba(23, 19, 15, 0.22) 50%, rgba(23, 19, 15, 0.72) 100%),
-              url('../brand_assets/leo_fur.jpg') center/cover !important;
+.opt[aria-pressed="true"] span,
+.opt[aria-checked="true"] span {
+  color: #ffffff !important;
 }
 
-#kontakt {
-  background: linear-gradient(180deg, #17130F 0%, rgba(23, 19, 15, 0.65) 20%, rgba(23, 19, 15, 0.75) 80%, #17130F 100%),
-              url('../brand_assets/leo_fur.jpg') center/cover !important;
+.opt-sub {
+  color: #7B685B !important;
 }
 
-.leo-tex::after,
-#band::after,
-#kontakt::after {
-  background: none;
+.opt[aria-pressed="true"] .opt-sub,
+.opt[aria-checked="true"] .opt-sub {
+  color: rgba(255, 255, 255, 0.9) !important;
+}
+
+/* Legal Dialog Sheets */
+dialog.sheet {
+  background: #FAF6F1 !important;
+  color: #1E1611 !important;
+  border: 1px solid rgba(200, 160, 110, 0.3) !important;
+  box-shadow: 0 24px 60px -15px rgba(50, 30, 15, 0.2) !important;
+}
+
+dialog.sheet h2, dialog.sheet h3 {
+  color: #1E1611 !important;
+}
+
+dialog.sheet p, dialog.sheet li {
+  color: #4A3C33 !important;
 }
 
 /* ==========================================================================
@@ -1556,13 +1615,13 @@ header {
   gap: .85rem;
   max-width: min(92vw, 460px);
   padding: .9rem 1.35rem;
-  background: rgba(34, 27, 22, .96);
-  border: 1px solid rgba(216, 168, 96, .35);
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(210, 175, 130, 0.4);
   border-radius: 9999px;
-  box-shadow: 0 16px 40px -12px rgba(0, 0, 0, .6), 0 0 24px -4px rgba(229, 20, 95, .25);
+  box-shadow: 0 16px 40px -10px rgba(60, 35, 15, 0.15), 0 0 24px -4px rgba(229, 20, 95, 0.15);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  color: #EFE3D2;
+  color: #1E1611;
   font-size: .88rem;
   line-height: 1.35;
   pointer-events: none;

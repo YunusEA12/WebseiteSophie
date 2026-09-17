@@ -6,10 +6,35 @@
 (function () {
   'use strict';
 
-  /* Browsers restore the previous scroll position on reload, which dropped
-     visitors into the middle of the price calculator instead of the top. */
+  /* Always start at the top on fresh load & reload. Prevent lingering hash from jumping to calculator */
   if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+  if (window.location.hash) {
+    try {
+      history.replaceState(null, document.title, window.location.pathname + window.location.search);
+    } catch (e) {}
+  }
+  window.scrollTo(0, 0);
+  window.addEventListener('load', function () {
+    setTimeout(function () { window.scrollTo(0, 0); }, 40);
+  });
   addEventListener('beforeunload', function () { window.scrollTo(0, 0); });
+
+  // Intercept anchor clicks so hash doesn't get stuck in the address bar
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest('a[href^="#"]');
+    if (!a) return;
+    var href = a.getAttribute('href');
+    if (!href || href === '#') {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+    var target = document.querySelector(href);
+    if (target) {
+      e.preventDefault();
+      target.scrollIntoView({ behavior: 'smooth' });
+    }
+  });
 
   // Environment & Accessibility detection
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -210,9 +235,14 @@
       document.body.style.overflow = open ? 'hidden' : '';
     }
 
-    burger.addEventListener('click', function () { set(!open); });
+    burger.addEventListener('click', function (e) {
+      e.stopPropagation();
+      set(!open);
+    });
     menu.addEventListener('click', function (e) {
-      if (e.target.closest('a')) set(false);
+      if (e.target.closest('a') || e.target === menu) {
+        set(false);
+      }
     });
 
     document.addEventListener('keydown', function (e) {

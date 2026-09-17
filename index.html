@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>gerberxnails — Sophie Gerber | Nageldesign</title>
 <meta name="description" content="Nageldesign von Sophie Gerber. Russische Maniküre bei jeder Behandlung inklusive. Termine per Instagram-DM oder WhatsApp.">
-<meta name="theme-color" content="#17130F">
+<meta name="theme-color" content="#FAF6F1">
 <meta name="author" content="Sophie Gerber">
 <link rel="canonical" href="https://gerberxnails.de/">
 
@@ -25,7 +25,7 @@
 <meta name="twitter:image" content="share.jpg">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2317130F'/%3E%3Ccircle cx='16' cy='16' r='7' fill='%23FF3D82'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="css/tailwind-base.css?v=af7c1978">
-<link rel="stylesheet" href="css/style.css?v=2f3f34ba">
+<link rel="stylesheet" href="css/style.css?v=2726d8d5">
 <link rel="stylesheet" href="css/tailwind-utils.css?v=7036ca99">
 </head>
 <body class="antialiased">
@@ -141,14 +141,14 @@
 <div id="peek" aria-hidden="true"><img src="" alt=""></div>
 
 <!-- ============ NAV ============ -->
-<header class="fixed top-0 inset-x-0 z-[78] bg-void/85 backdrop-blur-md border-b border-chalk/8">
-  <div class="mx-auto max-w-[88rem] px-5 sm:px-8 py-3.5 sm:py-4 flex items-center justify-between gap-4">
-    <a href="#top" data-mag class="group flex items-center gap-3 rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neon-pink">
-      <svg viewBox="-150 -150 300 300" class="w-8 h-8 shrink-0 transition-transform duration-500 group-hover:rotate-45" style="--pf:url(#gPink); --pc:#4A0D26" aria-hidden="true"><use href="#bloom"/></svg>
-      <span class="t-script text-[1.85rem] sm:text-[2.2rem] text-chalk group-hover:text-sand-bronze transition-colors leading-none pt-1">gerberxnails</span>
+<header class="fixed top-0 inset-x-0 z-[80] px-3 sm:px-6 pt-3 pointer-events-none transition-all duration-300">
+  <div class="header-pill pointer-events-auto mx-auto max-w-[88rem] w-full px-3.5 sm:px-7 py-2 sm:py-3 flex items-center justify-between gap-3 sm:gap-4">
+    <a href="#top" data-mag class="group flex items-center gap-2 sm:gap-2.5 rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neon-pink">
+      <svg viewBox="-150 -150 300 300" class="w-6 h-6 sm:w-8 sm:h-8 shrink-0 transition-transform duration-500 group-hover:rotate-45" style="--pf:url(#gPink); --pc:#4A0D26" aria-hidden="true"><use href="#bloom"/></svg>
+      <span class="t-script text-[1.65rem] sm:text-[2.2rem] text-[#1E1611] group-hover:text-sand-bronze transition-colors leading-none pt-0.5">gerberxnails</span>
     </a>
 
-    <nav class="hidden md:flex items-center gap-8">
+    <nav class="hidden md:flex items-center gap-8 text-[#1E1611]">
       <a href="#leistungen" class="navlink">Leistungen</a>
       <a href="#preise"     class="navlink">Preisrechner</a>
       <a href="#arbeiten"   class="navlink">Arbeiten</a>
@@ -156,12 +156,12 @@
       <a href="#kontakt"    class="navlink">Kontakt</a>
     </nav>
 
-    <div class="flex items-center gap-3">
+    <div class="flex items-center gap-2 sm:gap-3">
       <a href="#kontakt" data-mag class="btn btn-solid hidden sm:inline-flex text-[.82rem] px-5 py-2.5"><span>Termin anfragen</span></a>
       <button id="burger" type="button" aria-label="Menü öffnen" aria-expanded="false" aria-controls="menu"
-              class="md:hidden relative w-11 h-11 rounded-full border border-chalk/20
-                     transition-transform duration-500 hover:scale-105 active:scale-95
-                     focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neon-pink">
+              class="md:hidden relative w-10 h-10 rounded-full border border-sand-bronze/30 bg-white/85 backdrop-blur-sm
+                     transition-transform duration-300 hover:scale-105 active:scale-95 flex items-center justify-center
+                     focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neon-pink shadow-sm">
         <span></span><span></span>
       </button>
     </div>
@@ -170,22 +170,31 @@
 
 <!-- ============ OVERLAY MENU ============ -->
 <div id="menu" aria-hidden="true">
-  <nav class="h-full flex flex-col justify-center gap-3.5 px-7 sm:px-12 max-w-md mx-auto">
+  <nav class="w-full max-w-sm mx-auto flex flex-col justify-center items-center text-center px-6 py-10 relative">
     <div class="mb-3">
-      <span class="t-script text-5xl sm:text-6xl text-sand-bronze">gerberxnails</span>
+      <span class="t-script text-4xl sm:text-5xl text-sand-bronze drop-shadow-[0_2px_12px_rgba(229,20,95,0.08)]">gerberxnails</span>
+      <p class="t-editorial text-[.72rem] tracking-[.22em] uppercase text-sand-gold font-semibold mt-1">Russian Manicure &bull; Custom Nail Art</p>
     </div>
-    <a href="#leistungen" class="t-display text-[clamp(2.1rem,9vw,3.4rem)] tracking-[-.04em]">Leistungen</a>
-    <a href="#preise"     class="t-display text-[clamp(2.1rem,9vw,3.4rem)] tracking-[-.04em]">Preisrechner</a>
-    <a href="#arbeiten"   class="t-display text-[clamp(2.1rem,9vw,3.4rem)] tracking-[-.04em]">Arbeiten</a>
-      <a href="#policy" class="t-display text-[clamp(2.1rem,9vw,3.4rem)] tracking-[-.04em]">Studio Policy</a>
-    <a href="#kontakt"    class="t-display text-[clamp(2.1rem,9vw,3.4rem)] tracking-[-.04em]">Kontakt</a>
-    <div class="mt-6 flex flex-col gap-3">
+
+    <div class="w-16 h-px bg-gradient-to-r from-transparent via-sand-bronze/35 to-transparent my-2.5"></div>
+
+    <div class="flex flex-col items-center gap-1 w-full my-2">
+      <a href="#leistungen" class="menu-link t-display text-xl sm:text-2xl tracking-[-.01em] text-[#1E1611] hover:text-neon-pink transition-colors py-2">Leistungen</a>
+      <a href="#preise"     class="menu-link t-display text-xl sm:text-2xl tracking-[-.01em] text-[#1E1611] hover:text-neon-pink transition-colors py-2">Preisrechner</a>
+      <a href="#arbeiten"   class="menu-link t-display text-xl sm:text-2xl tracking-[-.01em] text-[#1E1611] hover:text-neon-pink transition-colors py-2">Arbeiten</a>
+      <a href="#policy"     class="menu-link t-display text-xl sm:text-2xl tracking-[-.01em] text-[#1E1611] hover:text-neon-pink transition-colors py-2">Studio Policy</a>
+      <a href="#kontakt"    class="menu-link t-display text-xl sm:text-2xl tracking-[-.01em] text-[#1E1611] hover:text-neon-pink transition-colors py-2">Kontakt</a>
+    </div>
+
+    <div class="w-16 h-px bg-gradient-to-r from-transparent via-sand-bronze/35 to-transparent my-2.5"></div>
+
+    <div class="mt-3 flex flex-col items-center gap-2 w-full max-w-xs">
       <a href="https://www.instagram.com/gerberxnails/" target="_blank" rel="noopener noreferrer"
-         class="btn btn-solid text-center !py-3.5 !text-[.94rem]">
+         class="btn btn-solid w-full text-center !py-3 !text-[.88rem] shadow-[0_6px_20px_rgba(229,20,95,0.22)]">
         <span>Termin per Instagram anfragen</span>
       </a>
       <a href="https://www.instagram.com/gerberxnails/" target="_blank" rel="noopener noreferrer"
-         class="t-editorial uppercase text-[.9rem] tracking-[.18em] text-sand-gold font-semibold text-center mt-1">@gerberxnails &nearr;</a>
+         class="t-editorial uppercase text-[.78rem] tracking-[.16em] text-sand-gold font-semibold text-center mt-0.5">@gerberxnails &nearr;</a>
     </div>
   </nav>
 </div>
@@ -195,11 +204,11 @@
 <!-- ============ HERO ============ -->
 <section class="atmos relative min-h-[100svh] flex flex-col justify-between overflow-hidden px-5 sm:px-8 pb-10 pt-28 sm:pt-36">
 
-  <!-- Soft Plush Leo Fur Atmosphere (fluffy high-fashion framing from moodboard) -->
-  <div class="pointer-events-none absolute left-0 top-0 w-full lg:w-3/5 h-full opacity-55 overflow-hidden z-0 select-none">
-    <img src="brand_assets/leo_fur.jpg" alt="" class="w-full h-full object-cover object-left-top filter contrast-110 brightness-[.28] saturate-[.75]">
-    <div class="absolute inset-0 bg-gradient-to-r from-void/35 via-void/70 to-void"></div>
-    <div class="absolute inset-0 bg-gradient-to-b from-void/50 via-transparent to-void"></div>
+  <!-- Soft Plush Leo Fur Atmosphere (bright, fluffy luxury framing from moodboard) -->
+  <div class="pointer-events-none absolute left-0 top-0 w-full lg:w-3/4 h-full opacity-70 overflow-hidden z-0 select-none">
+    <img src="brand_assets/leo_fur.jpg" alt="" class="w-full h-full object-cover object-left-top filter contrast-105 brightness-100">
+    <div class="absolute inset-0 bg-gradient-to-r from-transparent via-[#FAF6F1]/55 to-[#FAF6F1]"></div>
+    <div class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#FAF6F1]"></div>
   </div>
 
   <div class="js-rv is-in mx-auto w-full max-w-[88rem] relative z-10 my-auto">
@@ -237,12 +246,15 @@
         </div>
       </div>
 
-      <!-- Right: Real Instagram Feature Card + Realistic Turquoise Tropical Hibiscus Bloom -->
+      <!-- Right: Real Instagram Feature Card + Ambient Luxury Glow + Hibiscus Bloom -->
       <div class="relative mx-auto lg:mx-0 w-full max-w-[20rem] sm:max-w-[24rem] lg:max-w-[26rem] mt-6 lg:mt-0">
-        <div id="heroShow" class="relative rounded-3xl overflow-hidden shadow-[0_24px_60px_-15px_rgba(74,45,26,0.38)] border border-sand-gold/25 bg-white">
+        <!-- Ambient Halo Glow -->
+        <div class="absolute -inset-3 rounded-[2.5rem] bg-gradient-to-tr from-neon-pink/25 via-sand-gold/25 to-transparent blur-2xl pointer-events-none opacity-75"></div>
+
+        <div id="heroShow" class="relative rounded-3xl overflow-hidden shadow-[0_24px_60px_-15px_rgba(74,45,26,0.22)] border border-sand-gold/30 bg-white">
           <div class="relative aspect-[4/5]">
             <img src="brand_assets/nail_post_2.jpg" alt="Signature Set von Sophie Gerber" class="hero-slide is-on" loading="eager" decoding="async" width="700" height="875">
-            <img src="brand_assets/nail_post_1.jpg" alt="Leo  Gold von Sophie Gerber" class="hero-slide" loading="lazy" decoding="async" width="700" height="875">
+            <img src="brand_assets/nail_post_1.jpg" alt="Leo Gold von Sophie Gerber" class="hero-slide" loading="lazy" decoding="async" width="700" height="875">
             <img src="brand_assets/nail_post_5.jpg" alt="Chrome von Sophie Gerber" class="hero-slide" loading="lazy" decoding="async" width="700" height="875">
             <img src="brand_assets/nail_post_3.jpg" alt="Clean French von Sophie Gerber" class="hero-slide" loading="lazy" decoding="async" width="700" height="875">
             <img src="brand_assets/nail_post_8.jpg" alt="Cat Eye von Sophie Gerber" class="hero-slide" loading="lazy" decoding="async" width="700" height="875">
@@ -291,8 +303,8 @@
     </div>
   </div>
 
-  <!-- Stats & Scroll indicator -->
-  <div class="mx-auto w-full max-w-[88rem] relative z-10 mt-8 pt-5 border-t border-chalk/12 flex items-end justify-between gap-6">
+  <!-- Stats & Scroll indicator (Clean, seamless without harsh border) -->
+  <div class="mx-auto w-full max-w-[88rem] relative z-10 mt-8 pt-4 flex items-end justify-between gap-6">
     <div class="js-rv flex justify-between sm:justify-start gap-4 sm:gap-14 w-full sm:w-auto">
       <div class="rv">
         <div class="t-display text-[1.65rem] sm:text-[2.4rem] text-chalk">35&thinsp;&euro;</div>
@@ -545,49 +557,53 @@
          data-mag class="rv btn btn-line px-5 py-3 text-[.85rem]"><span>@gerberxnails &nearr;</span></a>
     </div>
 
-    <div class="js-rv rv grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
-      <button type="button" class="tile" data-view data-par="-24">
-        <div class="media aspect-[4/5]"><img src="brand_assets/nail_post_1.jpg" alt="Leo Print French Tips mit Goldketten" loading="eager" decoding="async" width="700" height="875" class="w-full h-full object-cover">
-          <div class="media-cap"><p class="t-display text-[1rem]">Leo &amp; Goldkette</p><p class="text-[.75rem] text-white/75">Extra Lang · Level 4</p></div></div>
+    <div class="js-rv rv grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5">
+      <button type="button" class="tile" data-view data-par="-20">
+        <div class="media aspect-[4/5] rounded-2xl sm:rounded-3xl overflow-hidden shadow-[0_12px_28px_rgba(70,45,20,0.1)] border border-sand-gold/25"><img src="brand_assets/nail_post_1.jpg" alt="Leo Print French Tips mit Goldketten" loading="eager" decoding="async" width="700" height="875" class="w-full h-full object-cover">
+          <div class="media-cap"><p class="t-display text-[1rem]">Leo &amp; Goldkette</p><p class="text-[.75rem] text-white/80">Extra Lang · Level 4</p></div></div>
       </button>
       <button type="button" class="tile" data-view data-par="14">
-        <div class="media aspect-[4/5]"><img src="brand_assets/nail_post_2.jpg" alt="Hibiskus Blüten und Leo Print" loading="eager" decoding="async" width="700" height="875" class="w-full h-full object-cover">
-          <div class="media-cap"><p class="t-display text-[1rem]">Hibiskus &amp; Leo Art</p><p class="text-[.75rem] text-white/75">Medium · Level 3</p></div></div>
+        <div class="media aspect-[4/5] rounded-2xl sm:rounded-3xl overflow-hidden shadow-[0_12px_28px_rgba(70,45,20,0.1)] border border-sand-gold/25"><img src="brand_assets/nail_post_2.jpg" alt="Hibiskus Blüten und Leo Print" loading="eager" decoding="async" width="700" height="875" class="w-full h-full object-cover">
+          <div class="media-cap"><p class="t-display text-[1rem]">Hibiskus &amp; Leo Art</p><p class="text-[.75rem] text-white/80">Medium · Level 3</p></div></div>
       </button>
       <button type="button" class="tile" data-view data-par="-14">
-        <div class="media aspect-[4/5]"><img src="brand_assets/nail_post_5.jpg" alt="Tropisches Ocean Design mit 3D Muscheln" loading="eager" decoding="async" width="700" height="875" class="w-full h-full object-cover">
-          <div class="media-cap"><p class="t-display text-[1rem]">Ocean &amp; 3D Chrome</p><p class="text-[.75rem] text-white/75">Extra Lang · Level 4</p></div></div>
+        <div class="media aspect-[4/5] rounded-2xl sm:rounded-3xl overflow-hidden shadow-[0_12px_28px_rgba(70,45,20,0.1)] border border-sand-gold/25"><img src="brand_assets/nail_post_5.jpg" alt="Tropisches Ocean Design mit 3D Muscheln" loading="eager" decoding="async" width="700" height="875" class="w-full h-full object-cover">
+          <div class="media-cap"><p class="t-display text-[1rem]">Ocean &amp; 3D Chrome</p><p class="text-[.75rem] text-white/80">Extra Lang · Level 4</p></div></div>
       </button>
-      <button type="button" class="tile" data-view data-par="20">
-        <div class="media aspect-[4/5]"><img src="brand_assets/nail_post_4.jpg" alt="Animal Print in warmen Herbsttönen" loading="eager" decoding="async" width="700" height="875" class="w-full h-full object-cover">
-          <div class="media-cap"><p class="t-display text-[1rem]">Autumn &amp; Animal Print</p><p class="text-[.75rem] text-white/75">Lang · Level 2</p></div></div>
+      <button type="button" class="tile" data-view data-par="18">
+        <div class="media aspect-[4/5] rounded-2xl sm:rounded-3xl overflow-hidden shadow-[0_12px_28px_rgba(70,45,20,0.1)] border border-sand-gold/25"><img src="brand_assets/nail_post_4.jpg" alt="Animal Print in warmen Herbsttönen" loading="eager" decoding="async" width="700" height="875" class="w-full h-full object-cover">
+          <div class="media-cap"><p class="t-display text-[1rem]">Autumn &amp; Animal Print</p><p class="text-[.75rem] text-white/80">Lang · Level 2</p></div></div>
       </button>
-      <button type="button" class="tile" data-view data-par="-18">
-        <div class="media aspect-[4/5]"><img src="brand_assets/nail_post_7.jpg" alt="Saubere Russische Maniküre" loading="eager" decoding="async" width="700" height="875" class="w-full h-full object-cover">
-          <div class="media-cap"><p class="t-display text-[1rem]">Clean Russian Manicure</p><p class="text-[.75rem] text-white/75">Kurz · Level 1</p></div></div>
+      <button type="button" class="tile" data-view data-par="-16">
+        <div class="media aspect-[4/5] rounded-2xl sm:rounded-3xl overflow-hidden shadow-[0_12px_28px_rgba(70,45,20,0.1)] border border-sand-gold/25"><img src="brand_assets/nail_post_7.jpg" alt="Saubere Russische Maniküre" loading="eager" decoding="async" width="700" height="875" class="w-full h-full object-cover">
+          <div class="media-cap"><p class="t-display text-[1rem]">Clean Russian Manicure</p><p class="text-[.75rem] text-white/80">Kurz · Level 1</p></div></div>
       </button>
-      <button type="button" class="tile" data-view data-par="10">
-        <div class="media aspect-[4/5]"><img src="brand_assets/nail_post_8.jpg" alt="Glaze und Katzenauge Glow" loading="eager" decoding="async" width="700" height="875" class="w-full h-full object-cover">
-          <div class="media-cap"><p class="t-display text-[1rem]">Cat Eye &amp; Glaze</p><p class="text-[.75rem] text-white/75">Medium · Level 2</p></div></div>
+      <button type="button" class="tile" data-view data-par="12">
+        <div class="media aspect-[4/5] rounded-2xl sm:rounded-3xl overflow-hidden shadow-[0_12px_28px_rgba(70,45,20,0.1)] border border-sand-gold/25"><img src="brand_assets/nail_post_8.jpg" alt="Glaze und Katzenauge Glow" loading="eager" decoding="async" width="700" height="875" class="w-full h-full object-cover">
+          <div class="media-cap"><p class="t-display text-[1rem]">Cat Eye &amp; Glaze</p><p class="text-[.75rem] text-white/80">Medium · Level 2</p></div></div>
       </button>
-      <button type="button" class="tile" data-view data-par="-15">
-        <div class="media aspect-[4/5]"><img src="brand_assets/nail_post_9.jpg" alt="Signature Hibiskus Blüten &amp; Muschel Nail Art mit Perlen" loading="eager" decoding="async" width="700" height="875" class="w-full h-full object-cover">
-          <div class="media-cap"><p class="t-display text-[1rem]">Signature Hibiskus &amp; Pearls</p><p class="text-[.75rem] text-white/75">Medium · Level 4</p></div></div>
+      <button type="button" class="tile" data-view data-par="-14">
+        <div class="media aspect-[4/5] rounded-2xl sm:rounded-3xl overflow-hidden shadow-[0_12px_28px_rgba(70,45,20,0.1)] border border-sand-gold/25"><img src="brand_assets/nail_post_9.jpg" alt="Signature Hibiskus Blüten &amp; Muschel Nail Art mit Perlen" loading="eager" decoding="async" width="700" height="875" class="w-full h-full object-cover">
+          <div class="media-cap"><p class="t-display text-[1rem]">Signature Hibiskus &amp; Pearls</p><p class="text-[.75rem] text-white/80">Medium · Level 4</p></div></div>
       </button>
       <button type="button" class="tile" data-view data-par="16">
-        <div class="media aspect-[4/5]"><img src="brand_assets/nail_post_3.jpg" alt="Streetwear French Tip Design in Blau &amp; Weiß" loading="eager" decoding="async" width="700" height="875" class="w-full h-full object-cover">
-          <div class="media-cap"><p class="t-display text-[1rem]">Streetwear French Blue</p><p class="text-[.75rem] text-white/75">Extra Lang · Level 3</p></div></div>
+        <div class="media aspect-[4/5] rounded-2xl sm:rounded-3xl overflow-hidden shadow-[0_12px_28px_rgba(70,45,20,0.1)] border border-sand-gold/25"><img src="brand_assets/nail_post_3.jpg" alt="Streetwear French Tip Design in Blau &amp; Weiß" loading="eager" decoding="async" width="700" height="875" class="w-full h-full object-cover">
+          <div class="media-cap"><p class="t-display text-[1rem]">Streetwear French Blue</p><p class="text-[.75rem] text-white/80">Extra Lang · Level 3</p></div></div>
       </button>
-      <button type="button" class="tile" data-view data-par="-12">
-        <div class="media aspect-[4/5]"><img src="brand_assets/nail_post_6.jpg" alt="Klassische rote Maniküre mit Hochglanz-Finish" loading="eager" decoding="async" width="700" height="875" class="w-full h-full object-cover">
-          <div class="media-cap"><p class="t-display text-[1rem]">Classic Red Elegance</p><p class="text-[.75rem] text-white/75">Kurz · Level 1</p></div></div>
-      </button>
+    </div>
+
+    <!-- Instagram Discover Button -->
+    <div class="mt-10 text-center">
+      <a href="https://www.instagram.com/gerberxnails/" target="_blank" rel="noopener noreferrer"
+         data-mag class="btn btn-line px-5 sm:px-8 py-3 sm:py-3.5 text-[.84rem] sm:text-[.92rem] max-w-full inline-flex text-center">
+        <span>Alle Sets auf Instagram entdecken (@gerberxnails) &nearr;</span>
+      </a>
     </div>
   </div>
 </section>
 
 <!-- ============ STUDIO POLICY & BUCHUNGSREGELN ============ -->
-<section id="policy" class="relative px-5 sm:px-8 py-[clamp(4rem,9vw,7rem)] scroll-mt-20 border-t border-chalk/8 bg-surf-1/50">
+<section id="policy" class="relative px-5 sm:px-8 py-[clamp(4rem,9vw,7rem)] scroll-mt-20 bg-surf-1/40">
   <div class="mx-auto max-w-[88rem]">
     <div class="js-rv flex flex-wrap items-end justify-between gap-6 mb-10">
       <div>
@@ -607,7 +623,7 @@
     </div>
 
     <div class="js-rv rv grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-      <div class="rounded-2xl border border-chalk/10 bg-surf-1/90 backdrop-blur-md p-5 sm:p-6 flex flex-col justify-between hover:border-sand-gold/40 transition-colors">
+      <div class="rounded-2xl border border-sand-gold/25 bg-white/85 backdrop-blur-md p-5 sm:p-6 flex flex-col justify-between shadow-[0_10px_24px_-6px_rgba(70,45,20,0.06)] hover:border-sand-gold/50 transition-colors">
         <div>
           <span class="t-display text-[1.6rem] text-sand-gold font-bold">24h</span>
           <h3 class="t-display text-[1.05rem] mt-2 font-semibold text-chalk">Absage &amp; Storno</h3>
@@ -615,10 +631,10 @@
             Bitte sag mindestens 24 Stunden vorher Bescheid, wenn du es nicht schaffst, damit ich den Slot rechtzeitig neu vergeben kann.
           </p>
         </div>
-        <span class="text-[.72rem] uppercase tracking-wider text-chalk-mute mt-4 pt-3 border-t border-chalk/8">Fairness &bull; Respekt</span>
+        <span class="text-[.72rem] uppercase tracking-wider text-chalk-mute mt-4 pt-2">Fairness &bull; Respekt</span>
       </div>
 
-      <div class="rounded-2xl border border-chalk/10 bg-surf-1/90 backdrop-blur-md p-5 sm:p-6 flex flex-col justify-between hover:border-sand-gold/40 transition-colors">
+      <div class="rounded-2xl border border-sand-gold/25 bg-white/85 backdrop-blur-md p-5 sm:p-6 flex flex-col justify-between shadow-[0_10px_24px_-6px_rgba(70,45,20,0.06)] hover:border-sand-gold/50 transition-colors">
         <div>
           <span class="t-display text-[1.6rem] text-sand-gold font-bold">Pünktlich</span>
           <h3 class="t-display text-[1.05rem] mt-2 font-semibold text-chalk">Time Management</h3>
@@ -626,10 +642,10 @@
             Komm bitte pünktlich. Ab 15 Minuten Verspätung müssen wir das Nail Art eventuell vereinfachen, um den nächsten Termin einzuhalten.
           </p>
         </div>
-        <span class="text-[.72rem] uppercase tracking-wider text-chalk-mute mt-4 pt-3 border-t border-chalk/8">Quality &bull; Timing</span>
+        <span class="text-[.72rem] uppercase tracking-wider text-chalk-mute mt-4 pt-2">Quality &bull; Timing</span>
       </div>
 
-      <div class="rounded-2xl border border-chalk/10 bg-surf-1/90 backdrop-blur-md p-5 sm:p-6 flex flex-col justify-between hover:border-sand-gold/40 transition-colors">
+      <div class="rounded-2xl border border-sand-gold/25 bg-white/85 backdrop-blur-md p-5 sm:p-6 flex flex-col justify-between shadow-[0_10px_24px_-6px_rgba(70,45,20,0.06)] hover:border-sand-gold/50 transition-colors">
         <div>
           <span class="t-display text-[1.6rem] text-sand-gold font-bold">Care</span>
           <h3 class="t-display text-[1.05rem] mt-2 font-semibold text-chalk">Nagelgesundheit</h3>
@@ -637,10 +653,10 @@
             Behandlungen führe ich ausschließlich an gesunden Naturnägeln durch (keine Behandlungen bei Pilzinfektionen oder offenen Wunden).
           </p>
         </div>
-        <span class="text-[.72rem] uppercase tracking-wider text-chalk-mute mt-4 pt-3 border-t border-chalk/8">Hygiene &bull; Safe</span>
+        <span class="text-[.72rem] uppercase tracking-wider text-chalk-mute mt-4 pt-2">Hygiene &bull; Safe</span>
       </div>
 
-      <div class="rounded-2xl border border-chalk/10 bg-surf-1/90 backdrop-blur-md p-5 sm:p-6 flex flex-col justify-between hover:border-sand-gold/40 transition-colors">
+      <div class="rounded-2xl border border-sand-gold/25 bg-white/85 backdrop-blur-md p-5 sm:p-6 flex flex-col justify-between shadow-[0_10px_24px_-6px_rgba(70,45,20,0.06)] hover:border-sand-gold/50 transition-colors">
         <div>
           <span class="t-display text-[1.6rem] text-neon-pink font-bold">7 Tage</span>
           <h3 class="t-display text-[1.05rem] mt-2 font-semibold text-chalk">Garantie &bull; Repair</h3>
@@ -648,16 +664,16 @@
             Sollte in der ersten Woche ohne grobe Fremdeinwirkung ein Nagel splittern oder Nail Art fehlen, repariere ich es dir kostenlos.
           </p>
         </div>
-        <span class="text-[.72rem] uppercase tracking-wider text-chalk-mute mt-4 pt-3 border-t border-chalk/8">Service &bull; Love</span>
+        <span class="text-[.72rem] uppercase tracking-wider text-chalk-mute mt-4 pt-2">Service &bull; Love</span>
       </div>
     </div>
   </div>
 </section>
 
 <!-- ============ KONTAKT ============ -->
-<section id="kontakt" class="leo-tex relative px-5 sm:px-8 py-[clamp(5rem,14vw,11rem)] scroll-mt-20 overflow-hidden" style="background: url('brand_assets/leo_fur.jpg') center/cover;">
-  <!-- Dark Vignette Overlay for maximum readability while plush fur shines softly behind -->
-  <div class="absolute inset-0 bg-void/78 backdrop-blur-[1px] pointer-events-none"></div>
+<section id="kontakt" class="relative px-5 sm:px-8 py-[clamp(5rem,14vw,11rem)] scroll-mt-20 overflow-hidden" style="background: url('brand_assets/leo_fur.jpg') center/cover;">
+  <!-- Soft Warm Silk Ivory Overlay for maximum readability with bright plush fur atmosphere -->
+  <div class="absolute inset-0 bg-gradient-to-b from-[#FAF6F1]/88 via-[#FAF6F1]/78 to-[#FAF6F1]/92 backdrop-blur-[0.5px] pointer-events-none"></div>
 
   <div class="mx-auto max-w-[88rem] relative z-10">
     <div class="grid lg:grid-cols-[1.1fr_0.9fr] gap-12 items-center">
@@ -690,7 +706,7 @@
         <div class="rv mt-6 flex items-center gap-3.5">
           <img src="brand_assets/sophie.jpg" alt="Sophie Gerber" width="150" height="150" loading="eager" decoding="async"
                class="w-14 h-14 sm:w-16 sm:h-16 rounded-full object-cover shrink-0
-                      ring-2 ring-sand-gold/70 ring-offset-2 ring-offset-void
+                      ring-2 ring-sand-gold/70 ring-offset-2 ring-offset-[#FAF6F1]
                       shadow-[0_8px_20px_-8px_rgba(74,45,26,.45)]">
           <div class="leading-tight">
             <p class="t-script text-[1.7rem] sm:text-[2rem] text-chalk leading-none pt-1">Sophie Gerber</p>
@@ -953,6 +969,6 @@
   <span class="toast-text" id="toast-text">Anfragetext kopiert! 💅</span>
 </div>
 
-<script src="js/main.js?v=30618ee5" defer></script>
+<script src="js/main.js?v=33199ea1" defer></script>
 </body>
 </html>
