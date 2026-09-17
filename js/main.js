@@ -1235,6 +1235,45 @@
     check();
   }
 
+  /* Traegt den Preis mit, solange der Rechner im Bild ist - sonst sieht man
+     beim Auswaehlen nie, was sich gerade aendert. */
+  function initPriceBar() {
+    var sec = document.getElementById('preise');
+    var total = document.getElementById('total');
+    if (!sec || !total) return;
+
+    var bar = document.createElement('div');
+    bar.id = 'pricebar';
+    bar.innerHTML =
+      '<div class="inner">' +
+        '<div><div class="lbl">Dein Preis</div><div class="amount"><b id="pb-total">45</b> <span>&euro;</span></div></div>' +
+        '<a href="https://www.instagram.com/gerberxnails/" target="_blank" rel="noopener noreferrer" ' +
+        'class="btn btn-solid px-5 py-3 text-[.85rem]"><span id="pb-cta">Termin anfragen</span></a>' +
+      '</div>';
+    document.body.appendChild(bar);
+
+    var pbTotal = bar.querySelector('#pb-total');
+    function sync() { pbTotal.textContent = total.textContent.trim(); }
+    sync();
+    new MutationObserver(sync).observe(total, { childList: true, characterData: true, subtree: true });
+
+    var consent = document.getElementById('consent');
+    function show(on) {
+      var blocked = consent && consent.classList.contains('show');
+      bar.classList.toggle('on', on && !blocked);
+    }
+
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (es) {
+        es.forEach(function (e) { show(e.isIntersecting); });
+      }, { threshold: 0, rootMargin: '-15% 0px -15% 0px' }).observe(sec);
+    }
+
+    if (consent) new MutationObserver(function () {
+      if (consent.classList.contains('show')) bar.classList.remove('on');
+    }).observe(consent, { attributes: true, attributeFilter: ['class'] });
+  }
+
   function initAll() {
     // Each feature is started on its own. If one throws, the rest still come up.
     function start(name, fn) {
@@ -1249,7 +1288,7 @@
       ['HeroShow', initHeroShow], ['Lightbox', initLightbox],
       ['ServiceThumbs', initServiceThumbs], ['Marquee', initMarqueeAndParallax],
       ['Vine', initLivingVine], ['Petals', initFloatingPetals],
-      ['Rechner', initPriceCalculator]
+      ['Rechner', initPriceCalculator], ['Preisleiste', initPriceBar]
     ].forEach(function (pair) { start(pair[0], pair[1]); });
   }
 

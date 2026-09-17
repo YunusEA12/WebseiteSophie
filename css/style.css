@@ -2089,3 +2089,116 @@ main > section:first-of-type {
     background: linear-gradient(to bottom, #17130F 0%, rgba(23,19,15,.35) 22%, rgba(23,19,15,.35) 78%, #17130F 100%);
   }
 }
+
+
+/* ==========================================================================
+   PREISRECHNER AUF DEM HANDY
+   Vier volle Zeilen je Gruppe ergaben 1783px - gut zwei Bildschirme, man
+   musste zwischen Auswahl und Summe hin und her scrollen. Als Zweierraster
+   passt eine Gruppe auf einen Blick.
+   ========================================================================== */
+@media (max-width: 640px) {
+  #preise fieldset {
+    padding: .9rem .85rem 1rem;
+    border-radius: 16px;
+  }
+
+  #preise fieldset > div[role="radiogroup"],
+  #preise fieldset > div.grid {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr;
+    gap: .45rem !important;
+    margin-top: .6rem !important;
+  }
+
+  #preise .opt {
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: .15rem;
+    padding: .6rem .7rem;
+    border-radius: 12px;
+    min-height: 3.5rem;
+    font-size: .92rem;
+  }
+
+  /* die Erklaerzeile kostet auf dem Handy eine ganze Zeile je Option */
+  #preise .opt-sub { display: none; }
+
+  #preise .opt .t-display { font-size: .88rem; }
+
+  #preise legend { font-size: .66rem; }
+
+  /* Summe kompakter: die Zahl bleibt gross, drumherum weniger Luft */
+  #preise #total { font-size: 3rem !important; }
+
+  #preise .rounded-\[18px\].border-neon-pink\/30 {
+    padding: 1.1rem 1rem 1.2rem;
+  }
+
+  #preise #breakdown {
+    margin-top: .8rem !important;
+    gap: .35rem;
+    font-size: .8rem;
+  }
+
+  #preise .rule { margin: .9rem 0 !important; }
+
+  #preise #btn-calc-cta { margin-top: .9rem !important; padding: .8rem 1rem !important; }
+}
+
+
+
+
+/* ==========================================================================
+   PREISLEISTE AUF DEM HANDY
+   Auswahl und Summe waren nie gleichzeitig zu sehen. Eine Rasterzelle kann
+   nur in ihrer eigenen Zeile haften, deshalb traegt eine feste Leiste den
+   Preis mit, solange der Rechner im Bild ist.
+   ========================================================================== */
+#pricebar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 70;
+  display: none;
+  padding: .55rem .7rem calc(.55rem + env(safe-area-inset-bottom));
+  background: linear-gradient(to top, #14100D 62%, rgba(20,16,13,.92));
+  border-top: 1px solid rgba(232,68,127,.3);
+  transform: translate3d(0, 110%, 0);
+  transition: transform .45s cubic-bezier(.22,1,.36,1);
+}
+
+#pricebar.on { transform: none; }
+
+@media (max-width: 1023px) {
+  #pricebar { display: block; }
+}
+
+#pricebar .inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .75rem;
+  max-width: 34rem;
+  margin-inline: auto;
+}
+
+#pricebar .lbl {
+  font-size: .62rem;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: #8E7F6C;
+  line-height: 1;
+}
+
+#pricebar .amount {
+  font-family: "Space Grotesk", sans-serif;
+  font-weight: 700;
+  font-size: 1.7rem;
+  line-height: 1.05;
+  color: #EFE3D2;
+}
+
+#pricebar .amount span { color: #E8447F; font-size: 1.05rem; }
