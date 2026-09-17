@@ -1,0 +1,919 @@
+/**
+ * gerberxnails — Modern Editorial Nail Design Studio
+ * Core Stylesheet & Component Design System
+ */
+@import url("../fonts/fonts.css");
+
+/* ==========================================================================
+   1. DESIGN TOKENS & ROOT VARIABLES
+   ========================================================================== */
+:root {
+  --leo-img: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240' viewBox='0 0 240 240'%3E%3Cdefs%3E%3CradialGradient id='f' cx='.35' cy='.3' r='.85'%3E%3Cstop offset='0' stop-color='%23F2E2CB'/%3E%3Cstop offset='1' stop-color='%23DCC3A0'/%3E%3C/radialGradient%3E%3Cg id='t'%3E%3Cg transform='translate(22.7 25.7) rotate(333) scale(0.96)'%3E%3Cellipse cx='0' cy='0' rx='7' ry='5.6' fill='%23C8974F' fill-opacity='.8'/%3E%3Cellipse cx='8.4' cy='-1.7' rx='4.7' ry='3.4' transform='rotate(79 8.4 -1.7)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='4.4' cy='6.8' rx='3.8' ry='3.4' transform='rotate(147 4.4 6.8)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-6.6' cy='3.7' rx='5.4' ry='3.6' transform='rotate(241 -6.6 3.7)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-6.5' cy='-5.8' rx='3.9' ry='2.4' transform='rotate(312 -6.5 -5.8)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='2.5' cy='-7.2' rx='3.9' ry='2.7' transform='rotate(379 2.5 -7.2)' fill='%233A2A1A' fill-opacity='.88'/%3E%3C/g%3E%3Cg transform='translate(10.8 71.0) rotate(159) scale(1.13)'%3E%3Cellipse cx='0' cy='0' rx='7' ry='5.6' fill='%23C8974F' fill-opacity='.8'/%3E%3Cellipse cx='8.5' cy='0.7' rx='4.8' ry='2.9' transform='rotate(95 8.5 0.7)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='4.2' cy='8.5' rx='5.4' ry='3.4' transform='rotate(154 4.2 8.5)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-7.1' cy='3.9' rx='4.0' ry='2.7' transform='rotate(241 -7.1 3.9)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-8.5' cy='-3.2' rx='4.3' ry='3.4' transform='rotate(291 -8.5 -3.2)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='2.3' cy='-9.1' rx='5.1' ry='2.4' transform='rotate(374 2.3 -9.1)' fill='%233A2A1A' fill-opacity='.88'/%3E%3C/g%3E%3Cg transform='translate(15.9 131.5) rotate(169) scale(1.19)'%3E%3Cellipse cx='0' cy='0' rx='7' ry='5.6' fill='%23C8974F' fill-opacity='.8'/%3E%3Cellipse cx='8.6' cy='-0.4' rx='4.0' ry='3.2' transform='rotate(87 8.6 -0.4)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='4.8' cy='6.6' rx='3.6' ry='2.9' transform='rotate(144 4.8 6.6)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-5.5' cy='5.5' rx='4.9' ry='2.4' transform='rotate(225 -5.5 5.5)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-8.5' cy='0.2' rx='4.8' ry='2.6' transform='rotate(269 -8.5 0.2)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-4.7' cy='-8.2' rx='5.0' ry='2.9' transform='rotate(330 -4.7 -8.2)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='3.6' cy='-7.5' rx='5.4' ry='2.4' transform='rotate(386 3.6 -7.5)' fill='%233A2A1A' fill-opacity='.88'/%3E%3C/g%3E%3Cg transform='translate(34.2 181.3) rotate(213) scale(1.20)'%3E%3Cellipse cx='0' cy='0' rx='7' ry='5.6' fill='%23C8974F' fill-opacity='.8'/%3E%3Cellipse cx='8.2' cy='-1.5' rx='5.1' ry='3.2' transform='rotate(80 8.2 -1.5)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='5.1' cy='8.0' rx='4.0' ry='2.7' transform='rotate(148 5.1 8.0)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-7.3' cy='3.6' rx='4.1' ry='2.5' transform='rotate(244 -7.3 3.6)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-8.1' cy='-3.1' rx='4.0' ry='3.1' transform='rotate(291 -8.1 -3.1)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='1.9' cy='-8.2' rx='5.3' ry='3.0' transform='rotate(373 1.9 -8.2)' fill='%233A2A1A' fill-opacity='.88'/%3E%3C/g%3E%3Cg transform='translate(26.1 226.3) rotate(66) scale(0.82)'%3E%3Cellipse cx='0' cy='0' rx='7' ry='5.6' fill='%23C8974F' fill-opacity='.8'/%3E%3Cellipse cx='7.8' cy='1.6' rx='3.9' ry='3.3' transform='rotate(101 7.8 1.6)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='0.3' cy='7.9' rx='5.3' ry='3.5' transform='rotate(178 0.3 7.9)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-7.1' cy='4.5' rx='3.8' ry='2.4' transform='rotate(238 -7.1 4.5)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-4.8' cy='-6.3' rx='4.9' ry='2.7' transform='rotate(323 -4.8 -6.3)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='4.3' cy='-7.6' rx='4.1' ry='2.6' transform='rotate(390 4.3 -7.6)' fill='%233A2A1A' fill-opacity='.88'/%3E%3C/g%3E%3Cg transform='translate(78.2 11.9) rotate(82) scale(1.00)'%3E%3Cellipse cx='0' cy='0' rx='7' ry='5.6' fill='%23C8974F' fill-opacity='.8'/%3E%3Cellipse cx='9.2' cy='-1.3' rx='4.0' ry='2.4' transform='rotate(82 9.2 -1.3)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='3.7' cy='7.5' rx='3.7' ry='2.6' transform='rotate(154 3.7 7.5)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-6.6' cy='5.6' rx='3.8' ry='2.8' transform='rotate(229 -6.6 5.6)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-6.1' cy='-7.3' rx='4.8' ry='3.2' transform='rotate(320 -6.1 -7.3)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='2.8' cy='-7.3' rx='3.7' ry='2.4' transform='rotate(381 2.8 -7.3)' fill='%233A2A1A' fill-opacity='.88'/%3E%3C/g%3E%3Cg transform='translate(83.5 77.6) rotate(347) scale(0.76)'%3E%3Cellipse cx='0' cy='0' rx='7' ry='5.6' fill='%23C8974F' fill-opacity='.8'/%3E%3Cellipse cx='9.0' cy='-0.1' rx='4.2' ry='3.6' transform='rotate(89 9.0 -0.1)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='4.7' cy='7.2' rx='4.9' ry='3.5' transform='rotate(147 4.7 7.2)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-7.9' cy='4.1' rx='5.0' ry='3.5' transform='rotate(243 -7.9 4.1)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-7.6' cy='-4.5' rx='5.2' ry='3.4' transform='rotate(301 -7.6 -4.5)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='2.4' cy='-8.8' rx='5.2' ry='3.1' transform='rotate(375 2.4 -8.8)' fill='%233A2A1A' fill-opacity='.88'/%3E%3C/g%3E%3Cg transform='translate(75.5 116.7) rotate(210) scale(1.02)'%3E%3Cellipse cx='0' cy='0' rx='7' ry='5.6' fill='%23C8974F' fill-opacity='.8'/%3E%3Cellipse cx='7.5' cy='-2.0' rx='4.1' ry='2.9' transform='rotate(75 7.5 -2.0)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='3.8' cy='8.6' rx='4.8' ry='2.9' transform='rotate(156 3.8 8.6)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-6.8' cy='5.2' rx='4.5' ry='3.0' transform='rotate(233 -6.8 5.2)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-6.7' cy='-3.7' rx='3.6' ry='3.5' transform='rotate(299 -6.7 -3.7)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='0.6' cy='-9.0' rx='4.8' ry='3.0' transform='rotate(364 0.6 -9.0)' fill='%233A2A1A' fill-opacity='.88'/%3E%3C/g%3E%3Cg transform='translate(83.1 164.3) rotate(52) scale(1.03)'%3E%3Cellipse cx='0' cy='0' rx='7' ry='5.6' fill='%23C8974F' fill-opacity='.8'/%3E%3Cellipse cx='8.1' cy='1.3' rx='5.3' ry='3.0' transform='rotate(99 8.1 1.3)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='3.8' cy='7.4' rx='4.1' ry='3.2' transform='rotate(153 3.8 7.4)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-8.2' cy='3.8' rx='4.0' ry='2.7' transform='rotate(245 -8.2 3.8)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-8.4' cy='-4.1' rx='4.0' ry='2.6' transform='rotate(296 -8.4 -4.1)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='2.0' cy='-9.1' rx='3.7' ry='2.5' transform='rotate(373 2.0 -9.1)' fill='%233A2A1A' fill-opacity='.88'/%3E%3C/g%3E%3Cg transform='translate(85.5 225.0) rotate(41) scale(0.96)'%3E%3Cellipse cx='0' cy='0' rx='7' ry='5.6' fill='%23C8974F' fill-opacity='.8'/%3E%3Cellipse cx='8.1' cy='1.7' rx='4.5' ry='3.2' transform='rotate(102 8.1 1.7)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='1.6' cy='9.0' rx='4.7' ry='2.8' transform='rotate(170 1.6 9.0)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-7.4' cy='3.3' rx='4.7' ry='3.2' transform='rotate(246 -7.4 3.3)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-7.2' cy='-3.9' rx='4.8' ry='3.1' transform='rotate(298 -7.2 -3.9)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='3.3' cy='-7.6' rx='3.9' ry='3.3' transform='rotate(383 3.3 -7.6)' fill='%233A2A1A' fill-opacity='.88'/%3E%3C/g%3E%3Cg transform='translate(113.5 31.8) rotate(287) scale(1.19)'%3E%3Cellipse cx='0' cy='0' rx='7' ry='5.6' fill='%23C8974F' fill-opacity='.8'/%3E%3Cellipse cx='8.8' cy='-0.3' rx='4.8' ry='3.4' transform='rotate(88 8.8 -0.3)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='0.2' cy='8.9' rx='4.0' ry='3.0' transform='rotate(179 0.2 8.9)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-5.1' cy='5.6' rx='4.4' ry='3.3' transform='rotate(222 -5.1 5.6)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-7.3' cy='-3.3' rx='4.2' ry='3.2' transform='rotate(294 -7.3 -3.3)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='2.8' cy='-8.3' rx='5.0' ry='2.9' transform='rotate(379 2.8 -8.3)' fill='%233A2A1A' fill-opacity='.88'/%3E%3C/g%3E%3Cg transform='translate(128.2 83.4) rotate(31) scale(1.17)'%3E%3Cellipse cx='0' cy='0' rx='7' ry='5.6' fill='%23C8974F' fill-opacity='.8'/%3E%3Cellipse cx='8.2' cy='-1.9' rx='4.7' ry='3.5' transform='rotate(77 8.2 -1.9)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='4.9' cy='7.1' rx='5.2' ry='3.4' transform='rotate(146 4.9 7.1)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-6.1' cy='5.9' rx='4.8' ry='2.6' transform='rotate(226 -6.1 5.9)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-9.0' cy='-1.3' rx='4.8' ry='3.3' transform='rotate(278 -9.0 -1.3)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-6.0' cy='-7.1' rx='5.4' ry='3.6' transform='rotate(320 -6.0 -7.1)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='4.7' cy='-7.8' rx='4.2' ry='3.5' transform='rotate(391 4.7 -7.8)' fill='%233A2A1A' fill-opacity='.88'/%3E%3C/g%3E%3Cg transform='translate(130.0 115.8) rotate(30) scale(0.95)'%3E%3Cellipse cx='0' cy='0' rx='7' ry='5.6' fill='%23C8974F' fill-opacity='.8'/%3E%3Cellipse cx='8.4' cy='1.4' rx='3.7' ry='3.4' transform='rotate(100 8.4 1.4)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='6.5' cy='6.4' rx='3.9' ry='2.8' transform='rotate(134 6.5 6.4)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-5.0' cy='5.9' rx='3.9' ry='3.0' transform='rotate(220 -5.0 5.9)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-9.1' cy='-1.3' rx='4.8' ry='3.5' transform='rotate(278 -9.1 -1.3)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-4.7' cy='-8.1' rx='3.8' ry='2.7' transform='rotate(330 -4.7 -8.1)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='4.2' cy='-6.9' rx='4.9' ry='3.2' transform='rotate(391 4.2 -6.9)' fill='%233A2A1A' fill-opacity='.88'/%3E%3C/g%3E%3Cg transform='translate(120.6 177.6) rotate(202) scale(0.89)'%3E%3Cellipse cx='0' cy='0' rx='7' ry='5.6' fill='%23C8974F' fill-opacity='.8'/%3E%3Cellipse cx='8.9' cy='2.6' rx='4.7' ry='2.8' transform='rotate(106 8.9 2.6)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='5.8' cy='6.3' rx='4.1' ry='3.0' transform='rotate(137 5.8 6.3)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-3.5' cy='6.9' rx='3.6' ry='2.9' transform='rotate(207 -3.5 6.9)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-7.6' cy='-0.2' rx='5.3' ry='3.1' transform='rotate(271 -7.6 -0.2)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-1.7' cy='-7.6' rx='3.8' ry='2.6' transform='rotate(348 -1.7 -7.6)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='6.0' cy='-5.9' rx='5.3' ry='3.4' transform='rotate(406 6.0 -5.9)' fill='%233A2A1A' fill-opacity='.88'/%3E%3C/g%3E%3Cg transform='translate(117.3 208.9) rotate(177) scale(0.90)'%3E%3Cellipse cx='0' cy='0' rx='7' ry='5.6' fill='%23C8974F' fill-opacity='.8'/%3E%3Cellipse cx='7.7' cy='0.1' rx='4.4' ry='2.4' transform='rotate(91 7.7 0.1)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='5.6' cy='7.0' rx='5.4' ry='2.4' transform='rotate(141 5.6 7.0)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-2.3' cy='7.2' rx='4.1' ry='3.3' transform='rotate(198 -2.3 7.2)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-8.4' cy='1.4' rx='4.5' ry='3.1' transform='rotate(261 -8.4 1.4)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-2.6' cy='-8.3' rx='4.9' ry='3.2' transform='rotate(343 -2.6 -8.3)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='5.2' cy='-5.5' rx='4.7' ry='3.4' transform='rotate(404 5.2 -5.5)' fill='%233A2A1A' fill-opacity='.88'/%3E%3C/g%3E%3Cg transform='translate(171.2 25.1) rotate(311) scale(0.99)'%3E%3Cellipse cx='0' cy='0' rx='7' ry='5.6' fill='%23C8974F' fill-opacity='.8'/%3E%3Cellipse cx='9.2' cy='0.2' rx='4.7' ry='3.4' transform='rotate(91 9.2 0.2)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='4.2' cy='8.0' rx='5.1' ry='3.5' transform='rotate(152 4.2 8.0)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-6.0' cy='5.5' rx='5.3' ry='2.7' transform='rotate(227 -6.0 5.5)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-5.5' cy='-7.5' rx='3.8' ry='2.7' transform='rotate(324 -5.5 -7.5)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='3.5' cy='-7.2' rx='3.8' ry='3.4' transform='rotate(386 3.5 -7.2)' fill='%233A2A1A' fill-opacity='.88'/%3E%3C/g%3E%3Cg transform='translate(165.8 80.1) rotate(45) scale(0.93)'%3E%3Cellipse cx='0' cy='0' rx='7' ry='5.6' fill='%23C8974F' fill-opacity='.8'/%3E%3Cellipse cx='8.4' cy='-2.2' rx='4.2' ry='3.4' transform='rotate(75 8.4 -2.2)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='3.5' cy='8.2' rx='4.7' ry='2.8' transform='rotate(157 3.5 8.2)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-8.7' cy='2.8' rx='5.0' ry='3.0' transform='rotate(252 -8.7 2.8)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-8.5' cy='-2.9' rx='4.7' ry='3.5' transform='rotate(289 -8.5 -2.9)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='2.3' cy='-7.5' rx='3.8' ry='2.6' transform='rotate(377 2.3 -7.5)' fill='%233A2A1A' fill-opacity='.88'/%3E%3C/g%3E%3Cg transform='translate(158.4 113.9) rotate(242) scale(1.01)'%3E%3Cellipse cx='0' cy='0' rx='7' ry='5.6' fill='%23C8974F' fill-opacity='.8'/%3E%3Cellipse cx='8.1' cy='2.4' rx='5.0' ry='2.8' transform='rotate(106 8.1 2.4)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='2.8' cy='8.1' rx='4.4' ry='3.1' transform='rotate(161 2.8 8.1)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-5.3' cy='7.2' rx='5.1' ry='2.6' transform='rotate(216 -5.3 7.2)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-7.4' cy='-5.1' rx='4.3' ry='2.6' transform='rotate(304 -7.4 -5.1)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='0.9' cy='-8.5' rx='3.6' ry='3.5' transform='rotate(366 0.9 -8.5)' fill='%233A2A1A' fill-opacity='.88'/%3E%3C/g%3E%3Cg transform='translate(176.4 173.7) rotate(310) scale(1.03)'%3E%3Cellipse cx='0' cy='0' rx='7' ry='5.6' fill='%23C8974F' fill-opacity='.8'/%3E%3Cellipse cx='7.9' cy='0.3' rx='4.7' ry='2.8' transform='rotate(93 7.9 0.3)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='2.8' cy='7.5' rx='3.8' ry='3.3' transform='rotate(159 2.8 7.5)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-2.9' cy='8.9' rx='3.8' ry='2.8' transform='rotate(198 -2.9 8.9)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-8.2' cy='-0.2' rx='4.4' ry='2.6' transform='rotate(271 -8.2 -0.2)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-5.1' cy='-6.0' rx='5.0' ry='2.8' transform='rotate(319 -5.1 -6.0)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='2.5' cy='-8.9' rx='5.4' ry='3.5' transform='rotate(376 2.5 -8.9)' fill='%233A2A1A' fill-opacity='.88'/%3E%3C/g%3E%3Cg transform='translate(155.4 209.6) rotate(346) scale(0.88)'%3E%3Cellipse cx='0' cy='0' rx='7' ry='5.6' fill='%23C8974F' fill-opacity='.8'/%3E%3Cellipse cx='8.6' cy='0.9' rx='4.6' ry='2.9' transform='rotate(96 8.6 0.9)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='0.0' cy='8.8' rx='4.9' ry='3.3' transform='rotate(180 0.0 8.8)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-7.1' cy='2.4' rx='4.7' ry='3.3' transform='rotate(251 -7.1 2.4)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-7.4' cy='-3.8' rx='3.7' ry='2.6' transform='rotate(297 -7.4 -3.8)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='1.8' cy='-7.5' rx='4.1' ry='3.5' transform='rotate(374 1.8 -7.5)' fill='%233A2A1A' fill-opacity='.88'/%3E%3C/g%3E%3Cg transform='translate(217.4 24.2) rotate(348) scale(1.01)'%3E%3Cellipse cx='0' cy='0' rx='7' ry='5.6' fill='%23C8974F' fill-opacity='.8'/%3E%3Cellipse cx='9.1' cy='0.8' rx='3.7' ry='3.1' transform='rotate(95 9.1 0.8)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='1.1' cy='7.5' rx='5.3' ry='2.6' transform='rotate(171 1.1 7.5)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-6.3' cy='4.7' rx='4.5' ry='3.1' transform='rotate(233 -6.3 4.7)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-8.8' cy='-3.2' rx='4.4' ry='3.0' transform='rotate(290 -8.8 -3.2)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='3.0' cy='-7.7' rx='4.1' ry='3.2' transform='rotate(382 3.0 -7.7)' fill='%233A2A1A' fill-opacity='.88'/%3E%3C/g%3E%3Cg transform='translate(217.7 65.9) rotate(258) scale(0.88)'%3E%3Cellipse cx='0' cy='0' rx='7' ry='5.6' fill='%23C8974F' fill-opacity='.8'/%3E%3Cellipse cx='8.5' cy='1.5' rx='4.7' ry='2.9' transform='rotate(100 8.5 1.5)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='1.5' cy='7.5' rx='4.2' ry='2.9' transform='rotate(169 1.5 7.5)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-7.5' cy='4.9' rx='4.2' ry='3.4' transform='rotate(237 -7.5 4.9)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-8.0' cy='-3.9' rx='4.1' ry='3.3' transform='rotate(296 -8.0 -3.9)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='0.2' cy='-7.7' rx='5.1' ry='3.5' transform='rotate(362 0.2 -7.7)' fill='%233A2A1A' fill-opacity='.88'/%3E%3C/g%3E%3Cg transform='translate(206.0 132.9) rotate(88) scale(1.07)'%3E%3Cellipse cx='0' cy='0' rx='7' ry='5.6' fill='%23C8974F' fill-opacity='.8'/%3E%3Cellipse cx='8.4' cy='0.7' rx='4.0' ry='2.5' transform='rotate(94 8.4 0.7)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='2.3' cy='7.4' rx='4.4' ry='3.2' transform='rotate(163 2.3 7.4)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-6.4' cy='4.9' rx='4.6' ry='2.9' transform='rotate(232 -6.4 4.9)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-5.9' cy='-6.2' rx='5.4' ry='3.5' transform='rotate(316 -5.9 -6.2)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='3.6' cy='-7.1' rx='3.8' ry='3.5' transform='rotate(386 3.6 -7.1)' fill='%233A2A1A' fill-opacity='.88'/%3E%3C/g%3E%3Cg transform='translate(224.0 171.5) rotate(129) scale(0.87)'%3E%3Cellipse cx='0' cy='0' rx='7' ry='5.6' fill='%23C8974F' fill-opacity='.8'/%3E%3Cellipse cx='9.0' cy='0.8' rx='3.9' ry='2.7' transform='rotate(95 9.0 0.8)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='0.1' cy='9.3' rx='5.2' ry='2.4' transform='rotate(179 0.1 9.3)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-5.0' cy='6.3' rx='4.4' ry='3.1' transform='rotate(218 -5.0 6.3)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-8.0' cy='-3.2' rx='3.7' ry='2.5' transform='rotate(292 -8.0 -3.2)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='3.5' cy='-7.8' rx='4.7' ry='2.8' transform='rotate(384 3.5 -7.8)' fill='%233A2A1A' fill-opacity='.88'/%3E%3C/g%3E%3Cg transform='translate(215.4 207.9) rotate(124) scale(1.09)'%3E%3Cellipse cx='0' cy='0' rx='7' ry='5.6' fill='%23C8974F' fill-opacity='.8'/%3E%3Cellipse cx='8.2' cy='1.6' rx='5.1' ry='3.4' transform='rotate(101 8.2 1.6)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='1.2' cy='8.3' rx='4.9' ry='2.9' transform='rotate(172 1.2 8.3)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-5.2' cy='5.9' rx='5.1' ry='3.1' transform='rotate(221 -5.2 5.9)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-7.9' cy='-4.3' rx='5.1' ry='2.6' transform='rotate(298 -7.9 -4.3)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='3.5' cy='-7.9' rx='4.4' ry='2.8' transform='rotate(384 3.5 -7.9)' fill='%233A2A1A' fill-opacity='.88'/%3E%3C/g%3E%3Cg transform='translate(130.5 103.7)'%3E%3Cellipse cx='0' cy='0' rx='3.0' ry='2.4' fill='%232E2012' fill-opacity='.72'/%3E%3C/g%3E%3Cg transform='translate(111.2 197.6)'%3E%3Cellipse cx='0' cy='0' rx='2.2' ry='1.9' fill='%232E2012' fill-opacity='.72'/%3E%3C/g%3E%3Cg transform='translate(218.6 144.9)'%3E%3Cellipse cx='0' cy='0' rx='3.2' ry='2.1' fill='%232E2012' fill-opacity='.72'/%3E%3C/g%3E%3Cg transform='translate(183.4 78.7)'%3E%3Cellipse cx='0' cy='0' rx='3.4' ry='1.8' fill='%232E2012' fill-opacity='.72'/%3E%3C/g%3E%3Cg transform='translate(157.7 78.5)'%3E%3Cellipse cx='0' cy='0' rx='3.5' ry='1.9' fill='%232E2012' fill-opacity='.72'/%3E%3C/g%3E%3Cg transform='translate(105.8 142.7)'%3E%3Cellipse cx='0' cy='0' rx='3.5' ry='2.3' fill='%232E2012' fill-opacity='.72'/%3E%3C/g%3E%3Cg transform='translate(67.0 127.3)'%3E%3Cellipse cx='0' cy='0' rx='3.6' ry='2.1' fill='%232E2012' fill-opacity='.72'/%3E%3C/g%3E%3Cg transform='translate(53.1 232.3)'%3E%3Cellipse cx='0' cy='0' rx='3.2' ry='2.1' fill='%232E2012' fill-opacity='.72'/%3E%3C/g%3E%3Cg transform='translate(20.2 198.8)'%3E%3Cellipse cx='0' cy='0' rx='2.2' ry='2.3' fill='%232E2012' fill-opacity='.72'/%3E%3C/g%3E%3Cg transform='translate(140.4 191.1)'%3E%3Cellipse cx='0' cy='0' rx='3.2' ry='2.0' fill='%232E2012' fill-opacity='.72'/%3E%3C/g%3E%3Cg transform='translate(93.7 37.1)'%3E%3Cellipse cx='0' cy='0' rx='3.0' ry='1.8' fill='%232E2012' fill-opacity='.72'/%3E%3C/g%3E%3Cg transform='translate(21.5 109.0)'%3E%3Cellipse cx='0' cy='0' rx='3.4' ry='2.4' fill='%232E2012' fill-opacity='.72'/%3E%3C/g%3E%3Cg transform='translate(53.1 13.9)'%3E%3Cellipse cx='0' cy='0' rx='2.4' ry='1.9' fill='%232E2012' fill-opacity='.72'/%3E%3C/g%3E%3Cg transform='translate(5.4 202.0)'%3E%3Cellipse cx='0' cy='0' rx='2.8' ry='2.2' fill='%232E2012' fill-opacity='.72'/%3E%3C/g%3E%3Cg transform='translate(73.3 130.9)'%3E%3Cellipse cx='0' cy='0' rx='2.7' ry='1.9' fill='%232E2012' fill-opacity='.72'/%3E%3C/g%3E%3Cg transform='translate(25.3 75.3)'%3E%3Cellipse cx='0' cy='0' rx='2.2' ry='2.3' fill='%232E2012' fill-opacity='.72'/%3E%3C/g%3E%3C/g%3E%3C/defs%3E%3Crect width='240' height='240' fill='url(%23f)'/%3E%3Cuse href='%23t' x='-240' y='-240'/%3E%3Cuse href='%23t' x='-240' y='0'/%3E%3Cuse href='%23t' x='-240' y='240'/%3E%3Cuse href='%23t' x='0' y='-240'/%3E%3Cuse href='%23t' x='0' y='0'/%3E%3Cuse href='%23t' x='0' y='240'/%3E%3Cuse href='%23t' x='240' y='-240'/%3E%3Cuse href='%23t' x='240' y='0'/%3E%3Cuse href='%23t' x='240' y='240'/%3E%3C/svg%3E");
+  --s-1: .5rem;
+  --s-2: 1rem;
+  --s-3: 1.5rem;
+  --s-4: 2rem;
+  --s-5: 3rem;
+  --s-6: 4.5rem;
+  --s-7: 7rem;
+  --s-8: 10rem;
+
+  --glow-pink: 0 1px 2px rgba(120, 10, 50, .14), 0 10px 26px -8px rgba(229, 20, 95, .42), 0 26px 60px -24px rgba(229, 20, 95, .3);
+  --glow-aqua: 0 1px 2px rgba(6, 60, 56, .14), 0 10px 26px -8px rgba(18, 150, 141, .38), 0 26px 60px -24px rgba(18, 150, 141, .26);
+  --lift:      0 1px 0 rgba(255, 255, 255, .9) inset, 0 16px 38px -22px rgba(74, 45, 26, .4);
+
+  --ease-spring: cubic-bezier(.2, .9, .28, 1.18);
+  --ease-out:    cubic-bezier(.22, 1, .36, 1);
+}
+
+/* ==========================================================================
+   2. BASE, RESET & TYPOGRAPHY
+   ========================================================================== */
+html {
+  -webkit-text-size-adjust: 100%;
+  background: #FAF4EE;
+}
+
+body {
+  background: transparent;
+  color: #1F1418;
+  font-family: Inter, system-ui, sans-serif;
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: #E5145F;
+  color: #FFFFFF;
+}
+
+h1, h2, h3 {
+  line-height: .95;
+}
+
+.t-script {
+  font-family: "Pinyon Script", "Alex Brush", cursive;
+  font-weight: 400;
+}
+
+.t-editorial {
+  font-family: "Playfair Display", Georgia, serif;
+}
+
+.t-display {
+  font-family: "Space Grotesk", sans-serif;
+  letter-spacing: -.035em;
+  font-weight: 700;
+}
+
+.t-serif {
+  font-family: "Instrument Serif", Georgia, serif;
+}
+
+/* ==========================================================================
+   3. ATMOSPHERE & FILM GRAIN
+   ========================================================================== */
+.atmos {
+  position: relative;
+  isolation: isolate;
+}
+
+.atmos::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  background:
+    radial-gradient(58% 44% at 10% 6%,  rgba(229, 20, 95, .13)  0%, rgba(229, 20, 95, 0)  62%),
+    radial-gradient(50% 38% at 92% 10%, rgba(18, 150, 141, .11) 0%, rgba(18, 150, 141, 0) 60%),
+    radial-gradient(66% 50% at 82% 92%, rgba(200, 151, 79, .18) 0%, rgba(200, 151, 79, 0) 66%),
+    radial-gradient(44% 40% at 18% 96%, rgba(18, 150, 141, .09) 0%, rgba(18, 150, 141, 0) 64%);
+}
+
+.grain {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  pointer-events: none;
+  opacity: .34;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E");
+}
+
+/* ==========================================================================
+   4. PRELOADER: HIBISCUS BLOOM OPENING
+   ========================================================================== */
+#loader {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: #FAF4EE;
+  display: grid;
+  place-items: center;
+  gap: 0;
+  transition: opacity .6s var(--ease-out), transform 1s var(--ease-out);
+}
+
+#loader.done {
+  opacity: 0;
+  transform: translate3d(0, -100%, 0);
+  pointer-events: none;
+}
+
+#loadwrap {
+  position: relative;
+  display: grid;
+  place-items: center;
+}
+
+#loadflower {
+  width: clamp(150px, 34vw, 230px);
+  height: clamp(150px, 34vw, 230px);
+  display: block;
+}
+
+#loadflower .lp {
+  transform-origin: 0 0;
+  transform: scale(.06);
+  opacity: 0;
+  transition: transform .85s var(--ease-spring), opacity .5s var(--ease-out);
+}
+
+#loadflower .lp.on {
+  transform: scale(1);
+  opacity: 1;
+}
+
+#loadflower .core {
+  opacity: 0;
+  transform: scale(.3);
+  transform-origin: 0 0;
+  transition: transform .7s var(--ease-spring), opacity .45s var(--ease-out);
+}
+
+#loadflower.bloomed .core {
+  opacity: 1;
+  transform: scale(1);
+}
+
+#loadmeta {
+  position: absolute;
+  left: 50%;
+  top: calc(100% + clamp(1.2rem, 4vw, 2.2rem));
+  transform: translateX(-50%);
+  text-align: center;
+  white-space: nowrap;
+}
+
+#loadname {
+  font-family: "Pinyon Script", "Alex Brush", cursive;
+  font-size: clamp(2.4rem, 7vw, 3.6rem);
+  color: #E5145F;
+  line-height: 1;
+}
+
+#count {
+  font-family: "Space Grotesk", sans-serif;
+  font-weight: 500;
+  letter-spacing: -.03em;
+  font-size: clamp(2.6rem, 9vw, 4.2rem);
+  line-height: 1;
+  color: #1F1418;
+  font-variant-numeric: tabular-nums;
+  margin-top: .15em;
+}
+
+/* ==========================================================================
+   5. CUSTOM CURSOR
+   ========================================================================== */
+.cursor-dot, .cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 95;
+  pointer-events: none;
+  border-radius: 999px;
+  will-change: transform;
+}
+
+.cursor-dot {
+  width: 6px;
+  height: 6px;
+  background: #E5145F;
+  margin: -3px 0 0 -3px;
+}
+
+.cursor-ring {
+  width: 40px;
+  height: 40px;
+  margin: -20px 0 0 -20px;
+  border: 1px solid rgba(31, 20, 24, .4);
+  display: grid;
+  place-items: center;
+  transition: width .4s var(--ease-spring), height .4s var(--ease-spring),
+              background-color .4s var(--ease-out), border-color .4s var(--ease-out);
+}
+
+.cursor-ring span {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: .62rem;
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: #FFFFFF;
+  opacity: 0;
+  transition: opacity .3s var(--ease-out);
+}
+
+body.cur-link .cursor-ring {
+  width: 64px;
+  height: 64px;
+  margin: -32px 0 0 -32px;
+  background: rgba(229, 20, 95, .12);
+  border-color: rgba(229, 20, 95, .75);
+}
+
+body.cur-view .cursor-ring {
+  width: 92px;
+  height: 92px;
+  margin: -46px 0 0 -46px;
+  background: #E5145F;
+  border-color: #E5145F;
+}
+
+body.cur-view .cursor-ring span {
+  opacity: 1;
+}
+
+body.cur-hide .cursor-ring,
+body.cur-hide .cursor-dot {
+  opacity: 0;
+}
+
+@media (hover: none), (pointer: coarse) {
+  .cursor-dot, .cursor-ring { display: none; }
+}
+
+/* ==========================================================================
+   6. LIVING VINE & DRIFTING PETALS (BACKGROUND LAYER)
+   ========================================================================== */
+#vine {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: -1;
+  pointer-events: none;
+  overflow: visible;
+}
+
+#petals {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* ==========================================================================
+   7. LEO PRINT PATTERN & OVERLAYS
+   ========================================================================== */
+.leo-tex {
+  background-color: #E4D2B4;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240' viewBox='0 0 240 240'%3E%3Cdefs%3E%3CradialGradient id='f' cx='.35' cy='.3' r='.85'%3E%3Cstop offset='0' stop-color='%23F2E2CB'/%3E%3Cstop offset='1' stop-color='%23DCC3A0'/%3E%3C/radialGradient%3E%3Cg id='t'%3E%3Cg transform='translate(22.7 25.7) rotate(333) scale(0.96)'%3E%3Cellipse cx='0' cy='0' rx='7' ry='5.6' fill='%23C8974F' fill-opacity='.8'/%3E%3Cellipse cx='8.4' cy='-1.7' rx='4.7' ry='3.4' transform='rotate(79 8.4 -1.7)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='4.4' cy='6.8' rx='3.8' ry='3.4' transform='rotate(147 4.4 6.8)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-6.6' cy='3.7' rx='5.4' ry='3.6' transform='rotate(241 -6.6 3.7)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-6.5' cy='-5.8' rx='3.9' ry='2.4' transform='rotate(312 -6.5 -5.8)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='2.5' cy='-7.2' rx='3.9' ry='2.7' transform='rotate(379 2.5 -7.2)' fill='%233A2A1A' fill-opacity='.88'/%3E%3C/g%3E%3Cg transform='translate(10.8 71.0) rotate(159) scale(1.13)'%3E%3Cellipse cx='0' cy='0' rx='7' ry='5.6' fill='%23C8974F' fill-opacity='.8'/%3E%3Cellipse cx='8.5' cy='0.7' rx='4.8' ry='2.9' transform='rotate(95 8.5 0.7)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='4.2' cy='8.5' rx='5.4' ry='3.4' transform='rotate(154 4.2 8.5)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-7.1' cy='3.9' rx='4.0' ry='2.7' transform='rotate(241 -7.1 3.9)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-8.5' cy='-3.2' rx='4.3' ry='3.4' transform='rotate(291 -8.5 -3.2)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='2.3' cy='-9.1' rx='5.1' ry='2.4' transform='rotate(374 2.3 -9.1)' fill='%233A2A1A' fill-opacity='.88'/%3E%3C/g%3E%3Cg transform='translate(15.9 131.5) rotate(169) scale(1.19)'%3E%3Cellipse cx='0' cy='0' rx='7' ry='5.6' fill='%23C8974F' fill-opacity='.8'/%3E%3Cellipse cx='8.6' cy='-0.4' rx='4.0' ry='3.2' transform='rotate(87 8.6 -0.4)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='4.8' cy='6.6' rx='3.6' ry='2.9' transform='rotate(144 4.8 6.6)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-5.5' cy='5.5' rx='4.9' ry='2.4' transform='rotate(225 -5.5 5.5)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-8.5' cy='0.2' rx='4.8' ry='2.6' transform='rotate(269 -8.5 0.2)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-4.7' cy='-8.2' rx='5.0' ry='2.9' transform='rotate(330 -4.7 -8.2)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='3.6' cy='-7.5' rx='5.4' ry='2.4' transform='rotate(386 3.6 -7.5)' fill='%233A2A1A' fill-opacity='.88'/%3E%3C/g%3E%3Cg transform='translate(34.2 181.3) rotate(213) scale(1.20)'%3E%3Cellipse cx='0' cy='0' rx='7' ry='5.6' fill='%23C8974F' fill-opacity='.8'/%3E%3Cellipse cx='8.2' cy='-1.5' rx='5.1' ry='3.2' transform='rotate(80 8.2 -1.5)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='5.1' cy='8.0' rx='4.0' ry='2.7' transform='rotate(148 5.1 8.0)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-7.3' cy='3.6' rx='4.1' ry='2.5' transform='rotate(244 -7.3 3.6)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-8.1' cy='-3.1' rx='4.0' ry='3.1' transform='rotate(291 -8.1 -3.1)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='1.9' cy='-8.2' rx='5.3' ry='3.0' transform='rotate(373 1.9 -8.2)' fill='%233A2A1A' fill-opacity='.88'/%3E%3C/g%3E%3Cg transform='translate(26.1 226.3) rotate(66) scale(0.82)'%3E%3Cellipse cx='0' cy='0' rx='7' ry='5.6' fill='%23C8974F' fill-opacity='.8'/%3E%3Cellipse cx='7.8' cy='1.6' rx='3.9' ry='3.3' transform='rotate(101 7.8 1.6)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='0.3' cy='7.9' rx='5.3' ry='3.5' transform='rotate(178 0.3 7.9)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-7.1' cy='4.5' rx='3.8' ry='2.4' transform='rotate(238 -7.1 4.5)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-4.8' cy='-6.3' rx='4.9' ry='2.7' transform='rotate(323 -4.8 -6.3)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='4.3' cy='-7.6' rx='4.1' ry='2.6' transform='rotate(390 4.3 -7.6)' fill='%233A2A1A' fill-opacity='.88'/%3E%3C/g%3E%3Cg transform='translate(78.2 11.9) rotate(82) scale(1.00)'%3E%3Cellipse cx='0' cy='0' rx='7' ry='5.6' fill='%23C8974F' fill-opacity='.8'/%3E%3Cellipse cx='9.2' cy='-1.3' rx='4.0' ry='2.4' transform='rotate(82 9.2 -1.3)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='3.7' cy='7.5' rx='3.7' ry='2.6' transform='rotate(154 3.7 7.5)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-6.6' cy='5.6' rx='3.8' ry='2.8' transform='rotate(229 -6.6 5.6)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-6.1' cy='-7.3' rx='4.8' ry='3.2' transform='rotate(320 -6.1 -7.3)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='2.8' cy='-7.3' rx='3.7' ry='2.4' transform='rotate(381 2.8 -7.3)' fill='%233A2A1A' fill-opacity='.88'/%3E%3C/g%3E%3Cg transform='translate(83.5 77.6) rotate(347) scale(0.76)'%3E%3Cellipse cx='0' cy='0' rx='7' ry='5.6' fill='%23C8974F' fill-opacity='.8'/%3E%3Cellipse cx='9.0' cy='-0.1' rx='4.2' ry='3.6' transform='rotate(89 9.0 -0.1)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='4.7' cy='7.2' rx='4.9' ry='3.5' transform='rotate(147 4.7 7.2)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-7.9' cy='4.1' rx='5.0' ry='3.5' transform='rotate(243 -7.9 4.1)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-7.6' cy='-4.5' rx='5.2' ry='3.4' transform='rotate(301 -7.6 -4.5)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='2.4' cy='-8.8' rx='5.2' ry='3.1' transform='rotate(375 2.4 -8.8)' fill='%233A2A1A' fill-opacity='.88'/%3E%3C/g%3E%3Cg transform='translate(75.5 116.7) rotate(210) scale(1.02)'%3E%3Cellipse cx='0' cy='0' rx='7' ry='5.6' fill='%23C8974F' fill-opacity='.8'/%3E%3Cellipse cx='7.5' cy='-2.0' rx='4.1' ry='2.9' transform='rotate(75 7.5 -2.0)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='3.8' cy='8.6' rx='4.8' ry='2.9' transform='rotate(156 3.8 8.6)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-6.8' cy='5.2' rx='4.5' ry='3.0' transform='rotate(233 -6.8 5.2)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-6.7' cy='-3.7' rx='3.6' ry='3.5' transform='rotate(299 -6.7 -3.7)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='0.6' cy='-9.0' rx='4.8' ry='3.0' transform='rotate(364 0.6 -9.0)' fill='%233A2A1A' fill-opacity='.88'/%3E%3C/g%3E%3Cg transform='translate(83.1 164.3) rotate(52) scale(1.03)'%3E%3Cellipse cx='0' cy='0' rx='7' ry='5.6' fill='%23C8974F' fill-opacity='.8'/%3E%3Cellipse cx='8.1' cy='1.3' rx='5.3' ry='3.0' transform='rotate(99 8.1 1.3)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='3.8' cy='7.4' rx='4.1' ry='3.2' transform='rotate(153 3.8 7.4)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-8.2' cy='3.8' rx='4.0' ry='2.7' transform='rotate(245 -8.2 3.8)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-8.4' cy='-4.1' rx='4.0' ry='2.6' transform='rotate(296 -8.4 -4.1)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='2.0' cy='-9.1' rx='3.7' ry='2.5' transform='rotate(373 2.0 -9.1)' fill='%233A2A1A' fill-opacity='.88'/%3E%3C/g%3E%3Cg transform='translate(85.5 225.0) rotate(41) scale(0.96)'%3E%3Cellipse cx='0' cy='0' rx='7' ry='5.6' fill='%23C8974F' fill-opacity='.8'/%3E%3Cellipse cx='8.1' cy='1.7' rx='4.5' ry='3.2' transform='rotate(102 8.1 1.7)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='1.6' cy='9.0' rx='4.7' ry='2.8' transform='rotate(170 1.6 9.0)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-7.4' cy='3.3' rx='4.7' ry='3.2' transform='rotate(246 -7.4 3.3)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-7.2' cy='-3.9' rx='4.8' ry='3.1' transform='rotate(298 -7.2 -3.9)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='3.3' cy='-7.6' rx='3.9' ry='3.3' transform='rotate(383 3.3 -7.6)' fill='%233A2A1A' fill-opacity='.88'/%3E%3C/g%3E%3Cg transform='translate(113.5 31.8) rotate(287) scale(1.19)'%3E%3Cellipse cx='0' cy='0' rx='7' ry='5.6' fill='%23C8974F' fill-opacity='.8'/%3E%3Cellipse cx='8.8' cy='-0.3' rx='4.8' ry='3.4' transform='rotate(88 8.8 -0.3)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='0.2' cy='8.9' rx='4.0' ry='3.0' transform='rotate(179 0.2 8.9)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-5.1' cy='5.6' rx='4.4' ry='3.3' transform='rotate(222 -5.1 5.6)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-7.3' cy='-3.3' rx='4.2' ry='3.2' transform='rotate(294 -7.3 -3.3)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='2.8' cy='-8.3' rx='5.0' ry='2.9' transform='rotate(379 2.8 -8.3)' fill='%233A2A1A' fill-opacity='.88'/%3E%3C/g%3E%3Cg transform='translate(128.2 83.4) rotate(31) scale(1.17)'%3E%3Cellipse cx='0' cy='0' rx='7' ry='5.6' fill='%23C8974F' fill-opacity='.8'/%3E%3Cellipse cx='8.2' cy='-1.9' rx='4.7' ry='3.5' transform='rotate(77 8.2 -1.9)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='4.9' cy='7.1' rx='5.2' ry='3.4' transform='rotate(146 4.9 7.1)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-6.1' cy='5.9' rx='4.8' ry='2.6' transform='rotate(226 -6.1 5.9)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-9.0' cy='-1.3' rx='4.8' ry='3.3' transform='rotate(278 -9.0 -1.3)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-6.0' cy='-7.1' rx='5.4' ry='3.6' transform='rotate(320 -6.0 -7.1)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='4.7' cy='-7.8' rx='4.2' ry='3.5' transform='rotate(391 4.7 -7.8)' fill='%233A2A1A' fill-opacity='.88'/%3E%3C/g%3E%3Cg transform='translate(130.0 115.8) rotate(30) scale(0.95)'%3E%3Cellipse cx='0' cy='0' rx='7' ry='5.6' fill='%23C8974F' fill-opacity='.8'/%3E%3Cellipse cx='8.4' cy='1.4' rx='3.7' ry='3.4' transform='rotate(100 8.4 1.4)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='6.5' cy='6.4' rx='3.9' ry='2.8' transform='rotate(134 6.5 6.4)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-5.0' cy='5.9' rx='3.9' ry='3.0' transform='rotate(220 -5.0 5.9)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-9.1' cy='-1.3' rx='4.8' ry='3.5' transform='rotate(278 -9.1 -1.3)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-4.7' cy='-8.1' rx='3.8' ry='2.7' transform='rotate(330 -4.7 -8.1)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='4.2' cy='-6.9' rx='4.9' ry='3.2' transform='rotate(391 4.2 -6.9)' fill='%233A2A1A' fill-opacity='.88'/%3E%3C/g%3E%3Cg transform='translate(120.6 177.6) rotate(202) scale(0.89)'%3E%3Cellipse cx='0' cy='0' rx='7' ry='5.6' fill='%23C8974F' fill-opacity='.8'/%3E%3Cellipse cx='8.9' cy='2.6' rx='4.7' ry='2.8' transform='rotate(106 8.9 2.6)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='5.8' cy='6.3' rx='4.1' ry='3.0' transform='rotate(137 5.8 6.3)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-3.5' cy='6.9' rx='3.6' ry='2.9' transform='rotate(207 -3.5 6.9)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-7.6' cy='-0.2' rx='5.3' ry='3.1' transform='rotate(271 -7.6 -0.2)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-1.7' cy='-7.6' rx='3.8' ry='2.6' transform='rotate(348 -1.7 -7.6)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='6.0' cy='-5.9' rx='5.3' ry='3.4' transform='rotate(406 6.0 -5.9)' fill='%233A2A1A' fill-opacity='.88'/%3E%3C/g%3E%3Cg transform='translate(117.3 208.9) rotate(177) scale(0.90)'%3E%3Cellipse cx='0' cy='0' rx='7' ry='5.6' fill='%23C8974F' fill-opacity='.8'/%3E%3Cellipse cx='7.7' cy='0.1' rx='4.4' ry='2.4' transform='rotate(91 7.7 0.1)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='5.6' cy='7.0' rx='5.4' ry='2.4' transform='rotate(141 5.6 7.0)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-2.3' cy='7.2' rx='4.1' ry='3.3' transform='rotate(198 -2.3 7.2)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-8.4' cy='1.4' rx='4.5' ry='3.1' transform='rotate(261 -8.4 1.4)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-2.6' cy='-8.3' rx='4.9' ry='3.2' transform='rotate(343 -2.6 -8.3)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='5.2' cy='-5.5' rx='4.7' ry='3.4' transform='rotate(404 5.2 -5.5)' fill='%233A2A1A' fill-opacity='.88'/%3E%3C/g%3E%3Cg transform='translate(171.2 25.1) rotate(311) scale(0.99)'%3E%3Cellipse cx='0' cy='0' rx='7' ry='5.6' fill='%23C8974F' fill-opacity='.8'/%3E%3Cellipse cx='9.2' cy='0.2' rx='4.7' ry='3.4' transform='rotate(91 9.2 0.2)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='4.2' cy='8.0' rx='5.1' ry='3.5' transform='rotate(152 4.2 8.0)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-6.0' cy='5.5' rx='5.3' ry='2.7' transform='rotate(227 -6.0 5.5)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-5.5' cy='-7.5' rx='3.8' ry='2.7' transform='rotate(324 -5.5 -7.5)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='3.5' cy='-7.2' rx='3.8' ry='3.4' transform='rotate(386 3.5 -7.2)' fill='%233A2A1A' fill-opacity='.88'/%3E%3C/g%3E%3Cg transform='translate(165.8 80.1) rotate(45) scale(0.93)'%3E%3Cellipse cx='0' cy='0' rx='7' ry='5.6' fill='%23C8974F' fill-opacity='.8'/%3E%3Cellipse cx='8.4' cy='-2.2' rx='4.2' ry='3.4' transform='rotate(75 8.4 -2.2)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='3.5' cy='8.2' rx='4.7' ry='2.8' transform='rotate(157 3.5 8.2)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-8.7' cy='2.8' rx='5.0' ry='3.0' transform='rotate(252 -8.7 2.8)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-8.5' cy='-2.9' rx='4.7' ry='3.5' transform='rotate(289 -8.5 -2.9)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='2.3' cy='-7.5' rx='3.8' ry='2.6' transform='rotate(377 2.3 -7.5)' fill='%233A2A1A' fill-opacity='.88'/%3E%3C/g%3E%3Cg transform='translate(158.4 113.9) rotate(242) scale(1.01)'%3E%3Cellipse cx='0' cy='0' rx='7' ry='5.6' fill='%23C8974F' fill-opacity='.8'/%3E%3Cellipse cx='8.1' cy='2.4' rx='5.0' ry='2.8' transform='rotate(106 8.1 2.4)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='2.8' cy='8.1' rx='4.4' ry='3.1' transform='rotate(161 2.8 8.1)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-5.3' cy='7.2' rx='5.1' ry='2.6' transform='rotate(216 -5.3 7.2)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-7.4' cy='-5.1' rx='4.3' ry='2.6' transform='rotate(304 -7.4 -5.1)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='0.9' cy='-8.5' rx='3.6' ry='3.5' transform='rotate(366 0.9 -8.5)' fill='%233A2A1A' fill-opacity='.88'/%3E%3C/g%3E%3Cg transform='translate(176.4 173.7) rotate(310) scale(1.03)'%3E%3Cellipse cx='0' cy='0' rx='7' ry='5.6' fill='%23C8974F' fill-opacity='.8'/%3E%3Cellipse cx='7.9' cy='0.3' rx='4.7' ry='2.8' transform='rotate(93 7.9 0.3)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='2.8' cy='7.5' rx='3.8' ry='3.3' transform='rotate(159 2.8 7.5)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-2.9' cy='8.9' rx='3.8' ry='2.8' transform='rotate(198 -2.9 8.9)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-8.2' cy='-0.2' rx='4.4' ry='2.6' transform='rotate(271 -8.2 -0.2)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-5.1' cy='-6.0' rx='5.0' ry='2.8' transform='rotate(319 -5.1 -6.0)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='2.5' cy='-8.9' rx='5.4' ry='3.5' transform='rotate(376 2.5 -8.9)' fill='%233A2A1A' fill-opacity='.88'/%3E%3C/g%3E%3Cg transform='translate(155.4 209.6) rotate(346) scale(0.88)'%3E%3Cellipse cx='0' cy='0' rx='7' ry='5.6' fill='%23C8974F' fill-opacity='.8'/%3E%3Cellipse cx='8.6' cy='0.9' rx='4.6' ry='2.9' transform='rotate(96 8.6 0.9)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='0.0' cy='8.8' rx='4.9' ry='3.3' transform='rotate(180 0.0 8.8)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-7.1' cy='2.4' rx='4.7' ry='3.3' transform='rotate(251 -7.1 2.4)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-7.4' cy='-3.8' rx='3.7' ry='2.6' transform='rotate(297 -7.4 -3.8)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='1.8' cy='-7.5' rx='4.1' ry='3.5' transform='rotate(374 1.8 -7.5)' fill='%233A2A1A' fill-opacity='.88'/%3E%3C/g%3E%3Cg transform='translate(217.4 24.2) rotate(348) scale(1.01)'%3E%3Cellipse cx='0' cy='0' rx='7' ry='5.6' fill='%23C8974F' fill-opacity='.8'/%3E%3Cellipse cx='9.1' cy='0.8' rx='3.7' ry='3.1' transform='rotate(95 9.1 0.8)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='1.1' cy='7.5' rx='5.3' ry='2.6' transform='rotate(171 1.1 7.5)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-6.3' cy='4.7' rx='4.5' ry='3.1' transform='rotate(233 -6.3 4.7)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-8.8' cy='-3.2' rx='4.4' ry='3.0' transform='rotate(290 -8.8 -3.2)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='3.0' cy='-7.7' rx='4.1' ry='3.2' transform='rotate(382 3.0 -7.7)' fill='%233A2A1A' fill-opacity='.88'/%3E%3C/g%3E%3Cg transform='translate(217.7 65.9) rotate(258) scale(0.88)'%3E%3Cellipse cx='0' cy='0' rx='7' ry='5.6' fill='%23C8974F' fill-opacity='.8'/%3E%3Cellipse cx='8.5' cy='1.5' rx='4.7' ry='2.9' transform='rotate(100 8.5 1.5)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='1.5' cy='7.5' rx='4.2' ry='2.9' transform='rotate(169 1.5 7.5)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-7.5' cy='4.9' rx='4.2' ry='3.4' transform='rotate(237 -7.5 4.9)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-8.0' cy='-3.9' rx='4.1' ry='3.3' transform='rotate(296 -8.0 -3.9)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='0.2' cy='-7.7' rx='5.1' ry='3.5' transform='rotate(362 0.2 -7.7)' fill='%233A2A1A' fill-opacity='.88'/%3E%3C/g%3E%3Cg transform='translate(206.0 132.9) rotate(88) scale(1.07)'%3E%3Cellipse cx='0' cy='0' rx='7' ry='5.6' fill='%23C8974F' fill-opacity='.8'/%3E%3Cellipse cx='8.4' cy='0.7' rx='4.0' ry='2.5' transform='rotate(94 8.4 0.7)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='2.3' cy='7.4' rx='4.4' ry='3.2' transform='rotate(163 2.3 7.4)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-6.4' cy='4.9' rx='4.6' ry='2.9' transform='rotate(232 -6.4 4.9)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-5.9' cy='-6.2' rx='5.4' ry='3.5' transform='rotate(316 -5.9 -6.2)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='3.6' cy='-7.1' rx='3.8' ry='3.5' transform='rotate(386 3.6 -7.1)' fill='%233A2A1A' fill-opacity='.88'/%3E%3C/g%3E%3Cg transform='translate(224.0 171.5) rotate(129) scale(0.87)'%3E%3Cellipse cx='0' cy='0' rx='7' ry='5.6' fill='%23C8974F' fill-opacity='.8'/%3E%3Cellipse cx='9.0' cy='0.8' rx='3.9' ry='2.7' transform='rotate(95 9.0 0.8)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='0.1' cy='9.3' rx='5.2' ry='2.4' transform='rotate(179 0.1 9.3)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-5.0' cy='6.3' rx='4.4' ry='3.1' transform='rotate(218 -5.0 6.3)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-8.0' cy='-3.2' rx='3.7' ry='2.5' transform='rotate(292 -8.0 -3.2)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='3.5' cy='-7.8' rx='4.7' ry='2.8' transform='rotate(384 3.5 -7.8)' fill='%233A2A1A' fill-opacity='.88'/%3E%3C/g%3E%3Cg transform='translate(215.4 207.9) rotate(124) scale(1.09)'%3E%3Cellipse cx='0' cy='0' rx='7' ry='5.6' fill='%23C8974F' fill-opacity='.8'/%3E%3Cellipse cx='8.2' cy='1.6' rx='5.1' ry='3.4' transform='rotate(101 8.2 1.6)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='1.2' cy='8.3' rx='4.9' ry='2.9' transform='rotate(172 1.2 8.3)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-5.2' cy='5.9' rx='5.1' ry='3.1' transform='rotate(221 -5.2 5.9)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='-7.9' cy='-4.3' rx='5.1' ry='2.6' transform='rotate(298 -7.9 -4.3)' fill='%233A2A1A' fill-opacity='.88'/%3E%3Cellipse cx='3.5' cy='-7.9' rx='4.4' ry='2.8' transform='rotate(384 3.5 -7.9)' fill='%233A2A1A' fill-opacity='.88'/%3E%3C/g%3E%3Cg transform='translate(130.5 103.7)'%3E%3Cellipse cx='0' cy='0' rx='3.0' ry='2.4' fill='%232E2012' fill-opacity='.72'/%3E%3C/g%3E%3Cg transform='translate(111.2 197.6)'%3E%3Cellipse cx='0' cy='0' rx='2.2' ry='1.9' fill='%232E2012' fill-opacity='.72'/%3E%3C/g%3E%3Cg transform='translate(218.6 144.9)'%3E%3Cellipse cx='0' cy='0' rx='3.2' ry='2.1' fill='%232E2012' fill-opacity='.72'/%3E%3C/g%3E%3Cg transform='translate(183.4 78.7)'%3E%3Cellipse cx='0' cy='0' rx='3.4' ry='1.8' fill='%232E2012' fill-opacity='.72'/%3E%3C/g%3E%3Cg transform='translate(157.7 78.5)'%3E%3Cellipse cx='0' cy='0' rx='3.5' ry='1.9' fill='%232E2012' fill-opacity='.72'/%3E%3C/g%3E%3Cg transform='translate(105.8 142.7)'%3E%3Cellipse cx='0' cy='0' rx='3.5' ry='2.3' fill='%232E2012' fill-opacity='.72'/%3E%3C/g%3E%3Cg transform='translate(67.0 127.3)'%3E%3Cellipse cx='0' cy='0' rx='3.6' ry='2.1' fill='%232E2012' fill-opacity='.72'/%3E%3C/g%3E%3Cg transform='translate(53.1 232.3)'%3E%3Cellipse cx='0' cy='0' rx='3.2' ry='2.1' fill='%232E2012' fill-opacity='.72'/%3E%3C/g%3E%3Cg transform='translate(20.2 198.8)'%3E%3Cellipse cx='0' cy='0' rx='2.2' ry='2.3' fill='%232E2012' fill-opacity='.72'/%3E%3C/g%3E%3Cg transform='translate(140.4 191.1)'%3E%3Cellipse cx='0' cy='0' rx='3.2' ry='2.0' fill='%232E2012' fill-opacity='.72'/%3E%3C/g%3E%3Cg transform='translate(93.7 37.1)'%3E%3Cellipse cx='0' cy='0' rx='3.0' ry='1.8' fill='%232E2012' fill-opacity='.72'/%3E%3C/g%3E%3Cg transform='translate(21.5 109.0)'%3E%3Cellipse cx='0' cy='0' rx='3.4' ry='2.4' fill='%232E2012' fill-opacity='.72'/%3E%3C/g%3E%3Cg transform='translate(53.1 13.9)'%3E%3Cellipse cx='0' cy='0' rx='2.4' ry='1.9' fill='%232E2012' fill-opacity='.72'/%3E%3C/g%3E%3Cg transform='translate(5.4 202.0)'%3E%3Cellipse cx='0' cy='0' rx='2.8' ry='2.2' fill='%232E2012' fill-opacity='.72'/%3E%3C/g%3E%3Cg transform='translate(73.3 130.9)'%3E%3Cellipse cx='0' cy='0' rx='2.7' ry='1.9' fill='%232E2012' fill-opacity='.72'/%3E%3C/g%3E%3Cg transform='translate(25.3 75.3)'%3E%3Cellipse cx='0' cy='0' rx='2.2' ry='2.3' fill='%232E2012' fill-opacity='.72'/%3E%3C/g%3E%3C/g%3E%3C/defs%3E%3Crect width='240' height='240' fill='url(%23f)'/%3E%3Cuse href='%23t' x='-240' y='-240'/%3E%3Cuse href='%23t' x='-240' y='0'/%3E%3Cuse href='%23t' x='-240' y='240'/%3E%3Cuse href='%23t' x='0' y='-240'/%3E%3Cuse href='%23t' x='0' y='0'/%3E%3Cuse href='%23t' x='0' y='240'/%3E%3Cuse href='%23t' x='240' y='-240'/%3E%3Cuse href='%23t' x='240' y='0'/%3E%3Cuse href='%23t' x='240' y='240'/%3E%3C/svg%3E");
+  background-size: 150px 150px;
+}
+
+/* A soft veil so the print can sit behind real content */
+.leo-soft::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(250, 244, 238, .87), rgba(250, 244, 238, .78));
+}
+
+.leo-soft > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* ==========================================================================
+   8. CONSENT BANNER & LEGAL DIALOG SHEETS
+   ========================================================================== */
+#consent {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 96;
+  padding: clamp(.75rem, 2vw, 1.25rem);
+  transform: translate3d(0, 120%, 0);
+  opacity: 0;
+  visibility: hidden;
+  transition: transform .7s var(--ease-spring), opacity .4s var(--ease-out), visibility 0s linear .7s;
+}
+
+#consent.show {
+  transform: translate3d(0, 0, 0);
+  opacity: 1;
+  visibility: visible;
+  transition-delay: 0s, 0s, 0s;
+}
+
+dialog.sheet {
+  border: none;
+  padding: 0;
+  max-width: min(52rem, 94vw);
+  width: 100%;
+  max-height: 86vh;
+  border-radius: 20px;
+  background: #FFFFFF;
+  color: #1F1418;
+  box-shadow: 0 20px 60px -24px rgba(74, 45, 26, .55);
+}
+
+dialog.sheet::backdrop {
+  background: rgba(31, 20, 24, .55);
+  backdrop-filter: blur(3px);
+}
+
+dialog.sheet[open] {
+  animation: sheetIn .45s var(--ease-out);
+}
+
+@keyframes sheetIn {
+  from { opacity: 0; transform: translate3d(0, 24px, 0); }
+  to   { opacity: 1; transform: none; }
+}
+
+.sheet-body {
+  overflow-y: auto;
+  max-height: calc(86vh - 4.5rem);
+  padding: 0 clamp(1.25rem, 4vw, 2.5rem) clamp(1.5rem, 4vw, 2.5rem);
+}
+
+.sheet h3 {
+  font-family: "Space Grotesk", sans-serif;
+  font-weight: 700;
+  letter-spacing: -.02em;
+  font-size: 1.02rem;
+  margin: 1.6rem 0 .4rem;
+}
+
+.sheet p, .sheet li {
+  font-size: .92rem;
+  color: #44353A;
+  line-height: 1.75;
+}
+
+.sheet ul {
+  list-style: disc;
+  padding-left: 1.15rem;
+}
+
+.fill {
+  background: rgba(229, 20, 95, .1);
+  border-bottom: 1px dashed rgba(229, 20, 95, .55);
+  padding: 0 .25em;
+  border-radius: 3px;
+  font-style: normal;
+}
+
+/* ==========================================================================
+   9. OVERLAY NAVIGATION MENU & BURGER BUTTON
+   ========================================================================== */
+#menu {
+  position: fixed;
+  inset: 0;
+  z-index: 72;
+  background: #FAF4EE;
+  transform: translate3d(0, -100%, 0);
+  visibility: hidden;
+  transition: transform .8s var(--ease-out), visibility 0s linear .8s;
+}
+
+#menu.open {
+  transform: translate3d(0, 0, 0);
+  visibility: visible;
+  transition-delay: 0s, 0s;
+}
+
+#menu a {
+  display: block;
+  opacity: 0;
+  transform: translate3d(0, 40px, 0);
+  transition: opacity .5s var(--ease-out), transform .7s var(--ease-spring), color .3s var(--ease-out);
+}
+
+#menu.open a {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+#menu.open a:nth-child(1) { transition-delay: .22s; }
+#menu.open a:nth-child(2) { transition-delay: .29s; }
+#menu.open a:nth-child(3) { transition-delay: .36s; }
+#menu.open a:nth-child(4) { transition-delay: .43s; }
+#menu.open a:nth-child(5) { transition-delay: .5s; }
+#menu.open a:nth-child(6) { transition-delay: .57s; }
+
+#menu a:hover {
+  color: #E5145F;
+}
+
+#menu a:focus-visible {
+  outline: none;
+  color: #E5145F;
+}
+
+/* Absolute centring keeps the cross exact regardless of how row boxes resolve */
+#burger span {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  height: 1.5px;
+  background: #1F1418;
+  border-radius: 2px;
+  transition: transform .45s var(--ease-spring), width .45s var(--ease-spring);
+}
+
+#burger span:nth-child(1) {
+  width: 20px;
+  transform: translate(-50%, -50%) translateY(-3.5px);
+}
+
+#burger span:nth-child(2) {
+  width: 13px;
+  transform: translate(-50%, -50%) translateY(3.5px);
+}
+
+#burger[aria-expanded="true"] span:nth-child(1) {
+  width: 20px;
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+#burger[aria-expanded="true"] span:nth-child(2) {
+  width: 20px;
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+/* ==========================================================================
+   10. BUTTONS & INTERACTIVE STATES (CLAUDE.md Compliant)
+   ========================================================================== */
+.btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .65rem;
+  font-family: "Space Grotesk", sans-serif;
+  font-weight: 600;
+  letter-spacing: -.01em;
+  border-radius: 999px;
+  white-space: nowrap;
+  overflow: hidden;
+  transition: transform .5s var(--ease-spring), box-shadow .5s var(--ease-out), color .35s var(--ease-out);
+  will-change: transform;
+}
+
+.btn > * {
+  position: relative;
+  z-index: 2;
+}
+
+.btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: inherit;
+  background: linear-gradient(120deg, #E5145F, #A50E45);
+  transform: translate3d(0, 101%, 0);
+  transition: transform .55s var(--ease-out);
+}
+
+.btn:hover::before {
+  transform: translate3d(0, 0, 0);
+}
+
+.btn:active {
+  transform: scale(.97);
+}
+
+.btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px #FAF4EE, 0 0 0 4px #E5145F;
+}
+
+.btn-solid {
+  background: #E5145F;
+  color: #FFFFFF;
+  box-shadow: var(--glow-pink);
+}
+
+.btn-solid::before {
+  background: linear-gradient(120deg, #12968D, #0B6C66);
+}
+
+.btn-solid:hover {
+  color: #FFFFFF;
+}
+
+.btn-line {
+  border: 1px solid rgba(31, 20, 24, .22);
+  color: #1F1418;
+  background: rgba(255, 255, 255, .55);
+}
+
+.btn-line:hover {
+  color: #FFFFFF;
+  border-color: transparent;
+}
+
+.navlink {
+  position: relative;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: .86rem;
+  font-weight: 500;
+  color: #63504F;
+  padding: .3rem 0;
+  transition: color .35s var(--ease-out);
+}
+
+.navlink::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 1px;
+  width: 100%;
+  background: linear-gradient(90deg, #E5145F, #12968D);
+  transform: scaleX(0);
+  transform-origin: left;
+  opacity: 0;
+  transition: transform .45s var(--ease-spring), opacity .3s var(--ease-out);
+}
+
+.navlink:hover {
+  color: #1F1418;
+}
+
+.navlink:hover::after {
+  transform: scaleX(1);
+  opacity: 1;
+}
+
+.navlink:active {
+  color: #E5145F;
+}
+
+.navlink:focus-visible {
+  outline: none;
+  color: #1F1418;
+  box-shadow: 0 2px 0 #E5145F;
+}
+
+/* ==========================================================================
+   11. WORD REVEAL & SCROLL ANIMATIONS
+   ========================================================================== */
+.rv-word {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  padding: .14em 0 .28em;
+  margin: -.14em 0 -.28em;
+}
+
+.rv-word > i {
+  display: inline-block;
+  font-style: inherit;
+  transform: translate3d(0, 150%, 0);
+  opacity: 0;
+}
+
+.is-in .rv-word > i {
+  transform: translate3d(0, 0, 0);
+  opacity: 1;
+  transition: transform .9s var(--ease-out), opacity .7s var(--ease-out);
+}
+
+.rv {
+  opacity: 0;
+  transform: translate3d(0, 32px, 0);
+}
+
+.is-in.rv, .is-in .rv {
+  opacity: 1;
+  transform: none;
+  transition: opacity .8s var(--ease-out), transform .9s var(--ease-spring);
+}
+
+/* ==========================================================================
+   12. SERVICE LIST & HOVER PEEK PREVIEW
+   ========================================================================== */
+.srv {
+  position: relative;
+  display: block;
+  border-top: 1px solid rgba(31, 20, 24, .14);
+}
+
+.srv:last-child {
+  border-bottom: 1px solid rgba(31, 20, 24, .14);
+}
+
+.srv-in {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  padding: clamp(1.4rem, 3.4vw, 2.6rem) 0;
+  transition: transform .6s var(--ease-spring), color .4s var(--ease-out);
+}
+
+.srv::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(90deg, rgba(229, 20, 95, .13), rgba(229, 20, 95, 0) 70%);
+  transform: scaleX(0);
+  transform-origin: left;
+  opacity: 0;
+  transition: transform .6s var(--ease-out), opacity .4s var(--ease-out);
+}
+
+.srv:hover::after {
+  transform: scaleX(1);
+  opacity: 1;
+}
+
+.srv:hover .srv-in {
+  transform: translate3d(clamp(.6rem, 2vw, 1.6rem), 0, 0);
+}
+
+.srv:focus-visible {
+  outline: none;
+}
+
+.srv:focus-visible::after {
+  transform: scaleX(1);
+  opacity: 1;
+}
+
+.srv:active .srv-in {
+  transform: translate3d(clamp(.3rem, 1vw, .8rem), 0, 0);
+}
+
+#peek {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 80;
+  width: clamp(200px, 20vw, 300px);
+  aspect-ratio: 4/5;
+  border-radius: 14px;
+  overflow: hidden;
+  pointer-events: none;
+  opacity: 0;
+  transform: translate3d(-50%, -50%, 0) scale(.86);
+  will-change: transform, opacity;
+  transition: opacity .45s var(--ease-out), scale .55s var(--ease-spring);
+  box-shadow: 0 30px 80px -30px rgba(0, 0, 0, .95);
+}
+
+#peek.on {
+  opacity: 1;
+  scale: 1;
+}
+
+#peek img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+@media (hover: none), (pointer: coarse) {
+  #peek { display: none; }
+}
+
+/* ==========================================================================
+   13. PRICE CONFIGURATOR
+   ========================================================================== */
+.opt {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  width: 100%;
+  text-align: left;
+  padding: .95rem 1.15rem;
+  border-radius: 14px;
+  border: 1px solid rgba(31, 20, 24, .14);
+  background: #FFFFFF;
+  font-family: "Space Grotesk", sans-serif;
+  color: #63504F;
+  transition: transform .45s var(--ease-spring), border-color .35s var(--ease-out),
+              background-color .35s var(--ease-out), color .35s var(--ease-out);
+}
+
+.opt:hover {
+  transform: translate3d(0, -2px, 0);
+  border-color: rgba(229, 20, 95, .5);
+  color: #1F1418;
+  background: rgba(229, 20, 95, .06);
+}
+
+.opt:active {
+  transform: translate3d(0, 0, 0) scale(.99);
+}
+
+.opt:focus-visible {
+  outline: none;
+  border-color: #E5145F;
+  box-shadow: 0 0 0 3px rgba(229, 20, 95, .22);
+}
+
+.opt[aria-pressed="true"],
+.opt[aria-checked="true"] {
+  border-color: #E5145F;
+  color: #FFFFFF;
+  background: #E5145F;
+}
+
+.opt[aria-pressed="true"] .opt-sub,
+.opt[aria-checked="true"] .opt-sub {
+  color: rgba(255, 255, 255, .75);
+}
+
+.opt-sub {
+  font-family: Inter, sans-serif;
+  font-size: .78rem;
+  color: #8C7A72;
+  line-height: 1.4;
+  transition: color .35s var(--ease-out);
+}
+
+/* ==========================================================================
+   14. MEDIA TILES & PARALLAX
+   ========================================================================== */
+.media {
+  position: relative;
+  overflow: hidden;
+  border-radius: 16px;
+  isolation: isolate;
+  background: #F3E9DC;
+}
+
+.media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform .9s var(--ease-out);
+  will-change: transform;
+}
+
+.media::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(150deg, rgba(229, 20, 95, .12) 0%, rgba(18, 150, 141, .08) 100%);
+  mix-blend-mode: multiply;
+}
+
+.media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  background: linear-gradient(to top, rgba(0, 0, 0, .62) 0%, rgba(0, 0, 0, .3) 11%, rgba(0, 0, 0, .06) 22%, rgba(0, 0, 0, 0) 34%);
+}
+
+.media-cap {
+  position: absolute;
+  z-index: 4;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 1rem 1.15rem;
+  color: #FFFFFF;
+}
+
+a.tile {
+  display: block;
+  transition: transform .6s var(--ease-spring);
+  will-change: transform;
+}
+
+a.tile:hover {
+  transform: translate3d(0, -6px, 0);
+}
+
+a.tile:hover .media img {
+  transform: scale(1.07);
+}
+
+a.tile:active {
+  transform: translate3d(0, -1px, 0) scale(.995);
+}
+
+a.tile:focus-visible {
+  outline: none;
+}
+
+a.tile:focus-visible .media {
+  box-shadow: 0 0 0 2px #FAF4EE, 0 0 0 4px #E5145F;
+}
+
+/* ==========================================================================
+   15. MARQUEE TICKER BAND & DIVIDER
+   ========================================================================== */
+.marq {
+  display: flex;
+  white-space: nowrap;
+  will-change: transform;
+}
+
+.rule {
+  height: 1px;
+  background: linear-gradient(90deg, rgba(229, 20, 95, 0), rgba(229, 20, 95, .45) 20%, rgba(18, 150, 141, .45) 80%, rgba(18, 150, 141, 0));
+}
+
+/* ==========================================================================
+   15.5 REAL LEO FUR & HIBISCUS BOTANICAL ASSETS
+   ========================================================================== */
+.leo-fur-banner {
+  background: url('../brand_assets/leo_fur.jpg') center/cover no-repeat;
+}
+
+.leo-fur-soft::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: url('../brand_assets/leo_fur.jpg') center/cover no-repeat;
+  opacity: .18;
+  mix-blend-mode: multiply;
+}
+
+.card-espresso {
+  background: #2C1E1A;
+  color: #FAF5EE;
+  border: 1px solid rgba(200, 151, 79, .25);
+  box-shadow: 0 12px 30px -10px rgba(44, 30, 26, .35);
+}
+
+/* leopard print sits inside the espresso cards, dimmed so the labels stay readable */
+.card-leo {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.card-leo::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: .3;
+  mix-blend-mode: screen;
+  background-color: transparent;
+  background-image: var(--leo-img);
+  background-size: 120px 120px;
+  pointer-events: none;
+}
+
+.card-leo > * {
+  position: relative;
+  z-index: 1;
+}
+
+.flower-bloom {
+  filter: contrast(1.15) brightness(1.02);
+  mix-blend-mode: multiply;
+}
+
+/* ==========================================================================
+   16. ACCESSIBILITY: REDUCED MOTION (CLAUDE.md Guardrail)
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .001ms !important;
+    transition-duration: .001ms !important;
+  }
+  .rv, .rv-word > i {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+}

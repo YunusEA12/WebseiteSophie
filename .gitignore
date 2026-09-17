@@ -1,0 +1,8 @@
+# Arbeitsdateien, gehören nicht auf die Website
+temporary screenshots/
+node_modules/
+_*.html
+_*.txt
+scripts/
+Thumbs.db
+.DS_Store
