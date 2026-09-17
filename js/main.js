@@ -6,6 +6,11 @@
 (function () {
   'use strict';
 
+  /* Browsers restore the previous scroll position on reload, which dropped
+     visitors into the middle of the price calculator instead of the top. */
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+  addEventListener('beforeunload', function () { window.scrollTo(0, 0); });
+
   // Environment & Accessibility detection
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var fine = window.matchMedia('(hover:hover) and (pointer:fine)').matches;
@@ -434,6 +439,11 @@
 
       // Portfolio tiles drift at their own pace inside the viewport
       var vh = innerHeight;
+      // On a narrow screen the offset only makes the two columns look ragged,
+      // and it costs a transform per tile per frame.
+      if (document.documentElement.clientWidth < 760) {
+        tiles.forEach(function (t) { if (t.style.transform) t.style.transform = ''; });
+      } else
       tiles.forEach(function (t) {
         var r = t.getBoundingClientRect();
         if (r.bottom < -200 || r.top > vh + 200) return;
@@ -443,6 +453,127 @@
 
       requestAnimationFrame(sframe);
     })();
+  }
+
+  /* ==========================================================================
+     HERO SLIDESHOW
+     ========================================================================== */
+  function initHeroShow() {
+    var box = document.getElementById('heroShow');
+    if (!box) return;
+    var slides = [].slice.call(box.querySelectorAll('.hero-slide'));
+    var caps = [].slice.call(box.querySelectorAll('.hero-cap'));
+    var dots = [].slice.call(box.querySelectorAll('.hero-dot'));
+    if (slides.length < 2) return;
+    var at = 0, timer;
+
+    function go(n) {
+      at = (n + slides.length) % slides.length;
+      slides.forEach(function (el, i) { el.classList.toggle('is-on', i === at); });
+      caps.forEach(function (el, i) { el.classList.toggle('is-on', i === at); });
+      dots.forEach(function (el, i) { el.classList.toggle('is-on', i === at); });
+    }
+
+    function play() {
+      if (reduce) return;
+      clearInterval(timer);
+      timer = setInterval(function () { go(at + 1); }, 4200);
+    }
+
+    dots.forEach(function (d) {
+      d.addEventListener('click', function () { go(+d.getAttribute('data-go')); play(); });
+    });
+
+    // a swipe moves the card along
+    var sx = null;
+    box.addEventListener('touchstart', function (e) { sx = e.touches[0].clientX; }, { passive: true });
+    box.addEventListener('touchend', function (e) {
+      if (sx === null) return;
+      var dx = e.changedTouches[0].clientX - sx;
+      if (Math.abs(dx) > 40) { go(at + (dx < 0 ? 1 : -1)); play(); }
+      sx = null;
+    }, { passive: true });
+
+    // pause while the card is off screen
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (es) {
+        es.forEach(function (e) { if (e.isIntersecting) play(); else clearInterval(timer); });
+      }, { threshold: .2 }).observe(box);
+    }
+    play();
+  }
+
+  /* ==========================================================================
+     LIGHTBOX FOR THE PORTFOLIO
+     ========================================================================== */
+  function initLightbox() {
+    var tiles = [].slice.call(document.querySelectorAll('.tile[data-view]'));
+    if (!tiles.length) return;
+
+    var box = document.createElement('div');
+    box.id = 'lightbox';
+    box.setAttribute('role', 'dialog');
+    box.setAttribute('aria-modal', 'true');
+    box.setAttribute('aria-label', 'Arbeit in gross');
+    box.innerHTML =
+      '<button type="button" id="lbClose" aria-label="Schliessen">&times;</button>' +
+      '<button type="button" id="lbPrev" aria-label="Vorheriges Bild">&#8249;</button>' +
+      '<button type="button" id="lbNext" aria-label="Naechstes Bild">&#8250;</button>' +
+      '<figure><img alt=""><figcaption></figcaption></figure>';
+    document.body.appendChild(box);
+
+    var img = box.querySelector('img');
+    var cap = box.querySelector('figcaption');
+    var at = 0, lastFocus = null;
+
+    function show(i) {
+      at = (i + tiles.length) % tiles.length;
+      var t = tiles[at];
+      var src = t.querySelector('img');
+      var title = t.querySelector('.media-cap p');
+      var sub = t.querySelectorAll('.media-cap p')[1];
+      img.src = src.getAttribute('src');
+      img.alt = src.getAttribute('alt') || '';
+      cap.innerHTML = '<b>' + (title ? title.textContent : '') + '</b>' + (sub ? sub.textContent : '');
+    }
+
+    function open(i) {
+      lastFocus = document.activeElement;
+      show(i);
+      box.classList.add('on');
+      document.body.style.overflow = 'hidden';
+      document.getElementById('lbClose').focus();
+    }
+
+    function close() {
+      box.classList.remove('on');
+      document.body.style.overflow = '';
+      if (lastFocus) lastFocus.focus();
+    }
+
+    tiles.forEach(function (t, i) {
+      t.addEventListener('click', function (e) { e.preventDefault(); open(i); });
+    });
+
+    document.getElementById('lbClose').addEventListener('click', close);
+    document.getElementById('lbPrev').addEventListener('click', function () { show(at - 1); });
+    document.getElementById('lbNext').addEventListener('click', function () { show(at + 1); });
+    box.addEventListener('click', function (e) { if (e.target === box) close(); });
+    document.addEventListener('keydown', function (e) {
+      if (!box.classList.contains('on')) return;
+      if (e.key === 'Escape') close();
+      if (e.key === 'ArrowLeft') show(at - 1);
+      if (e.key === 'ArrowRight') show(at + 1);
+    });
+
+    var sx = null;
+    box.addEventListener('touchstart', function (e) { sx = e.touches[0].clientX; }, { passive: true });
+    box.addEventListener('touchend', function (e) {
+      if (sx === null) return;
+      var dx = e.changedTouches[0].clientX - sx;
+      if (Math.abs(dx) > 45) show(at + (dx < 0 ? 1 : -1));
+      sx = null;
+    }, { passive: true });
   }
 
   /* ==========================================================================
@@ -505,7 +636,7 @@
       path = document.createElementNS(NS, 'path');
       path.setAttribute('fill', 'none');
       path.setAttribute('stroke', 'url(#gVine)');
-      path.setAttribute('stroke-width', W < 760 ? 2 : 2.8);
+      path.setAttribute('stroke-width', W < 760 ? 3.4 : 3.2);
       path.setAttribute('stroke-linecap', 'round');
       path.setAttribute('opacity', '.85');
       svg.appendChild(path);
@@ -916,6 +1047,8 @@
     initPreloader();
     initCustomCursor();
     initServicePeek();
+    initHeroShow();
+    initLightbox();
     initServiceThumbs();
     initMarqueeAndParallax();
     initLivingVine();

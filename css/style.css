@@ -1052,3 +1052,323 @@ a.tile:focus-visible .media {
     rgba(250, 244, 238, .96) 95%,
     #FAF4EE 100%);
 }
+
+
+/* ==========================================================================
+   ROUND 4 FIXES
+   ========================================================================== */
+
+/* 5. The petals drifted in front of everything and settled on the price cards.
+      Behind the content they still show over open background, never on a card. */
+#petals {
+  z-index: -1;
+}
+
+/* 8. Three service cards side by side even on a phone: they are short labels,
+      stacking them wasted a whole screen. */
+@media (max-width: 640px) {
+  .card-espresso {
+    padding: .75rem .5rem;
+    border-radius: 14px;
+  }
+
+  .card-espresso .t-display {
+    font-size: .78rem;
+    line-height: 1.15;
+  }
+
+  .card-espresso span:last-child {
+    font-size: .6rem;
+    line-height: 1.25;
+    margin-top: .25rem;
+  }
+
+  .card-espresso > div:first-child {
+    width: 1.75rem;
+    height: 1.75rem;
+    margin-bottom: .35rem;
+  }
+
+  .card-espresso svg {
+    width: 1.1rem;
+    height: 1.1rem;
+  }
+}
+
+/* 10. A softer crop on the portfolio tiles, matching the cards around them. */
+@media (max-width: 640px) {
+  .media {
+    border-radius: 18px;
+  }
+
+  .media-cap {
+    padding: .7rem .75rem;
+  }
+
+  .media-cap .t-display {
+    font-size: .82rem;
+    line-height: 1.2;
+  }
+
+  .media-cap p:last-child {
+    font-size: .66rem;
+  }
+}
+
+
+/* ==========================================================================
+   2. TOUCH: NO STICKY HOVER
+   On a phone a tap leaves the :hover state applied, so sweep animations and
+   lifts keep running after the finger is gone - that is the hitch when you
+   tap something. Hover effects now only exist where there is a real pointer.
+   ========================================================================== */
+@media (hover: none), (pointer: coarse) {
+  .btn::before {
+    display: none;
+  }
+
+  .btn:hover,
+  .btn:focus {
+    transform: none;
+  }
+
+  .btn:active {
+    transform: scale(.97);
+  }
+
+  a.tile:hover,
+  a.tile:hover .media img,
+  .srv:hover .srv-in,
+  .card-espresso:hover {
+    transform: none;
+  }
+
+  .srv:hover::after {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+
+  .srv:active::after {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+
+  .navlink:hover::after {
+    transform: scaleX(0);
+    opacity: 0;
+  }
+
+  /* a tap should answer instantly, not ease for half a second */
+  .btn,
+  a.tile,
+  .opt {
+    transition-duration: .18s;
+  }
+}
+
+/* ==========================================================================
+   7 + 9b. SECTION COLOUR TRANSITIONS
+   Sections met at a hard colour change. Each one now carries a soft band of
+   the neighbouring colour at its top and bottom, so the page reads as one
+   continuous surface instead of stacked blocks.
+   ========================================================================== */
+.seam {
+  position: relative;
+}
+
+.seam::before,
+.seam::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 5rem;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.seam::before {
+  top: 0;
+  background: linear-gradient(to bottom, #FAF4EE, rgba(250, 244, 238, 0));
+}
+
+.seam::after {
+  bottom: 0;
+  background: linear-gradient(to top, #FAF4EE, rgba(250, 244, 238, 0));
+}
+
+.seam > * {
+  position: relative;
+  z-index: 1;
+}
+
+@media (max-width: 640px) {
+  .seam::before,
+  .seam::after {
+    height: 3.25rem;
+  }
+}
+
+
+/* ==========================================================================
+   HERO SLIDESHOW
+   One card that cycles through the work instead of a single frozen photo.
+   Only opacity moves, so it stays cheap on a phone.
+   ========================================================================== */
+.hero-slide {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity .9s ease;
+  will-change: opacity;
+}
+
+.hero-slide.is-on {
+  opacity: 1;
+}
+
+.hero-cap {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  opacity: 0;
+  transform: translate3d(0, 8px, 0);
+  transition: opacity .5s ease, transform .5s ease;
+  pointer-events: none;
+}
+
+.hero-cap.is-on {
+  opacity: 1;
+  transform: none;
+}
+
+.hero-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .45);
+  transition: width .35s ease, background-color .35s ease;
+}
+
+.hero-dot.is-on {
+  width: 20px;
+  background: #fff;
+}
+
+.hero-dot:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+
+/* ==========================================================================
+   LIGHTBOX
+   Tapping a piece of work shows it large instead of leaving the site.
+   ========================================================================== */
+#lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 95;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  background: rgba(31, 20, 24, .88);
+  backdrop-filter: blur(6px);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .3s ease, visibility 0s linear .3s;
+}
+
+#lightbox.on {
+  opacity: 1;
+  visibility: visible;
+  transition-delay: 0s, 0s;
+}
+
+#lightbox figure {
+  margin: 0;
+  max-width: min(46rem, 100%);
+  max-height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: .75rem;
+  transform: scale(.94);
+  transition: transform .4s cubic-bezier(.2, .9, .28, 1.18);
+}
+
+#lightbox.on figure {
+  transform: none;
+}
+
+#lightbox img {
+  width: 100%;
+  max-height: 76vh;
+  object-fit: contain;
+  border-radius: 18px;
+  background: #17141E;
+}
+
+#lightbox figcaption {
+  color: #F5EFE8;
+  text-align: center;
+  font-size: .9rem;
+  line-height: 1.5;
+}
+
+#lightbox figcaption b {
+  display: block;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+#lbClose {
+  position: absolute;
+  top: max(1rem, env(safe-area-inset-top));
+  right: 1rem;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .14);
+  color: #fff;
+  font-size: 1.4rem;
+  line-height: 1;
+  display: grid;
+  place-items: center;
+}
+
+#lbPrev,
+#lbNext {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .14);
+  color: #fff;
+  font-size: 1.3rem;
+  display: grid;
+  place-items: center;
+}
+
+#lbPrev { left: .6rem; }
+#lbNext { right: .6rem; }
+
+button.tile {
+  display: block;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+}
+
+/* ==========================================================================
+   3. A CALMER HEADER
+   The vine used to show through the translucent bar and cut across the logo.
+   ========================================================================== */
+header {
+  background: rgba(250, 244, 238, .96) !important;
+  box-shadow: 0 1px 0 rgba(31, 20, 24, .06);
+}

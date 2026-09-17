@@ -25,8 +25,8 @@
 <meta name="twitter:image" content="share.jpg">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2308070A'/%3E%3Ccircle cx='16' cy='16' r='7' fill='%23FF3D82'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="css/tailwind-base.css?v=af7c1978">
-<link rel="stylesheet" href="css/style.css?v=27303da9">
-<link rel="stylesheet" href="css/tailwind-utils.css?v=2ddeb8e8">
+<link rel="stylesheet" href="css/style.css?v=1e086fe9">
+<link rel="stylesheet" href="css/tailwind-utils.css?v=19966865">
 </head>
 <body class="antialiased">
 
@@ -237,15 +237,46 @@
 
       <!-- Right: Real Instagram Feature Card + Realistic Turquoise Tropical Hibiscus Bloom -->
       <div class="relative mx-auto lg:mx-0 w-full max-w-[20rem] sm:max-w-[24rem] lg:max-w-[26rem] mt-6 lg:mt-0">
-        <div class="relative rounded-3xl overflow-hidden shadow-[0_24px_60px_-15px_rgba(74,45,26,0.38)] border-2 border-white bg-white">
-          <img src="brand_assets/nail_post_2.jpg" alt="Exklusives Naildesign mit Hibiskus und Leo-Print von Sophie Gerber" class="w-full aspect-[4/5] object-cover hover:scale-105 transition-transform duration-700">
+        <div id="heroShow" class="relative rounded-3xl overflow-hidden shadow-[0_24px_60px_-15px_rgba(74,45,26,0.38)] border-2 border-white bg-white">
+          <div class="relative aspect-[4/5]">
+            <img src="brand_assets/nail_post_2.jpg" alt="Signature Set von Sophie Gerber" class="hero-slide is-on" loading="eager" decoding="async" width="700" height="875">
+            <img src="brand_assets/nail_post_1.jpg" alt="Leo  Gold von Sophie Gerber" class="hero-slide" loading="lazy" decoding="async" width="700" height="875">
+            <img src="brand_assets/nail_post_5.jpg" alt="Chrome von Sophie Gerber" class="hero-slide" loading="lazy" decoding="async" width="700" height="875">
+            <img src="brand_assets/nail_post_3.jpg" alt="Clean French von Sophie Gerber" class="hero-slide" loading="lazy" decoding="async" width="700" height="875">
+            <img src="brand_assets/nail_post_8.jpg" alt="Cat Eye von Sophie Gerber" class="hero-slide" loading="lazy" decoding="async" width="700" height="875">
+          </div>
           <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent pointer-events-none"></div>
-          <div class="absolute bottom-4 inset-x-4 flex items-center justify-between text-white">
-            <div>
-              <p class="t-editorial text-[.68rem] uppercase tracking-[.22em] text-white/80">Signature Set</p>
-              <p class="t-display font-semibold text-sm">Hibiskus &bull; Leo Art &bull; Manicure</p>
+
+          <div class="absolute bottom-4 inset-x-4 flex items-end justify-between gap-3 text-white">
+            <div class="relative min-h-[2.6rem] flex-1">
+              <div class="hero-cap is-on">
+                <p class="t-editorial text-[.68rem] uppercase tracking-[.22em] text-white/80">Signature Set</p>
+                <p class="t-display font-semibold text-sm">Hibiskus &bull; Leo Art &bull; Manicure</p>
+              </div>
+              <div class="hero-cap">
+                <p class="t-editorial text-[.68rem] uppercase tracking-[.22em] text-white/80">Leo &amp; Gold</p>
+                <p class="t-display font-semibold text-sm">Extra Lang &bull; Level 4</p>
+              </div>
+              <div class="hero-cap">
+                <p class="t-editorial text-[.68rem] uppercase tracking-[.22em] text-white/80">Chrome</p>
+                <p class="t-display font-semibold text-sm">Medium &bull; Level 3</p>
+              </div>
+              <div class="hero-cap">
+                <p class="t-editorial text-[.68rem] uppercase tracking-[.22em] text-white/80">Clean French</p>
+                <p class="t-display font-semibold text-sm">Kurz &bull; Level 1</p>
+              </div>
+              <div class="hero-cap">
+                <p class="t-editorial text-[.68rem] uppercase tracking-[.22em] text-white/80">Cat Eye</p>
+                <p class="t-display font-semibold text-sm">Lang &bull; Level 2</p>
+              </div>
             </div>
-            <a href="#leistungen" class="text-xs bg-white/20 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/40 hover:bg-white hover:text-chalk transition-colors">Leistungen &darr;</a>
+            <div class="flex gap-1.5 shrink-0 pb-1">
+            <button type="button" class="hero-dot is-on" data-go="0" aria-label="Bild 1 von 5"></button>
+            <button type="button" class="hero-dot" data-go="1" aria-label="Bild 2 von 5"></button>
+            <button type="button" class="hero-dot" data-go="2" aria-label="Bild 3 von 5"></button>
+            <button type="button" class="hero-dot" data-go="3" aria-label="Bild 4 von 5"></button>
+            <button type="button" class="hero-dot" data-go="4" aria-label="Bild 5 von 5"></button>
+            </div>
           </div>
         </div>
 
@@ -285,7 +316,7 @@
 </section>
 
 <!-- ============ MARQUEE ============ -->
-<section id="band" class="band-fade relative py-7 sm:py-8 overflow-hidden" style="background: url('brand_assets/leo_fur.jpg') center/cover;" aria-hidden="true">
+<section id="band" class="band-fade relative py-11 sm:py-12 overflow-hidden" style="background: url('brand_assets/leo_fur.jpg') center/cover;" aria-hidden="true">
   <div class="absolute inset-0 bg-void/30 backdrop-blur-[0.5px] pointer-events-none"></div>
   <div class="absolute inset-0 bg-gradient-to-r from-void via-transparent to-void pointer-events-none"></div>
   <div class="marq relative" id="marq">
@@ -351,11 +382,11 @@
     <!-- 3 Espresso Badges & Blooming Pink Hibiscus (Card 2 from Gemini Moodboard) -->
     <div class="relative mb-12">
       <!-- Blooming Pink Hibiscus Flower from Moodboard -->
-      <div class="absolute -top-12 -right-4 sm:-right-6 w-24 sm:w-32 aspect-square pointer-events-none drop-shadow-[0_12px_24px_rgba(229,20,95,0.35)] z-20">
+      <div class="absolute -top-16 right-1 sm:-right-4 w-20 sm:w-28 aspect-square pointer-events-none drop-shadow-[0_12px_24px_rgba(229,20,95,0.3)] z-0 opacity-90">
         <img src="brand_assets/hibiscus_pink.webp" alt="Pinke Hibiskusblüte" class="w-full h-full object-contain flower-bloom">
       </div>
 
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5 sm:gap-4 relative z-10">
+      <div class="grid grid-cols-3 gap-2 sm:gap-4 relative z-10">
         <div class="card-espresso card-leo rounded-2xl p-4 sm:p-5 flex flex-col items-center text-center">
           <div class="w-10 h-10 mb-2.5 text-sand-gold flex items-center justify-center">
             <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M9 12h6M12 9v6"/></svg>
@@ -423,7 +454,7 @@
 </section>
 
 <!-- ============ PREISRECHNER ============ -->
-<section id="preise" class="atmos relative px-5 sm:px-8 py-[clamp(5rem,12vw,9rem)] scroll-mt-20">
+<section id="preise" class="atmos seam relative px-5 sm:px-8 py-[clamp(5rem,12vw,9rem)] scroll-mt-20">
   <div class="mx-auto max-w-[88rem]">
     <div class="js-rv mb-10">
       <div class="inline-flex items-center gap-2 mb-2">
@@ -500,7 +531,7 @@
 </section>
 
 <!-- ============ ARBEITEN ============ -->
-<section id="arbeiten" class="leo-tex leo-soft relative px-5 sm:px-8 py-[clamp(4rem,10vw,8rem)] scroll-mt-20">
+<section id="arbeiten" class="leo-tex leo-soft seam relative px-5 sm:px-8 py-[clamp(4rem,10vw,8rem)] scroll-mt-20">
   <div class="mx-auto max-w-[88rem]">
     <div class="js-rv flex flex-wrap items-end justify-between gap-6 mb-9">
       <div>
@@ -512,30 +543,30 @@
     </div>
 
     <div class="js-rv rv grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
-      <a href="https://www.instagram.com/gerberxnails/" target="_blank" rel="noopener noreferrer" class="tile" data-view data-par="-24">
+      <button type="button" class="tile" data-view data-par="-24">
         <div class="media aspect-[4/5]"><img src="brand_assets/nail_post_1.jpg" alt="Leo Print French Tips mit Goldketten" loading="eager" decoding="async" width="700" height="875" class="w-full h-full object-cover">
           <div class="media-cap"><p class="t-display text-[1rem]">Leo &amp; Goldkette</p><p class="text-[.75rem] text-white/75">Extra Lang · Level 4</p></div></div>
-      </a>
-      <a href="https://www.instagram.com/gerberxnails/" target="_blank" rel="noopener noreferrer" class="tile" data-view data-par="14">
+      </button>
+      <button type="button" class="tile" data-view data-par="14">
         <div class="media aspect-[4/5]"><img src="brand_assets/nail_post_2.jpg" alt="Hibiskus Blüten und Leo Print" loading="eager" decoding="async" width="700" height="875" class="w-full h-full object-cover">
           <div class="media-cap"><p class="t-display text-[1rem]">Hibiskus &amp; Leo Art</p><p class="text-[.75rem] text-white/75">Medium · Level 3</p></div></div>
-      </a>
-      <a href="https://www.instagram.com/gerberxnails/" target="_blank" rel="noopener noreferrer" class="tile" data-view data-par="-14">
+      </button>
+      <button type="button" class="tile" data-view data-par="-14">
         <div class="media aspect-[4/5]"><img src="brand_assets/nail_post_5.jpg" alt="Tropisches Ocean Design mit 3D Muscheln" loading="eager" decoding="async" width="700" height="875" class="w-full h-full object-cover">
           <div class="media-cap"><p class="t-display text-[1rem]">Ocean &amp; 3D Chrome</p><p class="text-[.75rem] text-white/75">Extra Lang · Level 4</p></div></div>
-      </a>
-      <a href="https://www.instagram.com/gerberxnails/" target="_blank" rel="noopener noreferrer" class="tile" data-view data-par="20">
+      </button>
+      <button type="button" class="tile" data-view data-par="20">
         <div class="media aspect-[4/5]"><img src="brand_assets/nail_post_4.jpg" alt="Animal Print in warmen Herbsttönen" loading="eager" decoding="async" width="700" height="875" class="w-full h-full object-cover">
           <div class="media-cap"><p class="t-display text-[1rem]">Autumn &amp; Animal Print</p><p class="text-[.75rem] text-white/75">Lang · Level 2</p></div></div>
-      </a>
-      <a href="https://www.instagram.com/gerberxnails/" target="_blank" rel="noopener noreferrer" class="tile" data-view data-par="-18">
+      </button>
+      <button type="button" class="tile" data-view data-par="-18">
         <div class="media aspect-[4/5]"><img src="brand_assets/nail_post_7.jpg" alt="Saubere Russische Maniküre" loading="eager" decoding="async" width="700" height="875" class="w-full h-full object-cover">
           <div class="media-cap"><p class="t-display text-[1rem]">Clean Russian Manicure</p><p class="text-[.75rem] text-white/75">Kurz · Level 1</p></div></div>
-      </a>
-      <a href="https://www.instagram.com/gerberxnails/" target="_blank" rel="noopener noreferrer" class="tile" data-view data-par="10">
+      </button>
+      <button type="button" class="tile" data-view data-par="10">
         <div class="media aspect-[4/5]"><img src="brand_assets/nail_post_8.jpg" alt="Glaze und Katzenauge Glow" loading="eager" decoding="async" width="700" height="875" class="w-full h-full object-cover">
           <div class="media-cap"><p class="t-display text-[1rem]">Cat Eye &amp; Glaze</p><p class="text-[.75rem] text-white/75">Medium · Level 2</p></div></div>
-      </a>
+      </button>
     </div>
   </div>
 </section>
@@ -599,7 +630,7 @@
       </div>
 
       <!-- Right: Moodboard Photo Card (Metallic / Chrome Nails with Gold Rings) -->
-      <div class="relative mx-auto lg:mx-0 w-full max-w-[22rem] sm:max-w-[25rem]">
+      <div class="hidden lg:block relative mx-auto lg:mx-0 w-full max-w-[22rem] sm:max-w-[25rem]">
         <div class="relative rounded-3xl overflow-hidden shadow-[0_24px_60px_-15px_rgba(74,45,26,0.35)] border-2 border-white bg-white">
           <img src="brand_assets/nail_post_1.jpg" alt="Exklusive Nails mit Goldketten & Leo-Details von Sophie Gerber" class="w-full aspect-[4/5] object-cover hover:scale-105 transition-transform duration-700">
           <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent pointer-events-none"></div>
@@ -792,6 +823,6 @@
   </div>
 </footer>
 
-<script src="js/main.js?v=69622165" defer></script>
+<script src="js/main.js?v=d2238a4b" defer></script>
 </body>
 </html>
