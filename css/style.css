@@ -272,6 +272,12 @@ body.cur-hide .cursor-dot {
   contain: strict;
 }
 
+@media (max-width: 768px) {
+  #vine {
+    display: none !important;
+  }
+}
+
 #petals {
   position: fixed;
   inset: 0;
@@ -1509,25 +1515,82 @@ header {
 
 
 /* ==========================================================================
-   LEOPARD DARKENING WITHOUT PSEUDO-ELEMENTS
-   Three rules were competing for the same ::before and ::after, so whichever
-   sat last in the file won and the dimming never landed. Blending the texture
-   against a dark colour needs no pseudo-element at all.
+   PLUSH LEOPARD FUR ATMOSPHERE (Y2K / LUXURY EDITORIAL GLAM)
+   We preserve the soft, fluffy texture of the genuine leopard fur from
+   Sophie's moodboard, while maintaining high-contrast readability through
+   layered, warm espresso-gold vignettes.
    ========================================================================== */
 .leo-tex {
-  background-color: #3B3026;
-  background-blend-mode: multiply;
+  background-color: #261E18;
+  background-blend-mode: normal;
 }
 
-#band,
+#band {
+  background: linear-gradient(90deg, #17130F 0%, rgba(23, 19, 15, 0.45) 15%, rgba(23, 19, 15, 0.45) 85%, #17130F 100%),
+              linear-gradient(180deg, rgba(23, 19, 15, 0.72) 0%, rgba(23, 19, 15, 0.22) 50%, rgba(23, 19, 15, 0.72) 100%),
+              url('../brand_assets/leo_fur.jpg') center/cover !important;
+}
+
 #kontakt {
-  background-color: #3B3026 !important;
-  background-blend-mode: multiply;
+  background: linear-gradient(180deg, #17130F 0%, rgba(23, 19, 15, 0.65) 20%, rgba(23, 19, 15, 0.75) 80%, #17130F 100%),
+              url('../brand_assets/leo_fur.jpg') center/cover !important;
 }
 
-/* the separate dark sheet is no longer needed and would double up */
 .leo-tex::after,
 #band::after,
 #kontakt::after {
   background: none;
 }
+
+/* ==========================================================================
+   16. INTERACTIVE TOAST NOTIFICATION
+   ========================================================================== */
+#toast {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translate3d(-50%, 140%, 0) scale(.92);
+  z-index: 95;
+  display: flex;
+  align-items: center;
+  gap: .85rem;
+  max-width: min(92vw, 460px);
+  padding: .9rem 1.35rem;
+  background: rgba(34, 27, 22, .96);
+  border: 1px solid rgba(216, 168, 96, .35);
+  border-radius: 9999px;
+  box-shadow: 0 16px 40px -12px rgba(0, 0, 0, .6), 0 0 24px -4px rgba(229, 20, 95, .25);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  color: #EFE3D2;
+  font-size: .88rem;
+  line-height: 1.35;
+  pointer-events: none;
+  opacity: 0;
+  transition: transform .45s var(--ease-spring), opacity .35s var(--ease-out);
+}
+
+#toast.show {
+  transform: translate3d(-50%, 0, 0) scale(1);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+#toast .toast-icon {
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 9999px;
+  background: #E8447F;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(232, 68, 127, .4);
+}
+
+#toast .toast-text {
+  font-weight: 500;
+  letter-spacing: -.01em;
+}
+

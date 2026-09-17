@@ -599,6 +599,14 @@
       W = document.documentElement.clientWidth;
       VH = window.innerHeight;
 
+      // On mobile screens, the vine is disabled per client request
+      if (W < 768) {
+        svg.style.display = 'none';
+        while (svg.firstChild) svg.removeChild(svg.firstChild);
+        return;
+      }
+      svg.style.display = '';
+
       // measure the page with the vine hidden so it cannot inflate its own height
       var prevDisplay = svg.style.display;
       svg.style.display = 'none';
@@ -648,7 +656,7 @@
         use.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', '#bloom');
         g.appendChild(use);
         g.style.setProperty('--pf', k % 2 ? 'url(#gAqua)' : 'url(#gPink)');
-        g.style.setProperty('--pc', k % 2 ? '#07201E' : '#3A0A1E');
+        g.style.setProperty('--pc', k % 2 ? '#4A2E0F' : '#3A0A1E');
         g.setAttribute('opacity', '0');
         svg.appendChild(g);
         return { idx: idx, el: g, seed: k * 1.7, scale: 0, spin: 0, shown: false };
@@ -903,7 +911,7 @@
         ctx.translate(p.x, p.y);
         ctx.rotate(p.a);
         ctx.globalAlpha = p.o;
-        ctx.fillStyle = p.pink ? '#D8A860' : '#4FD8CC';
+        ctx.fillStyle = p.pink ? '#E8447F' : '#E8C89A';
         ctx.beginPath();
         ctx.moveTo(0, p.r);
         ctx.bezierCurveTo(-p.r * 0.9, p.r * 0.25, -p.r * 0.62, -p.r * 0.85, 0, -p.r);
@@ -976,25 +984,78 @@
         li.appendChild(c);
         listEl.appendChild(li);
       });
-      ctaEl.textContent = 'Set für ' + s.total + ' € anfragen';
+      ctaEl.textContent = (s.solo ? 'Soak Off für ' : 'Set für ') + s.total + ' € anfragen';
 
-      // Smooth count-up animation to the new total
+      // Smooth count-up animation to the new total with guaranteed duration
       var target = s.total;
+      if (rollId) {
+        cancelAnimationFrame(rollId);
+        rollId = null;
+      }
       if (reduce) {
         shown = target;
         totalEl.textContent = target;
         return;
       }
-      (function roll() {
-        shown = lerp(shown, target, 0.22);
-        if (Math.abs(target - shown) < 0.5) {
+      var startVal = shown;
+      var startTime = performance.now();
+      var DURATION = 200; // snappy 200ms ease-out
+      (function roll(now) {
+        var elapsed = (now || performance.now()) - startTime;
+        var p = Math.min(1, elapsed / DURATION);
+        var ease = 1 - Math.pow(1 - p, 3);
+        shown = startVal + (target - startVal) * ease;
+        if (p >= 1) {
           shown = target;
           totalEl.textContent = target;
+          rollId = null;
           return;
         }
         totalEl.textContent = Math.round(shown);
-        requestAnimationFrame(roll);
-      })();
+        rollId = requestAnimationFrame(roll);
+      })(performance.now());
+    }
+
+    var rollId = null;
+
+    function buildInquiryText(s) {
+      if (s.solo) {
+        return 'Hi Sophie! 💅 Ich möchte gerne einen Termin für reines Soak Off (Ablösen ohne neues Set, 20 €) anfragen. Wann hättest du Zeit?';
+      }
+      var lenName = label('[data-len][aria-checked="true"]');
+      var lvlName = label('[data-lvl][aria-checked="true"]');
+      var parts = [
+        'Hi Sophie! 💅 Ich habe mir auf deiner Website mein Wunsch-Set zusammengestellt:',
+        '• Länge: ' + lenName + ' (' + s.len + ' €)',
+        '• Design: ' + lvlName + ' (' + s.lvl + ' €)',
+        '• Russische Maniküre: Inklusive'
+      ];
+      if (s.add) {
+        parts.push('• Zusatz: Fremde Arbeit entfernen (' + s.add + ' €)');
+      }
+      parts.push('• Orientierungspreis: ' + s.total + ' €');
+      parts.push('');
+      parts.push('Welche freien Termine hast du demnächst frei?');
+      return parts.join('\n');
+    }
+
+    var toastTimer = null;
+    function showToast(text) {
+      var toast = document.getElementById('toast');
+      var toastText = document.getElementById('toast-text');
+      if (!toast) return;
+      if (toastText && text) toastText.textContent = text;
+      toast.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(function () {
+        toast.classList.remove('show');
+      }, 3800);
+    }
+
+    function copyToClipboard(txt) {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(txt).catch(function () {});
+      }
     }
 
     function setSoloVisual(on) {
@@ -1031,6 +1092,51 @@
         this.setAttribute('aria-pressed', on ? 'true' : 'false');
         setSoloVisual(on);
         render();
+      });
+    }
+
+    // Connect smart actions to contact buttons
+    var calcCta = document.getElementById('btn-calc-cta');
+    if (calcCta) {
+      calcCta.addEventListener('click', function () {
+        var s = state();
+        var msg = buildInquiryText(s);
+        copyToClipboard(msg);
+        showToast('Anfragetext kopiert! 💅 Jetzt einfach in DM einfügen.');
+      });
+    }
+
+    var instaBtn = document.getElementById('btn-contact-insta');
+    if (instaBtn) {
+      instaBtn.addEventListener('click', function () {
+        var s = state();
+        var msg = buildInquiryText(s);
+        copyToClipboard(msg);
+        showToast('Anfragetext kopiert! 💅 Jetzt in Instagram-DM einfügen.');
+      });
+    }
+
+    var waBtn = document.getElementById('btn-whatsapp');
+    if (waBtn) {
+      waBtn.addEventListener('click', function (e) {
+        var s = state();
+        var msg = buildInquiryText(s);
+        var href = this.getAttribute('href') || '';
+        // If placeholder phone number is still present
+        if (href.indexOf('XXXXXXXXXX') > -1) {
+          e.preventDefault();
+          copyToClipboard(msg);
+          showToast('Text kopiert! Schreib Sophie am besten auf Instagram.');
+          var targetInsta = document.getElementById('btn-contact-insta');
+          if (targetInsta) {
+            targetInsta.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            targetInsta.classList.add('animate-pulse');
+            setTimeout(function () { targetInsta.classList.remove('animate-pulse'); }, 2000);
+          }
+          return;
+        }
+        var cleanHref = href.split('?')[0];
+        this.setAttribute('href', cleanHref + '?text=' + encodeURIComponent(msg));
       });
     }
 
