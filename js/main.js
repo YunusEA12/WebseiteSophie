@@ -348,6 +348,25 @@
   /* ==========================================================================
      6. SERVICE LIST HOVER IMAGE PREVIEW (PEEK)
      ========================================================================== */
+  /* On a phone there is no hover, so the preview image never appears. Put a
+     thumbnail straight into each row instead: the work is visible at a glance
+     and nothing has to be tapped for it. */
+  function initServiceThumbs() {
+    if (fine) return;
+    document.querySelectorAll('.srv').forEach(function (row) {
+      var src = row.getAttribute('data-peek');
+      var slot = row.querySelector('.srv-in');
+      if (!src || !slot || slot.querySelector('.srv-thumb')) return;
+      var img = document.createElement('img');
+      img.className = 'srv-thumb';
+      img.src = src;
+      img.alt = '';
+      img.loading = 'lazy';
+      img.setAttribute('aria-hidden', 'true');
+      slot.appendChild(img);
+    });
+  }
+
   function initServicePeek() {
     if (!fine || reduce) return;
 
@@ -434,19 +453,31 @@
     if (!svg) return;
 
     var NS = 'http://www.w3.org/2000/svg';
-    var NODES = 22; // Control points running down the page
-    var BLOOM_AT = [1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21]; // Nodes carrying a hibiscus
-    var W = 0, H = 0;
+    var NODES = 22;                                            // control points down the page
+    var BLOOM_AT = [1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21];    // nodes carrying a hibiscus
+    var W = 0, H = 0, VH = 0;
     var pts = [], cur = [], blooms = [];
-    var path, glow, len = 0;
+    var path, glow;
 
+    /* The curve is still described in document coordinates, but the SVG itself only
+       covers the viewport. Every frame we emit just the part of it that is on screen,
+       shifted up by the scroll offset. The browser then repaints one screen instead
+       of the whole 7000px page, which is the difference between 33 and 55 fps on a
+       phone. */
     function build() {
       W = document.documentElement.clientWidth;
+      VH = window.innerHeight;
+
+      // measure the page with the vine hidden so it cannot inflate its own height
+      var prevDisplay = svg.style.display;
+      svg.style.display = 'none';
       H = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
+      svg.style.display = prevDisplay;
+
       svg.setAttribute('width', W);
-      svg.setAttribute('height', H);
-      svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
-      svg.style.height = H + 'px';
+      svg.setAttribute('height', VH);
+      svg.setAttribute('viewBox', '0 0 ' + W + ' ' + VH);
+      svg.style.height = VH + 'px';
       while (svg.firstChild) svg.removeChild(svg.firstChild);
 
       pts = [];
@@ -458,13 +489,18 @@
       }
       cur = pts.map(function (q) { return { x: q.bx, y: q.by }; });
 
-      glow = document.createElementNS(NS, 'path');
-      glow.setAttribute('fill', 'none');
-      glow.setAttribute('stroke', 'url(#gVine)');
-      glow.setAttribute('stroke-width', W < 760 ? 10 : 16);
-      glow.setAttribute('stroke-linecap', 'round');
-      glow.setAttribute('opacity', '.28');
-      svg.appendChild(glow);
+      // the soft halo doubles the paint cost; a phone does without it
+      if (fine) {
+        glow = document.createElementNS(NS, 'path');
+        glow.setAttribute('fill', 'none');
+        glow.setAttribute('stroke', 'url(#gVine)');
+        glow.setAttribute('stroke-width', 16);
+        glow.setAttribute('stroke-linecap', 'round');
+        glow.setAttribute('opacity', '.28');
+        svg.appendChild(glow);
+      } else {
+        glow = null;
+      }
 
       path = document.createElementNS(NS, 'path');
       path.setAttribute('fill', 'none');
@@ -484,36 +520,59 @@
         g.style.setProperty('--pc', k % 2 ? '#0E3330' : '#4A0D26');
         g.setAttribute('opacity', '0');
         svg.appendChild(g);
-        return { idx: idx, el: g, seed: k * 1.7, scale: 0, spin: 0 };
+        return { idx: idx, el: g, seed: k * 1.7, scale: 0, spin: 0, shown: false };
       });
-
-      len = 0;
     }
 
-    // Catmull-Rom through the points, written as cubic beziers
-    function toPath(list) {
-      var out = 'M' + list[0].x.toFixed(1) + ',' + list[0].y.toFixed(1);
+    // catmull-rom through the points, already converted to viewport space
+    function toPath(list, off) {
+      var out = 'M' + list[0].x.toFixed(1) + ',' + (list[0].y - off).toFixed(1);
       for (var i = 0; i < list.length - 1; i++) {
         var p0 = list[i > 0 ? i - 1 : 0], p1 = list[i], p2 = list[i + 1];
         var p3 = list[i + 2 < list.length ? i + 2 : list.length - 1];
-        out += ' C' + (p1.x + (p2.x - p0.x) / 6).toFixed(1) + ',' + (p1.y + (p2.y - p0.y) / 6).toFixed(1)
-          + ' ' + (p2.x - (p3.x - p1.x) / 6).toFixed(1) + ',' + (p2.y - (p3.y - p1.y) / 6).toFixed(1)
-          + ' ' + p2.x.toFixed(1) + ',' + p2.y.toFixed(1);
+        out += ' C' + (p1.x + (p2.x - p0.x) / 6).toFixed(1) + ',' + (p1.y + (p2.y - p0.y) / 6 - off).toFixed(1)
+             + ' ' + (p2.x - (p3.x - p1.x) / 6).toFixed(1) + ',' + (p2.y - (p3.y - p1.y) / 6 - off).toFixed(1)
+             + ' ' + p2.x.toFixed(1) + ',' + (p2.y - off).toFixed(1);
       }
       return out;
     }
 
     var mx = -9999, my = -9999;   // document coords the vine bends toward
 
+    /* Sections with a solid leopard background sit in front of the vine, so the
+       thread used to stop dead at their top edge. Remember where they are and
+       let the line fade out just before it reaches one, then return once it has
+       passed - the thread reads as slipping behind the print, not as cut off. */
+    var veils = [];
+    function measureVeils() {
+      veils = [];
+      document.querySelectorAll('.leo-tex').forEach(function (el) {
+        var r = el.getBoundingClientRect();
+        var h = r.height;
+        if (h < 40) return;                       // skip the thin transition strips
+        veils.push({ top: r.top + window.scrollY, bottom: r.bottom + window.scrollY });
+      });
+    }
+
+    function veilFade(docY) {
+      // 1 = fully drawn, 0 = dissolved into the print
+      var FADE = 220;
+      for (var v = 0; v < veils.length; v++) {
+        var s = veils[v];
+        if (docY >= s.top && docY <= s.bottom) return 0;
+        if (docY < s.top && docY > s.top - FADE) return (s.top - docY) / FADE;
+        if (docY > s.bottom && docY < s.bottom + FADE) return (docY - s.bottom) / FADE;
+      }
+      return 1;
+    }
+
     build();
+    measureVeils();
     var rt;
-    addEventListener('resize', function () {
-      clearTimeout(rt);
-      rt = setTimeout(build, 180);
-    });
-    addEventListener('load', function () {
-      setTimeout(build, 500);
-    });
+    addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(function () { build(); measureVeils(); }, 180); });
+    addEventListener('load', function () { setTimeout(function () { build(); measureVeils(); }, 500); });
+
+    var lastD = '';
 
     (function tick() {
       Input.tick();
@@ -536,9 +595,18 @@
       }
 
       var reach = fine ? 340 : 420, pull = fine ? 0.55 : 0.4;
+      var top = window.scrollY, bottom = top + VH;
+      var pad = 260;
 
       for (var i = 0; i < pts.length; i++) {
         var q = pts[i], tx = q.bx, ty = q.by;
+
+        // points far off screen cannot be seen, so leave them at rest
+        if (q.by < top - 1400 || q.by > bottom + 1400) {
+          cur[i].x = q.bx; cur[i].y = q.by;
+          continue;
+        }
+
         if (mx > -9000) {
           var dx = mx - q.bx, dy = my - q.by;
           var dist = Math.sqrt(dx * dx + dy * dy);
@@ -552,23 +620,44 @@
         cur[i].y = lerp(cur[i].y, ty, 0.09);
       }
 
-      var dd = toPath(cur);
-      path.setAttribute('d', dd);
-      glow.setAttribute('d', dd);
+      // collect just the span that crosses the screen, plus one node either side
+      var from = 0, to = cur.length - 1;
+      for (var a = 0; a < cur.length; a++) { if (cur[a].y >= top - pad) { from = Math.max(0, a - 1); break; } }
+      for (var b = cur.length - 1; b >= 0; b--) { if (cur[b].y <= bottom + pad) { to = Math.min(cur.length - 1, b + 1); break; } }
 
-      if (!len) len = path.getTotalLength();
-      var room = H - innerHeight;
-      var prog = room > 0 ? Math.min(1, Math.max(0, window.scrollY / room)) : 1;
-      var grown = 0.18 + prog * 0.82;
-      var drawn = len * grown;
-      path.setAttribute('stroke-dasharray', len);
-      path.setAttribute('stroke-dashoffset', len - drawn);
-      glow.setAttribute('stroke-dasharray', len);
-      glow.setAttribute('stroke-dashoffset', len - drawn);
+      if (to - from >= 1) {
+        var slice = cur.slice(from, to + 1);
+        var dd = toPath(slice, top);
+        if (dd !== lastD) {
+          path.setAttribute('d', dd);
+          if (glow) glow.setAttribute('d', dd);
+          lastD = dd;
+        }
+        // fade where the line runs into a leopard band
+        var fade = veilFade(top + VH * 0.5);
+        var eased = fade * fade * (3 - 2 * fade);
+        path.setAttribute('opacity', (0.85 * eased).toFixed(3));
+        path.style.display = eased < 0.02 ? 'none' : '';
+        if (glow) {
+          glow.setAttribute('opacity', (0.28 * eased).toFixed(3));
+          glow.style.display = eased < 0.02 ? 'none' : '';
+        }
+      } else {
+        path.style.display = 'none';
+        if (glow) glow.style.display = 'none';
+      }
 
-      for (var b = 0; b < blooms.length; b++) {
-        var bl = blooms[b], n = cur[bl.idx];
-        var reached = (bl.idx / (NODES - 1)) <= grown + 0.03;
+      for (var c = 0; c < blooms.length; c++) {
+        var bl = blooms[c], n = cur[bl.idx];
+        var vy = n.y - top;
+
+        // hide anything off screen: no transform, no paint
+        if (vy < -200 || vy > VH + 200) {
+          if (bl.shown) { bl.el.setAttribute('opacity', '0'); bl.shown = false; }
+          continue;
+        }
+        bl.shown = true;
+
         var near = 0;
         if (mx > -9000) {
           var ex = mx - n.x, ey = my - n.y;
@@ -577,11 +666,12 @@
         }
         var narrow = W < 760;
         var restScale = narrow ? 0.17 : 0.28;
-        bl.scale = lerp(bl.scale, reached ? (restScale + near * 0.3) : 0, 0.08);
+        bl.scale = lerp(bl.scale, restScale + near * 0.3, 0.08);
         bl.spin += 0.1 + near * 0.5;
-        bl.el.setAttribute('opacity', reached ? ((narrow ? 0.38 : 0.6) + near * 0.4).toFixed(3) : '0');
+        var bf = veilFade(n.y);
+        bl.el.setAttribute('opacity', (((narrow ? 0.38 : 0.6) + near * 0.4) * bf * bf * (3 - 2 * bf)).toFixed(2));
         bl.el.setAttribute('transform',
-          'translate(' + n.x.toFixed(1) + ',' + n.y.toFixed(1) + ') rotate(' +
+          'translate(' + n.x.toFixed(1) + ',' + vy.toFixed(1) + ') rotate(' +
           (bl.spin * 0.3 + bl.seed * 40).toFixed(1) + ') scale(' + bl.scale.toFixed(3) + ')');
       }
 
@@ -826,6 +916,7 @@
     initPreloader();
     initCustomCursor();
     initServicePeek();
+    initServiceThumbs();
     initMarqueeAndParallax();
     initLivingVine();
     initFloatingPetals();
