@@ -976,28 +976,36 @@
   }
 
   /* ==========================================================================
-     SHARED: CLIPBOARD + TOAST
-     The calculator, the price bar and the appointment overview all hand the
-     visitor a ready request text to paste into a DM.
+     SHARED: COPY A REQUEST AND SAY SO
+     Instagram has no way to pre-fill a message. Every request button copies a
+     ready text instead and opens a sheet that shows it, says it is on the
+     clipboard and leads into the chat. A toast on the page went unseen: the
+     chat opened over it in the same moment.
      ========================================================================== */
-  var toastTimer = null;
-  function showToast(text) {
-    var toast = document.getElementById('toast');
-    var toastText = document.getElementById('toast-text');
-    if (!toast) return;
-    if (toastText && text) toastText.textContent = text;
-    toast.classList.add('show');
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(function () {
-      toast.classList.remove('show');
-    }, 3800);
+  var DM = 'https://ig.me/m/gerberxnails';   // opens the chat, not just the profile
+
+  // resolves true when the text is on the clipboard
+  function copyText(txt) {
+    function legacy() {
+      var ta = document.createElement('textarea');
+      ta.value = txt;
+      ta.setAttribute('readonly', '');
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      var ok = false;
+      try { ok = document.execCommand('copy'); } catch (e) {}
+      document.body.removeChild(ta);
+      return ok;
+    }
+    if (navigator.clipboard && window.isSecureContext) {
+      return navigator.clipboard.writeText(txt).then(function () { return true; }, legacy);
+    }
+    return Promise.resolve(legacy());
   }
 
-  function copyToClipboard(txt) {
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(txt).catch(function () {});
-    }
-  }
+  var Send = { open: function () {} };   // replaced once the sheet is set up
 
   // Filled in by the calculator once it runs.
   var Calc = {
@@ -1207,46 +1215,6 @@
       });
     }
 
-    // Connect smart actions to contact buttons
-    var calcCta = document.getElementById('btn-calc-cta');
-    if (calcCta) {
-      calcCta.addEventListener('click', function () {
-        copyToClipboard(Calc.request());
-        showToast('Anfragetext kopiert! 💅 Jetzt einfach in DM einfügen.');
-      });
-    }
-
-    var instaBtn = document.getElementById('btn-contact-insta');
-    if (instaBtn) {
-      instaBtn.addEventListener('click', function () {
-        copyToClipboard(Calc.request());
-        showToast('Anfragetext kopiert! 💅 Jetzt in Instagram-DM einfügen.');
-      });
-    }
-
-    var waBtn = document.getElementById('btn-whatsapp');
-    if (waBtn) {
-      waBtn.addEventListener('click', function (e) {
-        var msg = Calc.request();
-        var href = this.getAttribute('href') || '';
-        // If placeholder phone number is still present
-        if (href.indexOf('XXXXXXXXXX') > -1) {
-          e.preventDefault();
-          copyToClipboard(msg);
-          showToast('Text kopiert! Schreib Sophie am besten auf Instagram.');
-          var targetInsta = document.getElementById('btn-contact-insta');
-          if (targetInsta) {
-            targetInsta.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            targetInsta.classList.add('animate-pulse');
-            setTimeout(function () { targetInsta.classList.remove('animate-pulse'); }, 2000);
-          }
-          return;
-        }
-        var cleanHref = href.split('?')[0];
-        this.setAttribute('href', cleanHref + '?text=' + encodeURIComponent(msg));
-      });
-    }
-
     render();
   }
 
@@ -1265,7 +1233,6 @@
                   'August', 'September', 'Oktober', 'November', 'Dezember'];
     var DAYS = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'];
     var SHORT = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
-    var IG = 'https://www.instagram.com/gerberxnails/';
 
     function pad(n) { return (n < 10 ? '0' : '') + n; }
     function iso(d) { return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); }
@@ -1339,13 +1306,13 @@
 
       function freeLink(sl, cls, text) {
         var a = el('a', cls + (pink[sl.place] ? ' is-pink' : ''));
-        a.href = IG;
+        a.href = DM;
         a.target = '_blank';
         a.rel = 'noopener noreferrer';
         a.setAttribute('data-date', sl.date);
         a.setAttribute('data-time', sl.time);
         a.setAttribute('data-place', sl.place);
-        a.setAttribute('aria-label', slotLabel(sl) + ', frei. Anfrage kopieren und Instagram öffnen');
+        a.setAttribute('aria-label', slotLabel(sl) + ', frei. Anfrage vorbereiten');
         if (typeof text === 'string') a.textContent = text; else a.appendChild(text);
         return a;
       }
@@ -1460,10 +1427,11 @@
         }
       }
 
-      // one listener for every free slot: copy the request, Instagram opens via the link
+      // one listener for every free slot: prepare the request in the send sheet
       box.addEventListener('click', function (e) {
         var a = e.target.closest('a[data-date]');
         if (!a) return;
+        e.preventDefault();
         var d = toDate(a.getAttribute('data-date'));
         var time = clock(a.getAttribute('data-time'));
         var place = a.getAttribute('data-place');
@@ -1471,12 +1439,91 @@
                   (place ? ' (' + place + ')' : '') + ' noch frei? Den würde ich gerne buchen.';
         var set = Calc.chosenSet && Calc.chosenSet();
         if (set) msg += '\n\nMein Wunsch-Set von deiner Website:\n' + set.join('\n');
-        copyToClipboard(msg);
-        showToast('Anfrage für ' + SHORT[d.getDay()] + ' ' + dm(d) + ', ' + time + ' kopiert! 💅 Jetzt per DM schicken.');
+        Send.open(msg);
       });
 
       render();
     }
+  }
+
+  /* ==========================================================================
+     SEND SHEET
+     data-send="set"      the set from the calculator
+     data-send="general"  the set if one was put together, else a short hello
+     data-send="whatsapp" WhatsApp takes the text in the link itself; until
+                          Sophie's number is in, it falls back to Instagram
+     ========================================================================== */
+  function initSendSheet() {
+    var dlg = document.getElementById('dlg-send');
+    if (!dlg || typeof dlg.showModal !== 'function') return;   // links keep working as plain links
+
+    var pre = document.getElementById('send-text');
+    var title = document.getElementById('t-send');
+    var sub = document.getElementById('send-sub');
+    var wa = document.getElementById('send-wa');
+    var again = document.getElementById('send-again');
+    var waBtn = document.getElementById('btn-whatsapp');
+    var waBase = waBtn ? (waBtn.getAttribute('href') || '').split('?')[0] : '';
+    var hasWa = /wa\.me\/\d{8,}$/.test(waBase);
+    var current = '';
+
+    function general() {
+      var set = Calc.chosenSet && Calc.chosenSet();
+      if (set && Calc.request) return Calc.request();
+      return 'Hi Sophie! 💅 Ich würde gerne einen Termin bei dir anfragen. Wann hättest du Zeit?';
+    }
+
+    function waLink(txt) { return waBase + '?text=' + encodeURIComponent(txt); }
+
+    function state(ok) {
+      if (ok) {
+        title.textContent = 'Deine Nachricht ist kopiert';
+        sub.textContent = 'Sie liegt in deiner Zwischenablage. Du musst sie nur noch einfügen und abschicken.';
+      } else {
+        title.textContent = 'Deine Nachricht ist fertig';
+        sub.textContent = 'Kopieren hat hier nicht geklappt: Halte den Text unten gedrückt oder markiere ihn, kopiere ihn und füge ihn im Chat ein.';
+      }
+      dlg.classList.toggle('is-manual', !ok);
+    }
+
+    Send.open = function (txt) {
+      current = txt;
+      pre.textContent = txt;
+      again.textContent = 'Nochmal kopieren';
+      wa.hidden = !hasWa;
+      if (hasWa) wa.href = waLink(txt);
+      state(true);
+      copyText(txt).then(state);
+      if (!dlg.open) dlg.showModal();
+    };
+
+    again.addEventListener('click', function () {
+      copyText(current).then(function (ok) {
+        state(ok);
+        again.textContent = ok ? 'Kopiert ✓' : 'Nochmal kopieren';
+      });
+    });
+
+    document.addEventListener('click', function (e) {
+      var el = e.target.closest('[data-send]');
+      if (!el) return;
+      var kind = el.getAttribute('data-send');
+
+      if (kind === 'whatsapp' && hasWa) {
+        // the text travels in the link, nothing to paste
+        el.setAttribute('href', waLink(general()));
+        return;
+      }
+
+      e.preventDefault();
+      // the overlay menu would sit under the sheet
+      var menu = document.getElementById('menu');
+      if (menu && menu.classList.contains('open')) {
+        var close = document.getElementById('menu-close-btn');
+        if (close) close.click();
+      }
+      Send.open(kind === 'set' && Calc.request ? Calc.request() : general());
+    });
   }
 
   /* ==========================================================================
@@ -1508,8 +1555,8 @@
     bar.innerHTML =
       '<div class="inner">' +
         '<div><div class="lbl">Dein Preis</div><div class="amount"><b id="pb-total"></b> <span>&euro;</span></div></div>' +
-        '<a href="https://www.instagram.com/gerberxnails/" target="_blank" rel="noopener noreferrer" ' +
-        'class="btn btn-solid px-5 py-3 text-[.85rem]"><span id="pb-cta">Termin anfragen</span></a>' +
+        '<a href="' + DM + '" target="_blank" rel="noopener noreferrer" data-send="set" ' +
+        'class="btn btn-solid px-5 py-3 text-[.85rem]"><span id="pb-cta">Set anfragen</span></a>' +
       '</div>';
     document.body.appendChild(bar);
 
@@ -1518,12 +1565,6 @@
     function sync() { pbTotal.textContent = (pre && !pre.hidden ? 'ab ' : '') + total.textContent.trim(); }
     sync();
     new MutationObserver(sync).observe(total.parentNode, { childList: true, characterData: true, subtree: true, attributes: true });
-
-    bar.querySelector('a').addEventListener('click', function () {
-      if (!Calc.request) return;
-      copyToClipboard(Calc.request());
-      showToast('Anfragetext kopiert! 💅 Jetzt einfach in DM einfügen.');
-    });
 
     function show(on) { bar.classList.toggle('on', on); }
 
@@ -1577,7 +1618,7 @@
       ['HeroShow', initHeroShow], ['ShowcaseOrt', initShowcasePlacement], ['Lightbox', initLightbox],
       ['ServiceThumbs', initServiceThumbs], ['Marquee', initMarqueeAndParallax],
       ['Rechner', initPriceCalculator], ['Preisleiste', initPriceBar],
-      ['Termine', initAppointments]
+      ['Termine', initAppointments], ['Senden', initSendSheet]
     ].concat(SHOW_VINE_AND_PETALS ? [['Vine', initLivingVine], ['Petals', initFloatingPetals]] : [])
      .forEach(function (pair) { start(pair[0], pair[1]); });
   }

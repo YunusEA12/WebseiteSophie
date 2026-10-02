@@ -38,7 +38,7 @@
 <link rel="preload" href="fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="fonts/fonts.css?v=6096b837">
 <link rel="stylesheet" href="css/tailwind-base.css?v=af7c1978">
-<link rel="stylesheet" href="css/style.css?v=a9b0b451">
+<link rel="stylesheet" href="css/style.css?v=23b4056c">
 <link rel="stylesheet" href="css/tailwind-utils.css?v=0b47f978">
 </head>
 <body class="antialiased">
@@ -213,7 +213,7 @@
     <div class="w-12 h-px bg-gradient-to-r from-transparent via-sand-gold/35 to-transparent mx-auto my-2.5"></div>
 
     <div class="mt-2.5 flex flex-col items-center gap-1.5 w-full">
-      <a href="https://www.instagram.com/gerberxnails/" target="_blank" rel="noopener noreferrer"
+      <a href="https://ig.me/m/gerberxnails" target="_blank" rel="noopener noreferrer" data-send="general"
          class="btn btn-solid w-full text-center !py-2.5 !text-[.82rem] shadow-[0_6px_20px_rgba(229,20,95,0.3)]">
         <span>Termin per Instagram anfragen</span>
       </a>
@@ -264,7 +264,7 @@
         </p>
 
         <div class="rv mt-7 flex flex-wrap items-center gap-3.5">
-          <a href="https://www.instagram.com/gerberxnails/" target="_blank" rel="noopener noreferrer"
+          <a href="https://ig.me/m/gerberxnails" target="_blank" rel="noopener noreferrer" data-send="general"
              data-mag class="btn btn-solid px-8 py-3.5 text-[.94rem] shadow-lg shadow-neon-pink/25"><span>Termin per Instagram</span></a>
           <a href="#preise" data-mag class="btn btn-line px-8 py-3.5 text-[.94rem]"><span>Preis berechnen</span></a>
         </div>
@@ -603,10 +603,11 @@
           den genauen Preis stimmen wir im Chat ab. Bezahlung bar nach der Behandlung.
         </p>
 
-        <a href="https://www.instagram.com/gerberxnails/" target="_blank" rel="noopener noreferrer"
+        <a href="https://ig.me/m/gerberxnails" target="_blank" rel="noopener noreferrer" data-send="set"
            id="btn-calc-cta" data-mag class="btn btn-solid w-full mt-6 px-6 py-4 text-[.92rem]">
           <span id="cta-label">Set für 40–50 € anfragen</span>
         </a>
+        <p class="send-hint mt-3"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="3" width="8" height="4" rx="1.2"/><path d="M16 5h1.5A1.5 1.5 0 0 1 19 6.5v13A1.5 1.5 0 0 1 17.5 21h-11A1.5 1.5 0 0 1 5 19.5v-13A1.5 1.5 0 0 1 6.5 5H8"/><path d="m9 14 2 2 4-4"/></svg><span>Deine Auswahl wird als fertige Nachricht kopiert &ndash; im Instagram-Chat nur noch einfügen und senden.</span></p>
       </div>
     </div>
   </div>
@@ -810,17 +811,18 @@
         </div>
 
         <div class="rv mt-8 grid sm:grid-cols-2 gap-4 max-w-xl">
-          <a href="https://www.instagram.com/gerberxnails/" target="_blank" rel="noopener noreferrer"
+          <a href="https://ig.me/m/gerberxnails" target="_blank" rel="noopener noreferrer" data-send="general"
              id="btn-contact-insta" data-mag class="btn btn-solid px-6 py-5 text-[.95rem] !rounded-[18px] flex-col !gap-1 shadow-lg shadow-neon-pink/20">
             <span class="t-display text-[1.15rem]">Instagram-DM</span>
             <span class="text-[.84rem] font-normal opacity-85">@gerberxnails &nearr;</span>
           </a>
           <a href="https://wa.me/49XXXXXXXXXX" target="_blank" rel="noopener noreferrer"
-             id="btn-whatsapp" data-mag class="btn btn-line px-6 py-5 text-[.95rem] !rounded-[18px] flex-col !gap-1 bg-surf-1/80">
+             id="btn-whatsapp" data-send="whatsapp" data-mag class="btn btn-line px-6 py-5 text-[.95rem] !rounded-[18px] flex-col !gap-1 bg-surf-1/80">
             <span class="t-display text-[1.15rem]">WhatsApp</span>
-            <span class="text-[.84rem] font-normal opacity-75">Direkt im Chat anfragen &nearr;</span>
+            <span class="text-[.84rem] font-normal opacity-75">Text steht schon im Chat &nearr;</span>
           </a>
         </div>
+        <p class="rv send-hint mt-4 max-w-xl"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="3" width="8" height="4" rx="1.2"/><path d="M16 5h1.5A1.5 1.5 0 0 1 19 6.5v13A1.5 1.5 0 0 1 17.5 21h-11A1.5 1.5 0 0 1 5 19.5v-13A1.5 1.5 0 0 1 6.5 5H8"/><path d="m9 14 2 2 4-4"/></svg><span>Wir bereiten deine Nachricht vor &ndash; inklusive deines Wunsch-Sets aus dem Preisrechner. Bei Instagram fügst du sie nur noch ein, bei WhatsApp steht sie schon drin.</span></p>
 
         <p class="rv mt-6 text-[.82rem] text-chalk-mute">
           Bitte sag mindestens 48&nbsp;Stunden vorher Bescheid, wenn du einen Termin nicht schaffst.
@@ -915,6 +917,34 @@
   </div>
 </dialog>
 
+<!-- ============ NACHRICHT BEREIT ============ -->
+<!-- Instagram cannot pre-fill a message. So every request button copies a
+     ready text, and this sheet says so before sending people to the chat -
+     a toast on the page went unseen the moment Instagram opened. -->
+<dialog id="dlg-send" class="sheet send-sheet" aria-labelledby="t-send" aria-describedby="send-sub">
+  <div class="send-head">
+    <span class="send-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="3" width="8" height="4" rx="1.2"/><path d="M16 5h1.5A1.5 1.5 0 0 1 19 6.5v13A1.5 1.5 0 0 1 17.5 21h-11A1.5 1.5 0 0 1 5 19.5v-13A1.5 1.5 0 0 1 6.5 5H8"/><path d="m9 14 2 2 4-4"/></svg></span>
+    <div class="flex-1">
+      <h2 id="t-send" class="t-display">Deine Nachricht ist kopiert</h2>
+      <p id="send-sub" class="send-sub">Sie liegt in deiner Zwischenablage. Du musst sie nur noch einfügen und abschicken.</p>
+    </div>
+    <button type="button" data-close class="btn btn-line w-10 h-10 p-0 text-[1.1rem] shrink-0" aria-label="Schließen"><span>&times;</span></button>
+  </div>
+  <div class="send-body">
+    <pre id="send-text" class="send-text" tabindex="0" aria-label="Deine Nachricht"></pre>
+    <ol class="send-steps">
+      <li><b>Chat öffnen</b> &ndash; der Chat mit @gerberxnails geht direkt auf.</li>
+      <li><b>Ins Nachrichtenfeld tippen</b> und &bdquo;Einfügen&ldquo; wählen.</li>
+      <li><b>Abschicken</b> &ndash; Sophie meldet sich bei dir.</li>
+    </ol>
+    <div class="send-actions">
+      <a id="send-ig" href="https://ig.me/m/gerberxnails" target="_blank" rel="noopener noreferrer" class="btn btn-solid px-6 py-3.5 text-[.92rem]" autofocus><span>Instagram-Chat öffnen &nearr;</span></a>
+      <a id="send-wa" href="#" target="_blank" rel="noopener noreferrer" class="btn btn-line px-6 py-3.5 text-[.92rem]" hidden><span>Lieber per WhatsApp &ndash; Text steht schon drin</span></a>
+      <button type="button" id="send-again" class="send-again">Nochmal kopieren</button>
+    </div>
+  </div>
+</dialog>
+
 <!-- ============ FOOTER ============ -->
 <div class="leo-tex foot-fade" aria-hidden="true"></div>
 <footer class="px-5 sm:px-8 pt-8 pb-10">
@@ -942,12 +972,7 @@
   </div>
 </footer>
 
-<!-- ============ TOAST ============ -->
-<div id="toast" role="status" aria-live="polite">
-  <span class="toast-icon">✓</span>
-  <span class="toast-text" id="toast-text">Anfragetext kopiert! 💅</span>
-</div>
 
-<script src="js/main.js?v=6b1cfc34" defer></script>
+<script src="js/main.js?v=0ce431d6" defer></script>
 </body>
 </html>

@@ -1610,60 +1610,6 @@ dialog.sheet p, dialog.sheet li {
 }
 
 /* ==========================================================================
-   16. INTERACTIVE TOAST NOTIFICATION
-   ========================================================================== */
-#toast {
-  position: fixed;
-  bottom: 2rem;
-  left: 50%;
-  transform: translate3d(-50%, 140%, 0) scale(.92);
-  z-index: 95;
-  display: flex;
-  align-items: center;
-  gap: .85rem;
-  max-width: min(92vw, 460px);
-  padding: .85rem 1.25rem;
-  background: rgba(26, 21, 17, 0.95);
-  border: 1px solid rgba(216, 168, 96, 0.35);
-  border-radius: 9999px;
-  box-shadow: 0 16px 40px -10px rgba(0, 0, 0, 0.7), 0 0 24px -4px rgba(229, 20, 95, 0.2);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  color: #F7F2EA;
-  font-size: .88rem;
-  line-height: 1.35;
-  pointer-events: none;
-  opacity: 0;
-  transition: transform .45s var(--ease-spring), opacity .35s var(--ease-out);
-}
-
-#toast.show {
-  transform: translate3d(-50%, 0, 0) scale(1);
-  opacity: 1;
-  pointer-events: auto;
-}
-
-#toast .toast-icon {
-  width: 1.75rem;
-  height: 1.75rem;
-  border-radius: 9999px;
-  background: #E8447F;
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  box-shadow: 0 2px 8px rgba(232, 68, 127, .4);
-}
-
-#toast .toast-text {
-  font-weight: 500;
-  letter-spacing: -.01em;
-}
-
-
-
-/* ==========================================================================
    ROUND 6
    ========================================================================== */
 
@@ -2743,4 +2689,180 @@ a.slot:active,
   #termine .cal-day {
     min-height: 5.4rem;
   }
+}
+
+
+/* ==========================================================================
+   NACHRICHT BEREIT
+   Hinweis an den Knoepfen und das Fenster nach dem Klick: zeigt die
+   kopierte Nachricht und fuehrt in den Chat.
+   ========================================================================== */
+.send-hint {
+  display: flex;
+  align-items: flex-start;
+  gap: .5rem;
+  font-size: .8rem;
+  line-height: 1.5;
+  color: #C4B3A3;
+}
+
+.send-hint svg {
+  flex: 0 0 auto;
+  width: 1.05rem;
+  height: 1.05rem;
+  margin-top: .1rem;
+  color: #E0B36D;
+}
+
+dialog.send-sheet {
+  max-width: min(30rem, 94vw);
+  overflow: hidden;
+}
+
+.send-head {
+  display: flex;
+  align-items: flex-start;
+  gap: .9rem;
+  padding: 1.4rem clamp(1.1rem, 4vw, 1.75rem) .9rem;
+}
+
+.send-check {
+  flex: 0 0 auto;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  background: linear-gradient(135deg, #EE2A6E 0%, #CF1059 100%);
+  box-shadow: 0 10px 24px -10px rgba(229, 20, 95, .7);
+}
+
+.send-check svg { width: 1.45rem; height: 1.45rem; }
+
+.send-sheet.is-manual .send-check {
+  background: rgba(224, 179, 109, .16);
+  color: #E0B36D;
+  box-shadow: none;
+}
+
+.send-head h2 {
+  font-size: 1.25rem;
+  line-height: 1.2;
+  letter-spacing: -.02em;
+}
+
+.send-sub {
+  margin-top: .3rem;
+  font-size: .86rem !important;
+  line-height: 1.5 !important;
+}
+
+.send-body {
+  padding: 0 clamp(1.1rem, 4vw, 1.75rem) clamp(1.2rem, 4vw, 1.6rem);
+  max-height: calc(86vh - 6rem);
+  overflow-y: auto;
+}
+
+.send-text {
+  margin: 0;
+  max-height: 11.5rem;
+  overflow-y: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-family: Inter, system-ui, sans-serif;
+  font-size: .84rem;
+  line-height: 1.55;
+  color: #F7F2EA;
+  background: rgba(20, 16, 13, .8);
+  border: 1px solid rgba(216, 168, 96, .22);
+  border-radius: 14px;
+  padding: .85rem 1rem;
+  user-select: text;
+  -webkit-user-select: text;
+}
+
+.send-sheet.is-manual .send-text {
+  border-color: rgba(224, 179, 109, .6);
+}
+
+.send-text:focus-visible {
+  outline: 2px solid #FF4D86;
+  outline-offset: 2px;
+}
+
+.send-steps {
+  list-style: none;
+  counter-reset: step;
+  margin: 1rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: .45rem;
+}
+
+.send-steps li {
+  counter-increment: step;
+  position: relative;
+  padding-left: 2rem;
+  font-size: .86rem !important;
+  line-height: 1.5 !important;
+}
+
+.send-steps li::before {
+  content: counter(step);
+  position: absolute;
+  left: 0;
+  top: .05rem;
+  width: 1.4rem;
+  height: 1.4rem;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: .72rem;
+  font-weight: 700;
+  color: #14100D;
+  background: #E0B36D;
+}
+
+.send-steps b { color: #F7F2EA; font-weight: 600; }
+
+.send-actions {
+  display: grid;
+  gap: .6rem;
+  margin-top: 1.2rem;
+}
+
+.send-actions .btn { width: 100%; white-space: normal; text-align: center; }
+
+.send-again {
+  justify-self: center;
+  padding: .45rem .75rem;
+  border-radius: 999px;
+  font-size: .82rem;
+  color: #E0B36D;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color .25s var(--ease-out);
+}
+
+.send-again:hover { color: #FF4D86; }
+.send-again:focus-visible { outline: 2px solid #FF4D86; outline-offset: 2px; }
+.send-again:active { transform: scale(.97); }
+
+/* on a phone the sheet rises from the bottom edge, where the thumb is */
+@media (max-width: 640px) {
+  dialog.send-sheet {
+    margin: auto auto 0;
+    max-width: 100vw;
+    width: 100vw;
+    border-radius: 22px 22px 0 0;
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
+/* display rules like .btn { display: inline-flex } beat the browser's own
+   [hidden] style - hidden has to mean hidden */
+[hidden] {
+  display: none !important;
 }
