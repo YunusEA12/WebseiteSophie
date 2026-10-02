@@ -1981,9 +1981,10 @@ main > section:first-of-type {
    2560px werden sie auf ein Vielfaches hochgezogen und bis auf einen Finger
    beschnitten. Am Desktop bekommen sie deshalb einen eigenen Rahmen im
    Format der Vorlage; randlos bleibt es nur auf dem Handy, wo der Bildschirm
-   selbst hochkant ist.
+   selbst hochkant ist. Ab Tablet-Breite gilt dasselbe: auch dort war das
+   16:10-Band schon auf ein Drittel des Fotos beschnitten.
    ========================================================================== */
-@media (min-width: 1024px) {
+@media (min-width: 640px) {
   #showcase {
     padding: 4.5rem 2rem 5rem;
     display: flex;
@@ -2026,7 +2027,7 @@ main > section:first-of-type {
    Auf dem Handy ist die Slideshow randlos, dort waere sie ueberfluessig. */
 .showcase-backdrop { display: none; }
 
-@media (min-width: 1024px) {
+@media (min-width: 640px) {
   .showcase-backdrop {
     display: block;
     position: absolute;
@@ -2686,4 +2687,60 @@ a.slot:active,
   .cal-week span { font-size: .6rem; letter-spacing: .06em; }
   .cal-day { gap: .2rem; }
   .slot { padding: .28rem 0; }
+}
+
+
+/* ==========================================================================
+   DESIGN-RUNDE: TABLET, KLEINE HANDYS, BREITE SCHIRME
+   ========================================================================== */
+
+/* Utilities the markup uses but the precompiled Tailwind file lacks. The
+   utility file loads after this one, so these need !important to win over
+   .flex / .text-center / .justify-center. */
+.self-start { align-self: flex-start; }
+
+@media (min-width: 1024px) {
+  .lg\:hidden { display: none !important; }
+  .lg\:text-right { text-align: right !important; }
+  .lg\:justify-end { justify-content: flex-end !important; }
+}
+
+/* Tablet: the framed card is narrower than on desktop's 42vw would allow,
+   and the flower sits on its corner as it does on the phone. */
+@media (min-width: 640px) and (max-width: 1023px) {
+  #showcase {
+    padding: 3.5rem 1.5rem 4rem;
+  }
+
+  #showcase #heroShow {
+    width: min(26rem, 60vw);
+  }
+
+  #showcase .showcase-bloom {
+    top: 1rem;
+    right: calc(50% - min(13rem, 30vw) - 2.75rem);
+  }
+}
+
+/* prices and menu labels never break inside a word or amount */
+.opt > .t-display,
+.navlink {
+  white-space: nowrap;
+}
+
+/* The tracked-out eyebrows ran onto a second line with a lone word on
+   narrow phones. */
+@media (max-width: 400px) {
+  .tracking-\[\.26em\],
+  .tracking-\[\.28em\] {
+    letter-spacing: .15em !important;
+  }
+}
+
+/* The calendar no longer spans 1400px on wide screens - it sits beside its
+   heading, so the cells keep a calendar's proportions. */
+@media (min-width: 1024px) {
+  #termine .cal-day {
+    min-height: 5.4rem;
+  }
 }

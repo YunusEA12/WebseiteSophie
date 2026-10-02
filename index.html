@@ -38,7 +38,7 @@
 <link rel="preload" href="fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="fonts/fonts.css?v=6096b837">
 <link rel="stylesheet" href="css/tailwind-base.css?v=af7c1978">
-<link rel="stylesheet" href="css/style.css?v=09a48959">
+<link rel="stylesheet" href="css/style.css?v=a9b0b451">
 <link rel="stylesheet" href="css/tailwind-utils.css?v=0b47f978">
 </head>
 <body class="antialiased">
@@ -161,7 +161,7 @@
       <span class="t-script text-[1.35rem] sm:text-[1.75rem] text-[#F7F2EA] group-hover:text-sand-gold transition-colors leading-none pt-0.5">gerberxnails</span>
     </a>
 
-    <nav class="hidden md:flex items-center gap-8 text-[#C4B3A3]" aria-label="Hauptnavigation">
+    <nav class="hidden lg:flex items-center gap-8 text-[#C4B3A3]" aria-label="Hauptnavigation">
       <a href="#leistungen" class="navlink text-[.84rem] hover:text-white transition-colors">Leistungen</a>
       <a href="#preise"     class="navlink text-[.84rem] hover:text-white transition-colors">Preisrechner</a>
       <a href="#arbeiten"   class="navlink text-[.84rem] hover:text-white transition-colors">Arbeiten</a>
@@ -173,7 +173,7 @@
     <div class="flex items-center gap-2 sm:gap-3">
       <a href="#kontakt" data-mag class="btn btn-solid hidden sm:inline-flex text-[.78rem] px-4 py-1.5"><span>Termin anfragen</span></a>
       <button id="burger" type="button" aria-label="Menü öffnen" aria-expanded="false" aria-controls="menu"
-              class="md:hidden relative w-8 h-8 rounded-full border border-sand-gold/25 bg-black/40 backdrop-blur-sm
+              class="lg:hidden relative w-8 h-8 rounded-full border border-sand-gold/25 bg-black/40 backdrop-blur-sm
                      transition-transform duration-300 hover:scale-105 active:scale-95 flex items-center justify-center
                      focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neon-pink shadow-sm">
         <span></span><span></span>
@@ -291,7 +291,7 @@
       </div>
     </div>
 
-    <div class="hidden sm:flex items-center gap-3 text-chalk-mute shrink-0">
+    <div class="hidden lg:flex items-center gap-3 text-chalk-mute shrink-0">
       <span class="t-editorial text-[.72rem] uppercase tracking-[.2em]">Scrollen</span>
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="w-5 h-5 animate-bounce" aria-hidden="true">
         <path d="M12 4v16M6 14l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/>
@@ -738,12 +738,13 @@
      Nothing is booked here: a free slot copies a request for a DM. -->
 <section id="termine" class="atmos seam relative px-5 sm:px-8 py-[clamp(4.5rem,10vw,8rem)] scroll-mt-20">
   <div class="mx-auto max-w-[88rem]">
-    <div class="js-rv mb-8 sm:mb-10">
+    <div class="grid lg:grid-cols-[.34fr_.66fr] gap-8 lg:gap-16">
+    <div class="js-rv lg:sticky lg:top-24 self-start">
       <div class="inline-flex items-center gap-2 mb-2">
         <span class="w-2.5 h-2.5 rounded-full bg-neon-pink"></span>
-        <p class="t-editorial text-[.78rem] font-semibold uppercase tracking-[.26em] text-sand-gold">Verfügbarkeit &bull; Freie Termine</p>
+        <p class="t-editorial text-[.78rem] font-semibold uppercase tracking-[.26em] text-sand-gold">Verfügbarkeit</p>
       </div>
-      <p class="t-script text-[clamp(2.4rem,7vw,4.2rem)] text-sand-bronze leading-none">Wann passt es dir?</p>
+      <p class="t-script text-[clamp(2.4rem,7vw,4.2rem)] text-sand-bronze leading-none">Wann passt es&nbsp;dir?</p>
       <h2 class="t-display mt-2 text-[clamp(1.9rem,5vw,4rem)] tracking-[-.04em]" data-split>Freie Termine</h2>
       <p class="rv mt-3 max-w-[40rem] text-chalk-dim text-[.95rem] sm:text-[1.02rem] leading-relaxed">
         Tippe auf einen freien Termin &mdash; dein Anfragetext wird kopiert und du schickst ihn mir per DM.
@@ -758,6 +759,7 @@
           <a href="https://www.instagram.com/gerberxnails/" target="_blank" rel="noopener noreferrer">Instagram-Stories</a>.
         </p>
       </div>
+    </div>
     </div>
   </div>
 </section>
@@ -916,7 +918,7 @@
 <!-- ============ FOOTER ============ -->
 <div class="leo-tex foot-fade" aria-hidden="true"></div>
 <footer class="px-5 sm:px-8 pt-8 pb-10">
-  <div class="mx-auto max-w-[88rem] flex flex-col sm:flex-row items-center justify-between gap-6">
+  <div class="mx-auto max-w-[88rem] flex flex-col lg:flex-row items-center justify-between gap-6">
     <a href="#top" data-mag class="flex items-center gap-2.5 rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neon-pink">
       <svg viewBox="-150 -150 300 300" class="w-7 h-7 shrink-0" style="--pf:url(#gPink); --pc:#4A0D26" aria-hidden="true"><use href="#bloom"/></svg>
       <span class="t-script text-[1.85rem] text-chalk hover:text-sand-bronze transition-colors leading-none pt-1">gerberxnails</span>
@@ -929,9 +931,9 @@
       <a href="#termine"    class="navlink">Termine</a>
       <a href="#kontakt"    class="navlink">Kontakt</a>
     </nav>
-    <div class="text-[.78rem] text-chalk-mute text-center sm:text-right">
+    <div class="text-[.78rem] text-chalk-mute text-center lg:text-right">
       <p>&copy; <span id="year">2026</span> Sophie Gerber</p>
-      <p class="mt-1 flex flex-wrap justify-center sm:justify-end gap-x-4 gap-y-1">
+      <p class="mt-1 flex flex-wrap justify-center lg:justify-end gap-x-4 gap-y-1">
         <button type="button" data-open="dlg-policy" class="navlink !text-[.78rem]">Studio Policy</button>
         <a href="impressum.html" class="navlink !text-[.78rem]">Impressum</a>
         <a href="datenschutz.html" class="navlink !text-[.78rem]">Datenschutz</a>
