@@ -38,7 +38,7 @@
 <link rel="preload" href="fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="fonts/fonts.css?v=6096b837">
 <link rel="stylesheet" href="css/tailwind-base.css?v=af7c1978">
-<link rel="stylesheet" href="css/style.css?v=305d33c5">
+<link rel="stylesheet" href="css/style.css?v=09a48959">
 <link rel="stylesheet" href="css/tailwind-utils.css?v=0b47f978">
 </head>
 <body class="antialiased">
@@ -166,6 +166,7 @@
       <a href="#preise"     class="navlink text-[.84rem] hover:text-white transition-colors">Preisrechner</a>
       <a href="#arbeiten"   class="navlink text-[.84rem] hover:text-white transition-colors">Arbeiten</a>
       <a href="#policy"     class="navlink text-[.84rem] hover:text-white transition-colors">Studio Policy</a>
+      <a href="#termine"    class="navlink text-[.84rem] hover:text-white transition-colors">Termine</a>
       <a href="#kontakt"    class="navlink text-[.84rem] hover:text-white transition-colors">Kontakt</a>
     </nav>
 
@@ -205,6 +206,7 @@
       <a href="#preise"     class="menu-link t-display text-[1.12rem] tracking-[-.01em] text-[#F7F2EA] hover:text-neon-pink transition-colors py-1.5 w-full">Preisrechner</a>
       <a href="#arbeiten"   class="menu-link t-display text-[1.12rem] tracking-[-.01em] text-[#F7F2EA] hover:text-neon-pink transition-colors py-1.5 w-full">Arbeiten</a>
       <a href="#policy"     class="menu-link t-display text-[1.12rem] tracking-[-.01em] text-[#F7F2EA] hover:text-neon-pink transition-colors py-1.5 w-full">Studio Policy</a>
+      <a href="#termine"    class="menu-link t-display text-[1.12rem] tracking-[-.01em] text-[#F7F2EA] hover:text-neon-pink transition-colors py-1.5 w-full">Freie Termine</a>
       <a href="#kontakt"    class="menu-link t-display text-[1.12rem] tracking-[-.01em] text-[#F7F2EA] hover:text-neon-pink transition-colors py-1.5 w-full">Kontakt</a>
     </nav>
 
@@ -466,19 +468,26 @@
         <div class="srv-in">
           <span class="t-display text-[.8rem] text-sand-bronze w-8 shrink-0">03</span>
           <span class="t-display text-[clamp(1.4rem,4.4vw,3rem)] tracking-[-.035em] flex-1">Design Level 1&ndash;4</span>
-          <span class="t-display text-[.9rem] sm:text-[1.1rem] text-chalk-dim shrink-0">+10&ndash;25&thinsp;&euro;</span>
+          <span class="t-display text-[.9rem] sm:text-[1.1rem] text-chalk-dim shrink-0">+5&ndash;40&thinsp;&euro;</span>
+        </div>
+      </a>
+      <a href="#preise" class="srv" data-peek="brand_assets/nail_post_5.jpg">
+        <div class="srv-in">
+          <span class="t-display text-[.8rem] text-sand-bronze w-8 shrink-0">04</span>
+          <span class="t-display text-[clamp(1.4rem,4.4vw,3rem)] tracking-[-.035em] flex-1">Charms &amp; 3D-Extras</span>
+          <span class="t-display text-[.9rem] sm:text-[1.1rem] text-chalk-dim shrink-0">ab +1&thinsp;&euro;</span>
         </div>
       </a>
       <a href="#preise" class="srv" data-peek="brand_assets/nail_post_8.jpg">
         <div class="srv-in">
-          <span class="t-display text-[.8rem] text-sand-bronze w-8 shrink-0">04</span>
+          <span class="t-display text-[.8rem] text-sand-bronze w-8 shrink-0">05</span>
           <span class="t-display text-[clamp(1.4rem,4.4vw,3rem)] tracking-[-.035em] flex-1">Soak Off</span>
           <span class="t-display text-[.9rem] sm:text-[1.1rem] text-chalk-dim shrink-0">20&thinsp;&euro;</span>
         </div>
       </a>
       <a href="#preise" class="srv" data-peek="brand_assets/nail_post_1.jpg">
         <div class="srv-in">
-          <span class="t-display text-[.8rem] text-sand-bronze w-8 shrink-0">05</span>
+          <span class="t-display text-[.8rem] text-sand-bronze w-8 shrink-0">06</span>
           <span class="t-display text-[clamp(1.4rem,4.4vw,3rem)] tracking-[-.035em] flex-1">Fremde Arbeit entfernen</span>
           <span class="t-display text-[.9rem] sm:text-[1.1rem] text-chalk-dim shrink-0">+10&thinsp;&euro;</span>
         </div>
@@ -506,10 +515,10 @@
         <fieldset class="rounded-[18px] border border-chalk/12 bg-surf-1 p-5 flex flex-col">
           <legend class="t-display text-[.72rem] uppercase tracking-[.18em] text-chalk-mute px-1">Länge</legend>
           <div class="mt-3 flex-1 flex flex-col gap-2" role="radiogroup" aria-label="Länge">
-            <button type="button" class="opt flex-1" role="radio" aria-checked="true"  data-len="35"><span>Kurz</span><span class="t-display">35&thinsp;&euro;</span></button>
-            <button type="button" class="opt flex-1" role="radio" aria-checked="false" data-len="40"><span>Medium</span><span class="t-display">40&thinsp;&euro;</span></button>
-            <button type="button" class="opt flex-1" role="radio" aria-checked="false" data-len="45"><span>Lang</span><span class="t-display">45&thinsp;&euro;</span></button>
-            <button type="button" class="opt flex-1" role="radio" aria-checked="false" data-len="50"><span>Extra Lang</span><span class="t-display">50&thinsp;&euro;</span></button>
+            <button type="button" class="opt flex-1" role="radio" aria-checked="true"  data-len="35-40"><span>Kurz<span class="opt-size"> &middot; S</span></span><span class="t-display">35&ndash;40&thinsp;&euro;</span></button>
+            <button type="button" class="opt flex-1" role="radio" aria-checked="false" data-len="45"><span>Medium<span class="opt-size"> &middot; M</span></span><span class="t-display">45&thinsp;&euro;</span></button>
+            <button type="button" class="opt flex-1" role="radio" aria-checked="false" data-len="50"><span>Lang<span class="opt-size"> &middot; L</span></span><span class="t-display">50&thinsp;&euro;</span></button>
+            <button type="button" class="opt flex-1" role="radio" aria-checked="false" data-len="60"><span>Extra Lang<span class="opt-size"> &middot; XL</span></span><span class="t-display">60&thinsp;&euro;</span></button>
           </div>
         </fieldset>
 
@@ -517,14 +526,14 @@
         <fieldset class="rounded-[18px] border border-chalk/12 bg-surf-1 p-5">
           <legend class="t-display text-[.72rem] uppercase tracking-[.18em] text-chalk-mute px-1">Design Level</legend>
           <div class="mt-3 space-y-2" role="radiogroup" aria-label="Design Level">
-            <button type="button" class="opt" role="radio" aria-checked="true"  data-lvl="10">
-              <span>Level 1<span class="block opt-sub">Sehr einfaches Design</span></span><span class="t-display">+10&thinsp;&euro;</span></button>
-            <button type="button" class="opt" role="radio" aria-checked="false" data-lvl="15">
-              <span>Level 2<span class="block opt-sub">Einfaches Design</span></span><span class="t-display">+15&thinsp;&euro;</span></button>
-            <button type="button" class="opt" role="radio" aria-checked="false" data-lvl="20">
-              <span>Level 3<span class="block opt-sub">Mittelaufwendiges Design</span></span><span class="t-display">+20&thinsp;&euro;</span></button>
-            <button type="button" class="opt" role="radio" aria-checked="false" data-lvl="25">
-              <span>Level 4<span class="block opt-sub">Sehr aufwendiges Design</span></span><span class="t-display">+25&thinsp;&euro;</span></button>
+            <button type="button" class="opt" role="radio" aria-checked="true"  data-lvl="5-10">
+              <span>Level 1<span class="block opt-sub">Sehr einfaches Design</span></span><span class="t-display">+5&ndash;10&thinsp;&euro;</span></button>
+            <button type="button" class="opt" role="radio" aria-checked="false" data-lvl="15-20">
+              <span>Level 2<span class="block opt-sub">Einfaches Design</span></span><span class="t-display">+15&ndash;20&thinsp;&euro;</span></button>
+            <button type="button" class="opt" role="radio" aria-checked="false" data-lvl="30">
+              <span>Level 3<span class="block opt-sub">Mittelaufwendiges Design</span></span><span class="t-display">+30&thinsp;&euro;</span></button>
+            <button type="button" class="opt" role="radio" aria-checked="false" data-lvl="40">
+              <span>Level 4<span class="block opt-sub">Sehr aufwendiges Design</span></span><span class="t-display">+40&thinsp;&euro;</span></button>
           </div>
         </fieldset>
 
@@ -534,6 +543,10 @@
           <div class="mt-3 grid sm:grid-cols-2 gap-2">
             <button type="button" class="opt" aria-pressed="false" data-add="10">
               <span>Fremde Arbeit entfernen<span class="block opt-sub">Set von einem anderen Studio</span></span><span class="t-display">+10&thinsp;&euro;</span></button>
+            <button type="button" class="opt" aria-pressed="false" data-extra="1">
+              <span>Große Charms<span class="block opt-sub">z.&nbsp;B. drehender oder sehr großer Charm</span></span><span class="t-display">ab +1&thinsp;&euro;</span></button>
+            <button type="button" class="opt" aria-pressed="false" data-extra="5">
+              <span>3D-Modellierung<span class="block opt-sub">z.&nbsp;B. großes Tier, Mund oder Figuren</span></span><span class="t-display">ab +5&thinsp;&euro;</span></button>
             <button type="button" class="opt" aria-pressed="false" data-solo="20">
               <span>Nur Soak Off<span class="block opt-sub">Ablösen ohne neues Set</span></span><span class="t-display">20&thinsp;&euro;</span></button>
           </div>
@@ -544,27 +557,31 @@
 
           <div class="mt-3 space-y-3 text-[.88rem] sm:text-[.92rem] text-chalk-dim leading-relaxed">
             <p>
-              <strong class="text-chalk">Die Länge</strong> bestimmt den Grundpreis. Die russische Maniküre
+              <strong class="text-chalk">Die Länge</strong> (S bis XL) bestimmt den Grundpreis. Die russische Maniküre
               ist darin immer enthalten &mdash; Nagelhaut, Form und ein sauberer Aufbau gehören bei mir
               zu jeder Behandlung dazu und kosten nichts extra.
             </p>
             <p>
               <strong class="text-chalk">Das Design-Level</strong> richtet sich danach, wie viel Zeit am
               Nagel steckt. Level&nbsp;1 ist ein cleaner Look in einer Farbe oder zartes French.
-              Level&nbsp;4 heißt Handmalerei, Chrome, Katzenauge oder 3D&#8209;Elemente &mdash; daran sitze
-              ich deutlich länger.
+              Level&nbsp;4 heißt aufwendige Handmalerei, Chrome oder Katzenauge &mdash; daran sitze
+              ich deutlich länger. Große Charms und besondere 3D&#8209;Modellierungen wie ein Tier,
+              ein Mund oder Figuren kommen als Extra dazu.
             </p>
             <p>
               <strong class="text-chalk">Trägst du noch ein Set</strong> von einem anderen Studio, kommt das
               Entfernen dazu. Möchtest du nur ablösen lassen, ohne neues Set, wähle
               &bdquo;Nur Soak Off&ldquo; &mdash; dann entfallen die übrigen Posten.
             </p>
+            <p>
+              <strong class="text-chalk">Plane Zeit ein:</strong> Je nach Länge, Design und Aufwand dauert
+              eine Behandlung etwa 2 bis 4 Stunden. Bezahlt wird nach der Behandlung in bar.
+            </p>
             <p class="text-chalk-mute">
-              Alle Preise sind Endpreise in Euro.
-              Der angezeigte Betrag ist eine verlässliche Orientierung, keine Rechnung. Den endgültigen
-              Preis sage ich dir, sobald ich deine Nägel gesehen habe &mdash; etwa wenn sie stark
-              beschädigt sind oder du besondere Wünsche hast. Das klären wir vorher im Chat, damit
-              du am Termin keine Überraschung erlebst.
+              Alle Preise sind Endpreise in Euro und dienen als Orientierung. Bei besonders aufwendigen
+              oder individuellen Wünschen richtet sich der Endpreis nach dem tatsächlichen Zeit- und
+              Materialaufwand. Das sage ich dir immer vor der Behandlung &mdash; damit du am Termin
+              keine Überraschung erlebst.
             </p>
           </div>
         </div>
@@ -573,8 +590,9 @@
       <!-- Summe -->
       <div class="rounded-[18px] border border-neon-pink/30 bg-gradient-to-b from-neon-pink/12 to-transparent p-6 sm:p-7 lg:sticky lg:top-24">
         <p class="text-[.72rem] uppercase tracking-[.2em] text-chalk-mute">Dein Preis</p>
-        <div class="mt-2 flex items-baseline gap-1">
-          <span id="total" class="t-display text-[clamp(3.4rem,9vw,5.2rem)] leading-none text-chalk" aria-live="polite" aria-atomic="true">45</span>
+        <div class="mt-2 flex items-baseline gap-1.5" aria-live="polite" aria-atomic="true">
+          <span id="total-pre" class="t-display text-[1.6rem] text-sand-bronze" hidden>ab</span>
+          <span id="total" class="t-display text-[clamp(3.4rem,9vw,5.2rem)] leading-none text-chalk whitespace-nowrap">40&ndash;50</span>
           <span class="t-display text-[1.6rem] text-sand-bronze">&euro;</span>
         </div>
         <ul id="breakdown" class="mt-5 space-y-2 text-[.88rem] text-chalk-dim"></ul>
@@ -582,12 +600,12 @@
         <div class="rule my-6"></div>
         <p class="text-[.82rem] text-chalk-mute">
           Russische Maniküre ist immer inklusive. Der Rechner gibt eine Orientierung &mdash;
-          den genauen Preis stimmen wir im Chat ab.
+          den genauen Preis stimmen wir im Chat ab. Bezahlung bar nach der Behandlung.
         </p>
 
         <a href="https://www.instagram.com/gerberxnails/" target="_blank" rel="noopener noreferrer"
            id="btn-calc-cta" data-mag class="btn btn-solid w-full mt-6 px-6 py-4 text-[.92rem]">
-          <span id="cta-label">Set für 45 € anfragen</span>
+          <span id="cta-label">Set für 40–50 € anfragen</span>
         </a>
       </div>
     </div>
@@ -665,53 +683,80 @@
         </p>
       </div>
       <button type="button" data-open="dlg-policy" data-mag class="btn btn-line px-5 py-3 text-[.85rem]">
-        <span>Vollständige Policy lesen &rarr;</span>
+        <span>Alle Regeln &amp; AGB lesen &rarr;</span>
       </button>
     </div>
 
     <div class="js-rv rv grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
       <div class="rounded-2xl border border-sand-gold/25 bg-surf-1/75 backdrop-blur-md p-5 sm:p-6 flex flex-col justify-between shadow-[0_10px_24px_-6px_rgba(70,45,20,0.06)] hover:border-sand-gold/50 transition-colors">
         <div>
-          <span class="t-display text-[1.6rem] text-sand-gold font-bold">24h</span>
-          <h3 class="t-display text-[1.05rem] mt-2 font-semibold text-chalk">Absage &amp; Storno</h3>
+          <span class="t-display text-[1.6rem] text-sand-gold font-bold">48h</span>
+          <h3 class="t-display text-[1.05rem] mt-2 font-semibold text-chalk">Absagen &amp; Verschieben</h3>
           <p class="text-xs sm:text-[.86rem] text-chalk-dim mt-2 leading-relaxed">
-            Bitte sag mindestens 24 Stunden vorher Bescheid, wenn du es nicht schaffst, damit ich den Slot rechtzeitig neu vergeben kann.
+            Bitte sag deinen Termin mindestens 48 Stunden vorher ab oder verschieb ihn. Bei kurzfristigeren Absagen oder Nichterscheinen kann eine Ausfallgebühr anfallen.
           </p>
         </div>
         <span class="text-[.72rem] uppercase tracking-wider text-chalk-mute mt-4 pt-2">Fairness &bull; Respekt</span>
       </div>
-
       <div class="rounded-2xl border border-sand-gold/25 bg-surf-1/75 backdrop-blur-md p-5 sm:p-6 flex flex-col justify-between shadow-[0_10px_24px_-6px_rgba(70,45,20,0.06)] hover:border-sand-gold/50 transition-colors">
         <div>
-          <span class="t-display text-[1.6rem] text-sand-gold font-bold">Pünktlich</span>
-          <h3 class="t-display text-[1.05rem] mt-2 font-semibold text-chalk">Time Management</h3>
+          <span class="t-display text-[1.6rem] text-sand-gold font-bold">15 Min</span>
+          <h3 class="t-display text-[1.05rem] mt-2 font-semibold text-chalk">Pünktlichkeit</h3>
           <p class="text-xs sm:text-[.86rem] text-chalk-dim mt-2 leading-relaxed">
-            Komm bitte pünktlich. Ab 15 Minuten Verspätung müssen wir das Nail Art eventuell vereinfachen, um den nächsten Termin einzuhalten.
+            Gib bei Verspätung so früh wie möglich Bescheid. Ab 15 Minuten kann sich die Behandlung verkürzen, ab 30 Minuten gilt der Termin als nicht wahrgenommen.
           </p>
         </div>
         <span class="text-[.72rem] uppercase tracking-wider text-chalk-mute mt-4 pt-2">Quality &bull; Timing</span>
       </div>
-
       <div class="rounded-2xl border border-sand-gold/25 bg-surf-1/75 backdrop-blur-md p-5 sm:p-6 flex flex-col justify-between shadow-[0_10px_24px_-6px_rgba(70,45,20,0.06)] hover:border-sand-gold/50 transition-colors">
         <div>
-          <span class="t-display text-[1.6rem] text-sand-gold font-bold">Care</span>
-          <h3 class="t-display text-[1.05rem] mt-2 font-semibold text-chalk">Nagelgesundheit</h3>
+          <span class="t-display text-[1.6rem] text-neon-pink font-bold">5 Tage</span>
+          <h3 class="t-display text-[1.05rem] mt-2 font-semibold text-chalk">Nachbesserung</h3>
           <p class="text-xs sm:text-[.86rem] text-chalk-dim mt-2 leading-relaxed">
-            Behandlungen führe ich ausschließlich an gesunden Naturnägeln durch (keine Behandlungen bei Pilzinfektionen oder offenen Wunden).
-          </p>
-        </div>
-        <span class="text-[.72rem] uppercase tracking-wider text-chalk-mute mt-4 pt-2">Hygiene &bull; Safe</span>
-      </div>
-
-      <div class="rounded-2xl border border-sand-gold/25 bg-surf-1/75 backdrop-blur-md p-5 sm:p-6 flex flex-col justify-between shadow-[0_10px_24px_-6px_rgba(70,45,20,0.06)] hover:border-sand-gold/50 transition-colors">
-        <div>
-          <span class="t-display text-[1.6rem] text-neon-pink font-bold">7 Tage</span>
-          <h3 class="t-display text-[1.05rem] mt-2 font-semibold text-chalk">Reparatur-Service</h3>
-          <p class="text-xs sm:text-[.86rem] text-chalk-dim mt-2 leading-relaxed">
-            Splittert in der ersten Woche ohne grobe Fremdeinwirkung ein Nagel oder fehlt Nail Art, repariere ich es dir kostenlos &mdash; zusätzlich zu deinen gesetzlichen Rechten.
+            Bei material- oder verarbeitungsbedingten Problemen bessere ich innerhalb von 5 Tagen kostenlos nach. Deine gesetzlichen Rechte bleiben unberührt.
           </p>
         </div>
         <span class="text-[.72rem] uppercase tracking-wider text-chalk-mute mt-4 pt-2">Service &bull; Love</span>
+      </div>
+      <div class="rounded-2xl border border-sand-gold/25 bg-surf-1/75 backdrop-blur-md p-5 sm:p-6 flex flex-col justify-between shadow-[0_10px_24px_-6px_rgba(70,45,20,0.06)] hover:border-sand-gold/50 transition-colors">
+        <div>
+          <span class="t-display text-[1.6rem] text-sand-gold font-bold">Solo</span>
+          <h3 class="t-display text-[1.05rem] mt-2 font-semibold text-chalk">Homestudio</h3>
+          <p class="text-xs sm:text-[.86rem] text-chalk-dim mt-2 leading-relaxed">
+            Ich arbeite in einem kleinen Homestudio &mdash; bitte komm ohne Begleitung. Behandlungen gibt es ab 16 Jahren.
+          </p>
+        </div>
+        <span class="text-[.72rem] uppercase tracking-wider text-chalk-mute mt-4 pt-2">Ab 16 &bull; Ohne Begleitung</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TERMINE ============ -->
+<!-- Read-only overview of open slots. The data lives in termine.json, which
+     Sophie maintains (by hand or through the Google Sheet sync in tools/).
+     Nothing is booked here: a free slot copies a request for a DM. -->
+<section id="termine" class="atmos seam relative px-5 sm:px-8 py-[clamp(4.5rem,10vw,8rem)] scroll-mt-20">
+  <div class="mx-auto max-w-[88rem]">
+    <div class="js-rv mb-8 sm:mb-10">
+      <div class="inline-flex items-center gap-2 mb-2">
+        <span class="w-2.5 h-2.5 rounded-full bg-neon-pink"></span>
+        <p class="t-editorial text-[.78rem] font-semibold uppercase tracking-[.26em] text-sand-gold">Verfügbarkeit &bull; Freie Termine</p>
+      </div>
+      <p class="t-script text-[clamp(2.4rem,7vw,4.2rem)] text-sand-bronze leading-none">Wann passt es dir?</p>
+      <h2 class="t-display mt-2 text-[clamp(1.9rem,5vw,4rem)] tracking-[-.04em]" data-split>Freie Termine</h2>
+      <p class="rv mt-3 max-w-[40rem] text-chalk-dim text-[.95rem] sm:text-[1.02rem] leading-relaxed">
+        Tippe auf einen freien Termin &mdash; dein Anfragetext wird kopiert und du schickst ihn mir per DM.
+        Fest gebucht ist der Termin, sobald ich ihn dir bestätige.
+      </p>
+    </div>
+
+    <div class="js-rv rv">
+      <div id="cal" class="cal">
+        <p class="cal-empty">
+          Die aktuellen Termine findest du auch in meinen
+          <a href="https://www.instagram.com/gerberxnails/" target="_blank" rel="noopener noreferrer">Instagram-Stories</a>.
+        </p>
       </div>
     </div>
   </div>
@@ -747,6 +792,7 @@
         </p>
         <p class="rv mt-4 max-w-[36rem] text-[1.02rem] text-chalk-dim leading-relaxed">
           Schreib mir deine Wunschlänge, dein Design-Level und ein paar Wunschtermine &mdash; dann finden wir schnell deinen passenden Slot.
+          Welche Termine gerade frei sind, siehst du <a href="#termine" class="underline underline-offset-2 hover:text-neon-pink focus-visible:outline-none focus-visible:text-neon-pink">in der Übersicht</a>.
         </p>
 
         <!-- who you are actually writing to -->
@@ -775,7 +821,7 @@
         </div>
 
         <p class="rv mt-6 text-[.82rem] text-chalk-mute">
-          Bitte sag mindestens 24&nbsp;Stunden vorher Bescheid, wenn du einen Termin nicht schaffst.
+          Bitte sag mindestens 48&nbsp;Stunden vorher Bescheid, wenn du einen Termin nicht schaffst.
         </p>
       </div>
 
@@ -806,38 +852,63 @@
 <!-- ============ STUDIO POLICY DIALOG ============ -->
 <dialog id="dlg-policy" class="sheet" aria-labelledby="t-policy">
   <div class="flex items-center justify-between gap-4 px-[clamp(1.25rem,4vw,2.5rem)] pt-6 pb-4">
-    <h2 id="t-policy" class="t-display text-[1.5rem]">Studio Policy &bull; Buchungsregeln</h2>
+    <h2 id="t-policy" class="t-display text-[1.5rem]">Studio Policy &bull; AGB</h2>
     <button type="button" data-close class="btn btn-line w-10 h-10 p-0 text-[1.1rem]" aria-label="Schließen"><span>&times;</span></button>
   </div>
   <div class="sheet-body">
     <p class="rounded-xl bg-neon-pink/8 border border-neon-pink/25 px-4 py-3 text-[.86rem]">
-      <strong>Good to know!</strong> Damit dein Termin reibungslos verläuft und wir das beste Ergebnis für deine Nägel erzielen, beachte bitte diese einfachen Studio-Regeln vor deiner Buchung 💕
+      <strong>Good to know!</strong> Damit dein Termin reibungslos verläuft und wir das beste Ergebnis für deine Nägel erzielen, lies dir diese Regeln bitte vor deiner Buchung durch 💕
     </p>
 
-    <h3>1. Absage- &amp; Storno-Regelung (24h-Frist)</h3>
+    <h3>1. Termine</h3>
     <p>
-      Solltest du einen Termin nicht wahrnehmen können, sag mir bitte <strong>mindestens 24 Stunden vorher</strong> per Instagram-DM oder WhatsApp Bescheid. So kann ich den Slot an jemanden auf der Warteliste vergeben. Bei unentschuldigten No-Shows oder sehr kurzfristigen Absagen muss ich für Folgetermine eine Anzahlung erheben.
+      Termine werden verbindlich vereinbart. Gib bei der Buchung bitte deine gewünschte Länge, dein Design und eine eventuell vorhandene Fremdarbeit an.
     </p>
 
-    <h3>2. Pünktlichkeit &amp; Ablauf</h3>
+    <h3>2. Altersgrenze</h3>
     <p>
-      Bitte erscheine pünktlich zu deinem Termin. Ab einer <strong>Verspätung von 15 Minuten</strong> müssen wir das geplante Design eventuell anpassen oder vereinfachen, damit nachfolgende Kundinnen nicht warten müssen.
+      Nagelbehandlungen sind ausschließlich ab <strong>16 Jahren</strong> möglich.
     </p>
 
-    <h3>3. Nagelgesundheit &amp; Hygiene</h3>
+    <h3>3. Absagen &amp; Terminverschiebungen</h3>
     <p>
-      Die Gesundheit deiner Naturnägel steht an erster Stelle. Behandlungen führe ich ausschließlich an gesunden Nägeln durch. Bei Nagelpilz, ansteckenden Hauterkrankungen oder offenen Wunden an den Fingern kann zum Schutz aller keine Behandlung stattfinden.
+      Bitte sag deinen Termin <strong>mindestens 48 Stunden vorher</strong> ab oder verschieb ihn &mdash; per Instagram-DM oder WhatsApp. Bei kurzfristigeren Absagen oder Nichterscheinen kann eine Ausfallgebühr berechnet werden.
     </p>
 
-    <h3>4. 7-Tage-Reparatur-Service</h3>
+    <h3>4. Verspätungen</h3>
     <p>
-      Qualität hat oberste Priorität: Sollte innerhalb der ersten <strong>7 Tage</strong> nach deinem Termin ohne grobe Fremdeinwirkung eine Modellage splittern oder Nail Art fehlen, repariere ich den betroffenen Nagel selbstverständlich <strong>kostenlos</strong>. Melde dich dazu einfach direkt mit einem kurzen Foto bei mir!
-      Dieser Service ist ein freiwilliges Extra &mdash; deine gesetzlichen Rechte bei Mängeln bleiben davon unberührt und gelten unabhängig davon weiter.
+      Bitte gib bei einer Verspätung so früh wie möglich Bescheid. Ab <strong>15 Minuten</strong> Verspätung kann sich die Behandlungszeit verkürzen, und einzelne Designwünsche können gegebenenfalls nicht mehr umgesetzt werden. Ab <strong>30 Minuten</strong> Verspätung gilt der Termin als nicht wahrgenommen und kann nicht mehr durchgeführt werden.
     </p>
 
-    <h3>5. Fremdarbeit &amp; Vorbereitung</h3>
+    <h3>5. Begleitpersonen</h3>
     <p>
-      Kommst du mit Modellage aus einem anderen Studio, wähle bitte beim Preisrechner „Fremde Arbeit entfernen“ aus, damit wir genügend Zeit für ein sauberes und schonendes Ablösen einplanen können.
+      Da es sich um ein kleines Homestudio handelt, sind Begleitpersonen grundsätzlich nicht erwünscht. Bitte komm daher alleine zum Termin.
+    </p>
+
+    <h3>6. Preise &amp; Bezahlung</h3>
+    <p>
+      Es gelten die Preise der aktuellen Preisliste. Bei besonders aufwendigen Designs, zusätzlichem Material oder Zeitaufwand können weitere Kosten entstehen &mdash; diese teile ich dir vor der Behandlung mit. Die Bezahlung erfolgt nach der Behandlung <strong>in bar</strong>.
+    </p>
+
+    <h3>7. Nachbesserung</h3>
+    <p>
+      Innerhalb von <strong>5 Tagen</strong> nach deiner Behandlung bessere ich bei material- oder verarbeitungsbedingten Problemen kostenlos nach. Ausgenommen sind Schäden durch unsachgemäße Nutzung, Eigenverschulden, Knibbeln, Beißen, Feilen oder Entfernen der Modellage. Melde dich dazu einfach mit einem kurzen Foto bei mir.
+      Deine gesetzlichen Rechte bei Mängeln bleiben davon unberührt.
+    </p>
+
+    <h3>8. Fotos &amp; Datenschutz</h3>
+    <p>
+      Fotos und Videos deiner Nägel verwende ich nur mit deiner ausdrücklichen Zustimmung für Social Media. Deine Daten behandle ich vertraulich &mdash; mehr dazu in der <a href="datenschutz.html" class="underline underline-offset-2 hover:text-neon-pink">Datenschutzerklärung</a>.
+    </p>
+
+    <h3>9. Behandlungsdauer</h3>
+    <p>
+      Bitte plane für deinen Termin ausreichend Zeit ein: Je nach Länge, Design und Aufwand dauert eine Behandlung etwa <strong>2 bis 4 Stunden</strong>. Ich arbeite bewusst sorgfältig und nehme mir die nötige Zeit für ein sauberes, hochwertiges Ergebnis.
+    </p>
+
+    <h3>10. Schlussbestimmungen</h3>
+    <p>
+      Mit der Terminvereinbarung akzeptierst du diese AGB.
     </p>
   </div>
 </dialog>
@@ -855,6 +926,7 @@
       <a href="#preise"     class="navlink">Preisrechner</a>
       <a href="#arbeiten"   class="navlink">Arbeiten</a>
       <a href="#policy"     class="navlink">Studio Policy</a>
+      <a href="#termine"    class="navlink">Termine</a>
       <a href="#kontakt"    class="navlink">Kontakt</a>
     </nav>
     <div class="text-[.78rem] text-chalk-mute text-center sm:text-right">
@@ -874,6 +946,6 @@
   <span class="toast-text" id="toast-text">Anfragetext kopiert! 💅</span>
 </div>
 
-<script src="js/main.js?v=4417bfb7" defer></script>
+<script src="js/main.js?v=6b1cfc34" defer></script>
 </body>
 </html>

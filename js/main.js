@@ -976,142 +976,175 @@
   }
 
   /* ==========================================================================
+     SHARED: CLIPBOARD + TOAST
+     The calculator, the price bar and the appointment overview all hand the
+     visitor a ready request text to paste into a DM.
+     ========================================================================== */
+  var toastTimer = null;
+  function showToast(text) {
+    var toast = document.getElementById('toast');
+    var toastText = document.getElementById('toast-text');
+    if (!toast) return;
+    if (toastText && text) toastText.textContent = text;
+    toast.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () {
+      toast.classList.remove('show');
+    }, 3800);
+  }
+
+  function copyToClipboard(txt) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(txt).catch(function () {});
+    }
+  }
+
+  // Filled in by the calculator once it runs.
+  var Calc = {
+    request: null,   // () -> the full request text for the chosen set
+    chosenSet: null  // () -> lines describing the set, or null if untouched
+  };
+
+  /* ==========================================================================
      10. DYNAMIC PRICE CONFIGURATOR
+     The price list has ranges (S 35-40 EUR, Level 1 +5-10 EUR) and open-ended
+     extras (charms "ab +1 EUR"). Every option carries "min-max" or a single
+     number; the total shows as a range, or as "ab ..." once an open-ended
+     extra is in the set.
      ========================================================================== */
   function initPriceCalculator() {
     var totalEl = document.getElementById('total');
+    var preEl = document.getElementById('total-pre');
     var listEl = document.getElementById('breakdown');
     var ctaEl = document.getElementById('cta-label');
     if (!totalEl || !listEl || !ctaEl) return;
 
-    var shown = 45;
+    var touched = false;
 
-    function pick(sel) {
-      var e = document.querySelector(sel);
-      return e ? +e.getAttribute(sel.indexOf('len') > -1 ? 'data-len' : 'data-lvl') : 0;
+    // "35-40" -> [35, 40], "45" -> [45, 45]
+    function range(v) {
+      var p = String(v || '0').split('-');
+      var lo = +p[0] || 0;
+      return [lo, p.length > 1 ? (+p[1] || lo) : lo];
+    }
+
+    function euro(r, open) {
+      if (open) return 'ab ' + r[0] + ' €';
+      return (r[0] === r[1] ? r[0] : r[0] + '–' + r[1]) + ' €';
+    }
+
+    function pressed(el) { return !!el && el.getAttribute('aria-pressed') === 'true'; }
+
+    function name(el) {
+      return el ? el.querySelector('span').childNodes[0].textContent.trim() : '';
     }
 
     function state() {
       var soloBtn = document.querySelector('[data-solo]');
-      var solo = soloBtn && soloBtn.getAttribute('aria-pressed') === 'true';
-      if (solo) return { solo: true, total: +soloBtn.getAttribute('data-solo') };
+      if (pressed(soloBtn)) {
+        var sr = range(soloBtn.getAttribute('data-solo'));
+        return { solo: true, items: [{ kind: 'Soak Off', name: 'Soak Off ohne neues Set', r: sr, open: false }],
+                 min: sr[0], max: sr[1], open: false };
+      }
 
-      var len = pick('[data-len][aria-checked="true"]');
-      var lvl = pick('[data-lvl][aria-checked="true"]');
-      var addBtn = document.querySelector('[data-add]');
-      var add = (addBtn && addBtn.getAttribute('aria-pressed') === 'true') ? +addBtn.getAttribute('data-add') : 0;
-      return { solo: false, len: len, lvl: lvl, add: add, total: len + lvl + add };
+      var items = [];
+      var len = document.querySelector('[data-len][aria-checked="true"]');
+      var lvl = document.querySelector('[data-lvl][aria-checked="true"]');
+      if (len) {
+        var size = len.querySelector('.opt-size');
+        items.push({ kind: 'Länge', name: name(len) + (size ? ' (' + size.textContent.replace(/[^A-Z]/g, '') + ')' : ''),
+                     r: range(len.getAttribute('data-len')), open: false, note: ' · inkl. russischer Maniküre' });
+      }
+      if (lvl) items.push({ kind: 'Design', name: name(lvl), r: range(lvl.getAttribute('data-lvl')), open: false });
+      document.querySelectorAll('[data-add]').forEach(function (b) {
+        if (pressed(b)) items.push({ kind: 'Zusatz', name: name(b), r: range(b.getAttribute('data-add')), open: false });
+      });
+      document.querySelectorAll('[data-extra]').forEach(function (b) {
+        if (pressed(b)) items.push({ kind: 'Extra', name: name(b), r: range(b.getAttribute('data-extra')), open: true });
+      });
+
+      var min = 0, max = 0, open = false;
+      items.forEach(function (it) { min += it.r[0]; max += it.r[1]; open = open || it.open; });
+      return { solo: false, items: items, min: min, max: max, open: open };
     }
 
-    function label(sel) {
-      var e = document.querySelector(sel);
-      return e ? e.querySelector('span').childNodes[0].textContent.trim() : '';
-    }
+    var shown = null, rollId = null;
 
-    function rows(s) {
-      if (s.solo) return [['Soak Off ohne neues Set', s.total]];
-      var out = [
-        [label('[data-len][aria-checked="true"]') + ' · inkl. russischer Maniküre', s.len],
-        [label('[data-lvl][aria-checked="true"]'), s.lvl]
-      ];
-      if (s.add) out.push(['Fremde Arbeit entfernen', s.add]);
-      return out;
+    function paint(a, b, open) {
+      a = Math.round(a); b = Math.round(b);
+      totalEl.textContent = (open || a === b) ? String(a) : a + '–' + b;
     }
 
     function render() {
       var s = state();
+
       listEl.innerHTML = '';
-      rows(s).forEach(function (r) {
+      s.items.forEach(function (it) {
         var li = document.createElement('li');
         li.className = 'flex items-baseline gap-3';
         var a = document.createElement('span');
-        a.textContent = r[0];
+        a.textContent = it.name + (it.note || '');
         var b = document.createElement('span');
         b.className = 'flex-1 border-b border-dotted border-chalk/20';
         var c = document.createElement('span');
-        c.className = 't-display text-chalk';
-        c.textContent = r[1] + ' €';
+        c.className = 't-display text-chalk whitespace-nowrap';
+        c.textContent = euro(it.r, it.open);
         li.appendChild(a);
         li.appendChild(b);
         li.appendChild(c);
         listEl.appendChild(li);
       });
-      ctaEl.textContent = (s.solo ? 'Soak Off für ' : 'Set für ') + s.total + ' € anfragen';
 
-      // Smooth count-up animation to the new total with guaranteed duration
-      var target = s.total;
-      if (rollId) {
-        cancelAnimationFrame(rollId);
-        rollId = null;
-      }
-      if (reduce) {
+      if (preEl) preEl.hidden = !s.open;
+      ctaEl.textContent = (s.solo ? 'Soak Off' : 'Set') + (s.open ? ' ' : ' für ') +
+                          euro([s.min, s.max], s.open) + ' anfragen';
+
+      // short ease-out count toward the new figures
+      var target = [s.min, s.max];
+      if (rollId) { cancelAnimationFrame(rollId); rollId = null; }
+      if (reduce || !shown) {
         shown = target;
-        totalEl.textContent = target;
+        paint(target[0], target[1], s.open);
         return;
       }
-      var startVal = shown;
-      var startTime = performance.now();
-      var DURATION = 200; // snappy 200ms ease-out
+      var from = shown.slice();
+      var t0 = performance.now();
       (function roll(now) {
-        var elapsed = (now || performance.now()) - startTime;
-        var p = Math.min(1, elapsed / DURATION);
-        var ease = 1 - Math.pow(1 - p, 3);
-        shown = startVal + (target - startVal) * ease;
-        if (p >= 1) {
-          shown = target;
-          totalEl.textContent = target;
-          rollId = null;
-          return;
-        }
-        totalEl.textContent = Math.round(shown);
-        rollId = requestAnimationFrame(roll);
-      })(performance.now());
+        var p = Math.min(1, ((now || performance.now()) - t0) / 200);
+        var e = 1 - Math.pow(1 - p, 3);
+        shown = [from[0] + (target[0] - from[0]) * e, from[1] + (target[1] - from[1]) * e];
+        paint(shown[0], shown[1], s.open);
+        if (p < 1) rollId = requestAnimationFrame(roll);
+        else { shown = target; rollId = null; }
+      })(t0);
     }
 
-    var rollId = null;
+    function setLines(s) {
+      if (s.solo) return ['• Nur Soak Off, ohne neues Set (' + euro([s.min, s.max]) + ')'];
+      var out = s.items.map(function (it) {
+        return '• ' + it.kind + ': ' + it.name + ' – ' + euro(it.r, it.open);
+      });
+      out.push('• Russische Maniküre: inklusive');
+      out.push('• Orientierungspreis: ' + euro([s.min, s.max], s.open));
+      return out;
+    }
 
     function buildInquiryText(s) {
       if (s.solo) {
-        return 'Hi Sophie! 💅 Ich möchte gerne einen Termin für reines Soak Off (Ablösen ohne neues Set, 20 €) anfragen. Wann hättest du Zeit?';
+        return 'Hi Sophie! 💅 Ich möchte gerne einen Termin für reines Soak Off (Ablösen ohne neues Set, ' +
+               euro([s.min, s.max]) + ') anfragen. Wann hättest du Zeit?';
       }
-      var lenName = label('[data-len][aria-checked="true"]');
-      var lvlName = label('[data-lvl][aria-checked="true"]');
-      var parts = [
-        'Hi Sophie! 💅 Ich habe mir auf deiner Website mein Wunsch-Set zusammengestellt:',
-        '• Länge: ' + lenName + ' (' + s.len + ' €)',
-        '• Design: ' + lvlName + ' (' + s.lvl + ' €)',
-        '• Russische Maniküre: Inklusive'
-      ];
-      if (s.add) {
-        parts.push('• Zusatz: Fremde Arbeit entfernen (' + s.add + ' €)');
-      }
-      parts.push('• Orientierungspreis: ' + s.total + ' €');
-      parts.push('');
-      parts.push('Welche freien Termine hast du demnächst frei?');
-      return parts.join('\n');
+      return ['Hi Sophie! 💅 Ich habe mir auf deiner Website mein Wunsch-Set zusammengestellt:']
+        .concat(setLines(s), ['', 'Welche Termine hast du demnächst frei?'])
+        .join('\n');
     }
 
-    var toastTimer = null;
-    function showToast(text) {
-      var toast = document.getElementById('toast');
-      var toastText = document.getElementById('toast-text');
-      if (!toast) return;
-      if (toastText && text) toastText.textContent = text;
-      toast.classList.add('show');
-      clearTimeout(toastTimer);
-      toastTimer = setTimeout(function () {
-        toast.classList.remove('show');
-      }, 3800);
-    }
-
-    function copyToClipboard(txt) {
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(txt).catch(function () {});
-      }
-    }
+    Calc.request = function () { return buildInquiryText(state()); };
+    // only a set the visitor actually put together is worth quoting
+    Calc.chosenSet = function () { return touched ? setLines(state()) : null; };
 
     function setSoloVisual(on) {
-      document.querySelectorAll('[data-len],[data-lvl],[data-add]').forEach(function (b) {
+      document.querySelectorAll('[data-len],[data-lvl],[data-add],[data-extra]').forEach(function (b) {
         b.disabled = on;
         b.style.opacity = on ? '.35' : '';
         b.style.pointerEvents = on ? 'none' : '';
@@ -1125,6 +1158,7 @@
           b.setAttribute('aria-checked', 'false');
         });
         btn.setAttribute('aria-checked', 'true');
+        touched = true;
         render();
       });
     });
@@ -1154,20 +1188,21 @@
     });
     syncTabStops();
 
-    var addBtn = document.querySelector('[data-add]');
-    if (addBtn) {
-      addBtn.addEventListener('click', function () {
-        this.setAttribute('aria-pressed', this.getAttribute('aria-pressed') === 'true' ? 'false' : 'true');
+    document.querySelectorAll('[data-add],[data-extra]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        btn.setAttribute('aria-pressed', pressed(btn) ? 'false' : 'true');
+        touched = true;
         render();
       });
-    }
+    });
 
     var soloBtn = document.querySelector('[data-solo]');
     if (soloBtn) {
       soloBtn.addEventListener('click', function () {
-        var on = this.getAttribute('aria-pressed') !== 'true';
+        var on = !pressed(this);
         this.setAttribute('aria-pressed', on ? 'true' : 'false');
         setSoloVisual(on);
+        touched = true;
         render();
       });
     }
@@ -1176,9 +1211,7 @@
     var calcCta = document.getElementById('btn-calc-cta');
     if (calcCta) {
       calcCta.addEventListener('click', function () {
-        var s = state();
-        var msg = buildInquiryText(s);
-        copyToClipboard(msg);
+        copyToClipboard(Calc.request());
         showToast('Anfragetext kopiert! 💅 Jetzt einfach in DM einfügen.');
       });
     }
@@ -1186,9 +1219,7 @@
     var instaBtn = document.getElementById('btn-contact-insta');
     if (instaBtn) {
       instaBtn.addEventListener('click', function () {
-        var s = state();
-        var msg = buildInquiryText(s);
-        copyToClipboard(msg);
+        copyToClipboard(Calc.request());
         showToast('Anfragetext kopiert! 💅 Jetzt in Instagram-DM einfügen.');
       });
     }
@@ -1196,8 +1227,7 @@
     var waBtn = document.getElementById('btn-whatsapp');
     if (waBtn) {
       waBtn.addEventListener('click', function (e) {
-        var s = state();
-        var msg = buildInquiryText(s);
+        var msg = Calc.request();
         var href = this.getAttribute('href') || '';
         // If placeholder phone number is still present
         if (href.indexOf('XXXXXXXXXX') > -1) {
@@ -1218,6 +1248,235 @@
     }
 
     render();
+  }
+
+  /* ==========================================================================
+     FREE APPOINTMENTS
+     Reads termine.json from this server - no third party sees the visitor -
+     and draws a month view like Sophie's story. Free slots copy a request
+     and open Instagram; taken ones are struck through; past days fade.
+     Nothing is booked here, Sophie still confirms every appointment.
+     ========================================================================== */
+  function initAppointments() {
+    var box = document.getElementById('cal');
+    if (!box || !window.fetch) return;
+
+    var MONTHS = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli',
+                  'August', 'September', 'Oktober', 'November', 'Dezember'];
+    var DAYS = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'];
+    var SHORT = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
+    var IG = 'https://www.instagram.com/gerberxnails/';
+
+    function pad(n) { return (n < 10 ? '0' : '') + n; }
+    function iso(d) { return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); }
+    function toDate(s) { var p = s.split('-'); return new Date(+p[0], +p[1] - 1, +p[2]); }
+    function clock(t) { return t.replace(/^0(\d)/, '$1'); }            // "09:30" -> "9:30"
+    function dm(d) { return d.getDate() + '.' + (d.getMonth() + 1) + '.'; }
+
+    function el(tag, cls, text) {
+      var e = document.createElement(tag);
+      if (cls) e.className = cls;
+      if (text != null) e.textContent = text;
+      return e;
+    }
+
+    var now = new Date();
+    var today = iso(now);
+    var nowTime = pad(now.getHours()) + ':' + pad(now.getMinutes());
+
+    fetch('termine.json', { cache: 'no-cache' })
+      .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+      .then(setup)
+      .catch(function (err) {
+        // the fallback text in the markup stays: "see my Instagram stories"
+        if (window.console) console.warn('[gerberxnails] Termine:', err);
+      });
+
+    function setup(data) {
+      var pink = {};
+      var places = (data.orte || []).filter(function (o) { return o && o.name; });
+      places.forEach(function (o) { if (o.farbe === 'pink') pink[o.name] = true; });
+
+      var slots = (data.termine || []).filter(function (t) {
+        return t && /^\d{4}-\d\d-\d\d$/.test(t.datum) && /^\d\d:\d\d$/.test(t.zeit);
+      }).map(function (t) {
+        return {
+          date: t.datum, time: t.zeit, place: t.ort || (places[0] && places[0].name) || '',
+          taken: !!t.vergeben,
+          past: t.datum < today || (t.datum === today && t.zeit <= nowTime)
+        };
+      }).sort(function (a, b) { return (a.date + a.time) < (b.date + b.time) ? -1 : 1; });
+
+      var byDay = {};
+      slots.forEach(function (sl) { (byDay[sl.date] = byDay[sl.date] || []).push(sl); });
+
+      var upcoming = slots.filter(function (sl) { return !sl.past; });
+      var free = upcoming.filter(function (sl) { return !sl.taken; });
+
+      // months from now to the last one that still has something to show
+      var months = [];
+      var cur = new Date(now.getFullYear(), now.getMonth(), 1);
+      var last = upcoming.length ? toDate(upcoming[upcoming.length - 1].date) : cur;
+      while (cur <= last) {
+        months.push(new Date(cur));
+        cur = new Date(cur.getFullYear(), cur.getMonth() + 1, 1);
+      }
+
+      // open on the month of the next free slot, else the current one
+      var at = 0;
+      if (free.length) {
+        var f = toDate(free[0].date);
+        months.forEach(function (m, i) {
+          if (m.getFullYear() === f.getFullYear() && m.getMonth() === f.getMonth()) at = i;
+        });
+      }
+
+      function slotLabel(sl) {
+        var d = toDate(sl.date);
+        return DAYS[d.getDay()] + ', ' + d.getDate() + '. ' + MONTHS[d.getMonth()] + ', ' + clock(sl.time) +
+               ' Uhr' + (sl.place ? ', ' + sl.place : '');
+      }
+
+      function freeLink(sl, cls, text) {
+        var a = el('a', cls + (pink[sl.place] ? ' is-pink' : ''));
+        a.href = IG;
+        a.target = '_blank';
+        a.rel = 'noopener noreferrer';
+        a.setAttribute('data-date', sl.date);
+        a.setAttribute('data-time', sl.time);
+        a.setAttribute('data-place', sl.place);
+        a.setAttribute('aria-label', slotLabel(sl) + ', frei. Anfrage kopieren und Instagram öffnen');
+        if (typeof text === 'string') a.textContent = text; else a.appendChild(text);
+        return a;
+      }
+
+      function render(focusNav) {
+        box.innerHTML = '';
+
+        if (!upcoming.length) {
+          var empty = el('p', 'cal-empty', 'Gerade sind keine neuen Termine eingetragen. Schreib mir trotzdem gern per DM \u2013 ich melde mich, sobald es freie Slots gibt.');
+          box.appendChild(empty);
+          return;
+        }
+
+        // quick picks: the next free slots, big enough to hit on a phone
+        if (free.length) {
+          var next = el('div', 'cal-next');
+          next.appendChild(el('span', 'cal-next-label', 'Nächste freie Termine'));
+          free.slice(0, 4).forEach(function (sl) {
+            var d = toDate(sl.date);
+            var frag = document.createDocumentFragment();
+            frag.appendChild(el('i'));
+            frag.appendChild(document.createTextNode(SHORT[d.getDay()] + ' ' + dm(d) + ' \u00b7 ' + clock(sl.time)));
+            next.appendChild(freeLink(sl, 'cal-chip', frag));
+          });
+          box.appendChild(next);
+        }
+
+        var m = months[at];
+        var head = el('div', 'cal-head');
+        var title = el('h3', 'cal-title');
+        title.appendChild(el('span', 't-script', MONTHS[m.getMonth()]));
+        title.appendChild(el('span', 'cal-year', String(m.getFullYear())));
+        head.appendChild(title);
+        if (months.length > 1) {
+          var navs = el('div', 'cal-navs');
+          var prev = el('button', 'cal-nav', '\u2039');
+          prev.type = 'button';
+          prev.setAttribute('aria-label', 'Vorheriger Monat');
+          prev.disabled = at === 0;
+          prev.addEventListener('click', function () { if (at > 0) { at--; render('prev'); } });
+          var nxt = el('button', 'cal-nav', '\u203a');
+          nxt.type = 'button';
+          nxt.setAttribute('aria-label', 'Nächster Monat');
+          nxt.disabled = at === months.length - 1;
+          nxt.addEventListener('click', function () { if (at < months.length - 1) { at++; render('next'); } });
+          navs.appendChild(prev);
+          navs.appendChild(nxt);
+          head.appendChild(navs);
+        }
+        box.appendChild(head);
+
+        var week = el('div', 'cal-week');
+        week.setAttribute('aria-hidden', 'true');
+        ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'].forEach(function (w) { week.appendChild(el('span', '', w)); });
+        box.appendChild(week);
+
+        var grid = el('div', 'cal-grid');
+        var offset = (m.getDay() + 6) % 7;                       // Monday first
+        for (var b = 0; b < offset; b++) grid.appendChild(el('div', 'cal-day is-blank'));
+
+        var daysIn = new Date(m.getFullYear(), m.getMonth() + 1, 0).getDate();
+        for (var day = 1; day <= daysIn; day++) {
+          var d = new Date(m.getFullYear(), m.getMonth(), day);
+          var key = iso(d);
+          var list = (byDay[key] || []).filter(function (sl) { return !sl.past; });
+          var cell = el('div', 'cal-day');
+          if (key < today) cell.classList.add('is-past');
+          if (key === today) cell.classList.add('is-today');
+          if (list.some(function (sl) { return !sl.taken; })) cell.classList.add('has-free');
+
+          var num = el('span', 'cal-num', String(day));
+          num.setAttribute('aria-hidden', 'true');
+          cell.appendChild(num);
+          if (list.length) cell.appendChild(el('span', 'sr-only', DAYS[d.getDay()] + ', ' + day + '. ' + MONTHS[d.getMonth()] + ':'));
+
+          list.forEach(function (sl) {
+            if (sl.taken) {
+              var t = el('span', 'slot' + (pink[sl.place] ? ' is-pink' : ''), clock(sl.time));
+              t.appendChild(el('span', 'sr-only', ' vergeben'));
+              cell.appendChild(t);
+            } else {
+              cell.appendChild(freeLink(sl, 'slot', clock(sl.time)));
+            }
+          });
+          grid.appendChild(cell);
+        }
+        box.appendChild(grid);
+
+        var foot = el('div', 'cal-foot');
+        var legend = el('div', 'cal-legend');
+        places.forEach(function (o) {
+          var it = el('span', o.farbe === 'pink' ? 'is-pink' : '');
+          it.appendChild(el('i'));
+          it.appendChild(document.createTextNode(o.name));
+          legend.appendChild(it);
+        });
+        var taken = el('span');
+        taken.appendChild(el('s', '', '12:30'));
+        taken.appendChild(document.createTextNode(' vergeben'));
+        legend.appendChild(taken);
+        foot.appendChild(legend);
+        if (data.stand && /^\d{4}-\d\d-\d\d$/.test(data.stand)) {
+          var st = toDate(data.stand);
+          foot.appendChild(el('span', 'cal-stand', 'Zuletzt aktualisiert: ' + st.getDate() + '. ' +
+            MONTHS[st.getMonth()] + (st.getFullYear() !== now.getFullYear() ? ' ' + st.getFullYear() : '')));
+        }
+        box.appendChild(foot);
+
+        if (focusNav) {
+          var again = box.querySelector('.cal-nav[aria-label="' + (focusNav === 'prev' ? 'Vorheriger Monat' : 'Nächster Monat') + '"]');
+          if (again && !again.disabled) again.focus(); else { var any = box.querySelector('.cal-nav:not([disabled])'); if (any) any.focus(); }
+        }
+      }
+
+      // one listener for every free slot: copy the request, Instagram opens via the link
+      box.addEventListener('click', function (e) {
+        var a = e.target.closest('a[data-date]');
+        if (!a) return;
+        var d = toDate(a.getAttribute('data-date'));
+        var time = clock(a.getAttribute('data-time'));
+        var place = a.getAttribute('data-place');
+        var msg = 'Hi Sophie! 💅 Ist dein Termin am ' + DAYS[d.getDay()] + ', ' + dm(d) + ' um ' + time + ' Uhr' +
+                  (place ? ' (' + place + ')' : '') + ' noch frei? Den würde ich gerne buchen.';
+        var set = Calc.chosenSet && Calc.chosenSet();
+        if (set) msg += '\n\nMein Wunsch-Set von deiner Website:\n' + set.join('\n');
+        copyToClipboard(msg);
+        showToast('Anfrage für ' + SHORT[d.getDay()] + ' ' + dm(d) + ', ' + time + ' kopiert! 💅 Jetzt per DM schicken.');
+      });
+
+      render();
+    }
   }
 
   /* ==========================================================================
@@ -1248,16 +1507,23 @@
     bar.id = 'pricebar';
     bar.innerHTML =
       '<div class="inner">' +
-        '<div><div class="lbl">Dein Preis</div><div class="amount"><b id="pb-total">45</b> <span>&euro;</span></div></div>' +
+        '<div><div class="lbl">Dein Preis</div><div class="amount"><b id="pb-total"></b> <span>&euro;</span></div></div>' +
         '<a href="https://www.instagram.com/gerberxnails/" target="_blank" rel="noopener noreferrer" ' +
         'class="btn btn-solid px-5 py-3 text-[.85rem]"><span id="pb-cta">Termin anfragen</span></a>' +
       '</div>';
     document.body.appendChild(bar);
 
     var pbTotal = bar.querySelector('#pb-total');
-    function sync() { pbTotal.textContent = total.textContent.trim(); }
+    var pre = document.getElementById('total-pre');
+    function sync() { pbTotal.textContent = (pre && !pre.hidden ? 'ab ' : '') + total.textContent.trim(); }
     sync();
-    new MutationObserver(sync).observe(total, { childList: true, characterData: true, subtree: true });
+    new MutationObserver(sync).observe(total.parentNode, { childList: true, characterData: true, subtree: true, attributes: true });
+
+    bar.querySelector('a').addEventListener('click', function () {
+      if (!Calc.request) return;
+      copyToClipboard(Calc.request());
+      showToast('Anfragetext kopiert! 💅 Jetzt einfach in DM einfügen.');
+    });
 
     function show(on) { bar.classList.toggle('on', on); }
 
@@ -1310,7 +1576,8 @@
       ['Cursor', initCustomCursor], ['ServicePeek', initServicePeek],
       ['HeroShow', initHeroShow], ['ShowcaseOrt', initShowcasePlacement], ['Lightbox', initLightbox],
       ['ServiceThumbs', initServiceThumbs], ['Marquee', initMarqueeAndParallax],
-      ['Rechner', initPriceCalculator], ['Preisleiste', initPriceBar]
+      ['Rechner', initPriceCalculator], ['Preisleiste', initPriceBar],
+      ['Termine', initAppointments]
     ].concat(SHOW_VINE_AND_PETALS ? [['Vine', initLivingVine], ['Petals', initFloatingPetals]] : [])
      .forEach(function (pair) { start(pair[0], pair[1]); });
   }

@@ -1,0 +1,27 @@
+{
+  "stand": "2026-10-02",
+  "orte": [
+    { "name": "Homestudio", "farbe": "gold" },
+    { "name": "Pforzheim", "farbe": "pink" }
+  ],
+  "termine": [
+    { "datum": "2026-10-02", "zeit": "12:30", "ort": "Homestudio", "vergeben": true },
+    { "datum": "2026-10-02", "zeit": "16:00", "ort": "Homestudio", "vergeben": true },
+    { "datum": "2026-10-03", "zeit": "12:30", "ort": "Homestudio", "vergeben": true },
+    { "datum": "2026-10-04", "zeit": "09:00", "ort": "Homestudio", "vergeben": true },
+    { "datum": "2026-10-04", "zeit": "12:30", "ort": "Homestudio", "vergeben": false },
+    { "datum": "2026-10-04", "zeit": "16:00", "ort": "Homestudio", "vergeben": false },
+    { "datum": "2026-10-11", "zeit": "09:00", "ort": "Homestudio", "vergeben": true },
+    { "datum": "2026-10-11", "zeit": "12:30", "ort": "Homestudio", "vergeben": true },
+    { "datum": "2026-10-11", "zeit": "16:00", "ort": "Homestudio", "vergeben": true },
+    { "datum": "2026-10-15", "zeit": "09:30", "ort": "Pforzheim", "vergeben": false },
+    { "datum": "2026-10-18", "zeit": "09:00", "ort": "Homestudio", "vergeben": true },
+    { "datum": "2026-10-18", "zeit": "12:30", "ort": "Homestudio", "vergeben": true },
+    { "datum": "2026-10-18", "zeit": "16:00", "ort": "Homestudio", "vergeben": true },
+    { "datum": "2026-10-22", "zeit": "09:30", "ort": "Pforzheim", "vergeben": false },
+    { "datum": "2026-10-25", "zeit": "09:00", "ort": "Homestudio", "vergeben": false },
+    { "datum": "2026-10-25", "zeit": "12:30", "ort": "Homestudio", "vergeben": true },
+    { "datum": "2026-10-25", "zeit": "16:00", "ort": "Homestudio", "vergeben": true },
+    { "datum": "2026-10-29", "zeit": "09:30", "ort": "Pforzheim", "vergeben": true }
+  ]
+}
