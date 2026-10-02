@@ -1,0 +1,47 @@
+# Holt Sophies Termin-Tabelle und aktualisiert termine.json.
+# Aktiv erst, wenn unter Settings > Secrets and variables > Actions > Variables
+# die Variable TERMINE_CSV_URL gesetzt ist (Link "Im Web veroeffentlichen" als CSV).
+# Jede echte Aenderung wird committet; GitHub Pages baut die Seite dann neu.
+name: Termine aktualisieren
+
+on:
+  schedule:
+    # alle 30 Minuten zwischen etwa 7 und 23 Uhr deutscher Zeit
+    - cron: "*/30 5-21 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: termine
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    if: ${{ vars.TERMINE_CSV_URL != '' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Tabelle holen
+        run: node tools/termine-sync.mjs
+        env:
+          TERMINE_CSV_URL: ${{ vars.TERMINE_CSV_URL }}
+
+      - name: Aenderung speichern
+        run: |
+          if git diff --quiet -- termine.json; then
+            echo "Keine Aenderung."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add termine.json
+          git commit -m "Termine aktualisiert"
+          git push
