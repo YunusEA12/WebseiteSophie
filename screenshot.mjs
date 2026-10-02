@@ -28,17 +28,10 @@ const width = isMobile ? 390 : 1440;
 const height = isMobile ? 844 : 900;
 await page.setViewport({ width, height, isMobile, hasTouch: isMobile, deviceScaleFactor: isMobile ? 2 : 1 });
 
-// Pre-set consent so banner never obscures hero
-await page.evaluateOnNewDocument(() => {
-  try { localStorage.setItem('gxn-consent', 'all'); } catch(e) {}
-});
-
 await page.goto(url, { waitUntil: "networkidle0", timeout: 60000 });
 
-// Dismiss cookie banner so it doesn't obscure the hero in screenshots
+// Reveal everything that normally animates in on scroll
 await page.evaluate(() => {
-  const consentBtn = document.getElementById('consent-min') || document.getElementById('consent-all');
-  if (consentBtn) consentBtn.click();
   document.querySelectorAll('.fade-up').forEach(el => el.classList.add('visible'));
   if (typeof window.__revealAll === 'function') window.__revealAll();
 });

@@ -20,6 +20,8 @@ const MIME = {
   ".webp": "image/webp",
   ".woff2": "font/woff2",
   ".woff": "font/woff",
+  ".txt": "text/plain",
+  ".xml": "application/xml",
 };
 
 http.createServer((req, res) => {

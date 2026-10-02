@@ -40,16 +40,27 @@
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var fine = window.matchMedia('(hover:hover) and (pointer:fine)').matches;
 
+  /* The vine and the drifting petals live at z-index -1, and the body
+     background covers them completely: nobody has seen them in the current
+     design, yet both redrew every frame on every device. They stay off until
+     they get a place in the layout again. To bring them back, set this to
+     true and remove the "#vine, #petals { display: none }" rule in style.css
+     (and give them a stacking position above the body background). */
+  var SHOW_VINE_AND_PETALS = false;
+
   /* ------------------------------------------------------------------
      Shared input. On a desktop this follows the mouse. On a phone there is
      no hover, so it follows the finger, and when nothing is being touched
-     it drifts with how fast the page is scrolling and how the device is
-     tilted — that way the page still breathes while someone just reads.
+     it drifts with how fast the page is scrolling.
+
+     The gyroscope used to feed in here too. iPhones answered that with a
+     permission prompt for motion sensors, and Android read the sensor
+     without asking - neither is acceptable for a decorative effect, so the
+     page no longer touches device sensors at all.
      ------------------------------------------------------------------ */
   var Input = (function () {
     var x = -9999, y = -9999;      // viewport coords, -9999 = no input
     var active = false;
-    var tiltX = 0, tiltY = 0;      // -1..1 from the gyroscope
     var scrollV = 0;               // smoothed scroll velocity in px/frame
     var lastY = window.scrollY;
     var idleT = 0;
@@ -77,41 +88,12 @@
       idleT = 0;
     }, { passive: true });
 
-    // tilt is opt-in on iOS; ask once after the first real interaction
-    var tiltOn = false;
-    function listenTilt() {
-      if (tiltOn) return;
-      tiltOn = true;
-      addEventListener('deviceorientation', function (e) {
-        if (e.gamma === null || e.beta === null) return;
-        tiltX = Math.max(-1, Math.min(1, e.gamma / 35));
-        tiltY = Math.max(-1, Math.min(1, (e.beta - 45) / 35));
-      }, { passive: true });
-    }
-    function askTilt() {
-      var D = window.DeviceOrientationEvent;
-      if (!D) return;
-      if (typeof D.requestPermission === 'function') {
-        D.requestPermission().then(function (r) { if (r === 'granted') listenTilt(); }).catch(function () {});
-      } else {
-        listenTilt();
-      }
-    }
-    if (!fine) {
-      addEventListener('touchend', function once() {
-        removeEventListener('touchend', once);
-        askTilt();
-      }, { passive: true });
-    }
-
     return {
       // where the interaction is, in viewport coords
       get x() { return x; },
       get y() { return y; },
       get active() { return active; },
       get scrollV() { return scrollV; },
-      get tiltX() { return tiltX; },
-      get tiltY() { return tiltY; },
       // called once per frame by the animation loops
       tick: function () {
         scrollV *= 0.94;
@@ -132,64 +114,12 @@
   }
 
   /* ==========================================================================
-     1. CONSENT BANNER & LEGAL DIALOGS (DSGVO / GDPR)
+     1. DIALOG SHEETS (Studio Policy)
+     There is no consent banner: nothing on this site needs consent. Imprint
+     and privacy policy are their own pages so they work without script.
      ========================================================================== */
-  function initConsentAndDialogs() {
-    var KEY = 'gxn-consent';
-    var bar = document.getElementById('consent');
-    if (!bar) return;
-
-    function read() {
-      try { return localStorage.getItem(KEY); } catch (e) { return null; }
-    }
-    function write(v) {
-      try { localStorage.setItem(KEY, v); } catch (e) {}
-    }
-    function show() { bar.classList.add('show'); }
-    function hide() { bar.classList.remove('show'); }
-
-    if (!read()) {
-      setTimeout(function () {
-        if (!read()) show();
-      }, 1400);
-    }
-
-    var consentAll = document.getElementById('consent-all');
-    if (consentAll) {
-      consentAll.addEventListener('click', function () {
-        write('all');
-        hide();
-      });
-    }
-
-    var consentMin = document.getElementById('consent-min');
-    if (consentMin) {
-      consentMin.addEventListener('click', function () {
-        write('min');
-        hide();
-      });
-    }
-
-    // a permanent way back to the choice, from the footer
-    var footerBtn = document.getElementById('cookie-settings');
-    if (footerBtn) footerBtn.addEventListener('click', function () {
-      try { localStorage.removeItem(KEY); } catch (e) {}
-      var open = document.querySelector('dialog.sheet[open]');
-      if (open) open.close();
-      show();
-    });
-
-    var reset = document.getElementById('consent-reset');
-    if (reset) {
-      reset.addEventListener('click', function () {
-        try { localStorage.removeItem(KEY); } catch (e) {}
-        var open = document.querySelector('dialog.sheet[open]');
-        if (open) open.close();
-        show();
-      });
-    }
-
-    // Open/close legal sheets via data attributes
+  function initDialogs() {
+    // Open/close sheets via data attributes
     document.addEventListener('click', function (e) {
       var opener = e.target.closest('[data-open]');
       if (opener) {
@@ -227,13 +157,32 @@
 
     var open = false;
     function set(next) {
+      var was = open;
       open = next;
       menu.classList.toggle('open', open);
-      menu.setAttribute('aria-hidden', String(!open));
+      menu.inert = !open;
       burger.setAttribute('aria-expanded', String(open));
       burger.setAttribute('aria-label', open ? 'Menü schließen' : 'Menü öffnen');
       document.body.style.overflow = open ? 'hidden' : '';
+      // keyboard and screen reader users land inside the menu, and back on
+      // the burger when it closes
+      if (open && !was) {
+        var first = menu.querySelector('.menu-link');
+        if (first) setTimeout(function () { first.focus({ preventScroll: true }); }, 60);
+      } else if (!open && was && menu.contains(document.activeElement)) {
+        burger.focus({ preventScroll: true });
+      }
     }
+
+    // Tab stays inside the open menu instead of wandering behind the overlay
+    menu.addEventListener('keydown', function (e) {
+      if (!open || e.key !== 'Tab') return;
+      var items = [].slice.call(menu.querySelectorAll('a[href], button:not([disabled])'));
+      if (!items.length) return;
+      var first = items[0], last = items[items.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    });
 
     burger.addEventListener('click', function (e) {
       e.stopPropagation();
@@ -336,9 +285,9 @@
         flower.classList.add('bloomed');
         setTimeout(function () {
           loader.classList.add('done');
-        }, reduce ? 60 : 720);
+        }, reduce ? 60 : 480);
       }
-    }, reduce ? 18 : 105);
+    }, reduce ? 18 : 75);
   }
 
   /* ==========================================================================
@@ -350,6 +299,9 @@
     var dot = document.querySelector('.cursor-dot');
     var ring = document.querySelector('.cursor-ring');
     if (!dot || !ring) return;
+    // the ring is only shown once something moves it; otherwise it sat as a
+    // quarter circle in the top left corner
+    document.documentElement.classList.add('has-cursor');
 
     var mx = innerWidth / 2, my = innerHeight / 2, rx = mx, ry = my;
 
@@ -536,7 +488,7 @@
     var caps = [].slice.call(box.querySelectorAll('.hero-cap'));
     var dots = [].slice.call(box.querySelectorAll('.hero-dot'));
     if (slides.length < 2) return;
-    var at = 0, timer;
+    var at = 0, timer, held = false;
 
     function go(n) {
       at = (n + slides.length) % slides.length;
@@ -547,10 +499,28 @@
     }
 
     function play() {
-      if (reduce) return;
+      if (reduce || held) return;
       clearInterval(timer);
       timer = setInterval(function () { go(at + 1); }, 4200);
     }
+
+    // A mouse resting on the picture or keyboard focus on the dots keeps it
+    // still. Only a real pointer and visible focus count: a tap fires the same
+    // events on a phone and would freeze the show until the next tap elsewhere.
+    function hold(on) {
+      held = on;
+      if (on) clearInterval(timer); else play();
+    }
+    if (fine) {
+      box.addEventListener('mouseenter', function () { hold(true); });
+      box.addEventListener('mouseleave', function () { hold(false); });
+    }
+    box.addEventListener('focusin', function (e) {
+      try { if (e.target.matches(':focus-visible')) hold(true); } catch (err) {}
+    });
+    box.addEventListener('focusout', function (e) {
+      if (held && !box.contains(e.relatedTarget)) hold(false);
+    });
 
     dots.forEach(function (d) {
       d.addEventListener('click', function () { go(+d.getAttribute('data-go')); play(); });
@@ -586,11 +556,11 @@
     box.id = 'lightbox';
     box.setAttribute('role', 'dialog');
     box.setAttribute('aria-modal', 'true');
-    box.setAttribute('aria-label', 'Arbeit in gross');
+    box.setAttribute('aria-label', 'Arbeit in groß');
     box.innerHTML =
-      '<button type="button" id="lbClose" aria-label="Schliessen">&times;</button>' +
+      '<button type="button" id="lbClose" aria-label="Schließen">&times;</button>' +
       '<button type="button" id="lbPrev" aria-label="Vorheriges Bild">&#8249;</button>' +
-      '<button type="button" id="lbNext" aria-label="Naechstes Bild">&#8250;</button>' +
+      '<button type="button" id="lbNext" aria-label="Nächstes Bild">&#8250;</button>' +
       '<figure><img alt=""><figcaption></figcaption></figure>';
     document.body.appendChild(box);
 
@@ -602,8 +572,8 @@
       at = (i + tiles.length) % tiles.length;
       var t = tiles[at];
       var src = t.querySelector('img');
-      var title = t.querySelector('.media-cap p');
-      var sub = t.querySelectorAll('.media-cap p')[1];
+      var title = t.querySelector('.media-cap > span');
+      var sub = t.querySelectorAll('.media-cap > span')[1];
       img.src = src.getAttribute('src');
       img.alt = src.getAttribute('alt') || '';
       cap.innerHTML = '<b>' + (title ? title.textContent : '') + '</b>' + (sub ? sub.textContent : '');
@@ -636,6 +606,13 @@
       if (e.key === 'Escape') close();
       if (e.key === 'ArrowLeft') show(at - 1);
       if (e.key === 'ArrowRight') show(at + 1);
+      // keep Tab on the three controls while the picture is open
+      if (e.key === 'Tab') {
+        var ctrls = [].slice.call(box.querySelectorAll('button'));
+        var i = ctrls.indexOf(document.activeElement);
+        e.preventDefault();
+        ctrls[(i + (e.shiftKey ? -1 : 1) + ctrls.length) % ctrls.length].focus();
+      }
     });
 
     var sx = null;
@@ -797,13 +774,13 @@
       } else if (!fine) {
         // Nobody is touching. A fixed target would make the vine settle and stop,
         // so drive it with a slow clock: the bend keeps travelling on its own and
-        // the scroll speed and tilt ride on top of it.
+        // the scroll speed rides on top of it.
         var t = Date.now() / 1000;
         var lean = Math.max(-1, Math.min(1, Input.scrollV / 22));
         var driftX = Math.sin(t * 0.55) * 0.30 + Math.sin(t * 0.23) * 0.16;
         var driftY = Math.cos(t * 0.41) * 0.18;
-        mx = W * (0.5 + driftX + Input.tiltX * 0.26 + lean * 0.22);
-        my = window.scrollY + innerHeight * (0.45 + driftY + Input.tiltY * 0.14);
+        mx = W * (0.5 + driftX + lean * 0.22);
+        my = window.scrollY + innerHeight * (0.45 + driftY);
       } else {
         mx = -9999; my = -9999;
       }
@@ -945,12 +922,12 @@
       px = Input.active ? Input.x : -9999;
       py = Input.active ? Input.y : -9999;
 
-      // scrolling blows the petals along, tilt makes them drift sideways, and a
-      // slow breeze keeps them moving when the phone is just lying there
+      // scrolling blows the petals along, and a slow breeze keeps them moving
+      // when the phone is just lying there
       var now = Date.now() / 1000;
       var gust = Math.max(-3, Math.min(3, Input.scrollV * 0.06));
       var breeze = fine ? 0 : (Math.sin(now * 0.4) * 0.5 + Math.sin(now * 0.17) * 0.3);
-      var sway = Input.tiltX * 0.35 + breeze;
+      var sway = breeze;
 
       ctx.clearRect(0, 0, w, h);
       for (var i = 0; i < ps.length; i++) {
@@ -1152,6 +1129,31 @@
       });
     });
 
+    /* A radiogroup is one tab stop; the arrow keys move between its options
+       and select them, as screen readers announce it. */
+    function syncTabStops() {
+      document.querySelectorAll('[role="radiogroup"]').forEach(function (g) {
+        g.querySelectorAll('[role="radio"]').forEach(function (r) {
+          r.tabIndex = r.getAttribute('aria-checked') === 'true' ? 0 : -1;
+        });
+      });
+    }
+    document.querySelectorAll('[role="radiogroup"]').forEach(function (g) {
+      g.addEventListener('keydown', function (e) {
+        var step = { ArrowDown: 1, ArrowRight: 1, ArrowUp: -1, ArrowLeft: -1 }[e.key];
+        if (!step) return;
+        var radios = [].slice.call(g.querySelectorAll('[role="radio"]:not([disabled])'));
+        var i = radios.indexOf(document.activeElement);
+        if (i < 0) return;
+        e.preventDefault();
+        var next = radios[(i + step + radios.length) % radios.length];
+        next.click();
+        next.focus();
+      });
+      g.addEventListener('click', syncTabStops);
+    });
+    syncTabStops();
+
     var addBtn = document.querySelector('[data-add]');
     if (addBtn) {
       addBtn.addEventListener('click', function () {
@@ -1257,21 +1259,13 @@
     sync();
     new MutationObserver(sync).observe(total, { childList: true, characterData: true, subtree: true });
 
-    var consent = document.getElementById('consent');
-    function show(on) {
-      var blocked = consent && consent.classList.contains('show');
-      bar.classList.toggle('on', on && !blocked);
-    }
+    function show(on) { bar.classList.toggle('on', on); }
 
     if ('IntersectionObserver' in window) {
       new IntersectionObserver(function (es) {
         es.forEach(function (e) { show(e.isIntersecting); });
       }, { threshold: 0, rootMargin: '-15% 0px -15% 0px' }).observe(sec);
     }
-
-    if (consent) new MutationObserver(function () {
-      if (consent.classList.contains('show')) bar.classList.remove('on');
-    }).observe(consent, { attributes: true, attributeFilter: ['class'] });
   }
 
   /* Am Desktop steht die Slideshow besser unten bei "Let's do your nails",
@@ -1311,30 +1305,14 @@
     }
     [
       ['Header', initHeaderState],
-      ['Consent', initConsentAndDialogs], ['Menue', initMobileMenu],
+      ['Dialoge', initDialogs], ['Menue', initMobileMenu],
       ['TextReveal', initTextReveal], ['Preloader', initPreloader],
       ['Cursor', initCustomCursor], ['ServicePeek', initServicePeek],
       ['HeroShow', initHeroShow], ['ShowcaseOrt', initShowcasePlacement], ['Lightbox', initLightbox],
       ['ServiceThumbs', initServiceThumbs], ['Marquee', initMarqueeAndParallax],
-      ['Vine', initLivingVine], ['Petals', initFloatingPetals],
       ['Rechner', initPriceCalculator], ['Preisleiste', initPriceBar]
-    ].forEach(function (pair) { start(pair[0], pair[1]); });
-  }
-
-  function initAllLegacy() {
-    initConsentAndDialogs();
-    initMobileMenu();
-    initTextReveal();
-    initPreloader();
-    initCustomCursor();
-    initServicePeek();
-    initHeroShow();
-    initLightbox();
-    initServiceThumbs();
-    initMarqueeAndParallax();
-    initLivingVine();
-    initFloatingPetals();
-    initPriceCalculator();
+    ].concat(SHOW_VINE_AND_PETALS ? [['Vine', initLivingVine], ['Petals', initFloatingPetals]] : [])
+     .forEach(function (pair) { start(pair[0], pair[1]); });
   }
 
   if (document.readyState === 'loading') {
