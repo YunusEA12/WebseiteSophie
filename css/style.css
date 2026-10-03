@@ -3220,7 +3220,7 @@ main > section:first-of-type.atmos::before {
   transform-origin: left center;
 }
 
-#hint.is-counting .hint-bar { animation: hintBar var(--wait, 3s) linear forwards; }
+#hint.is-counting .hint-bar { animation: hintBar var(--wait, 2s) linear forwards; }
 
 @keyframes hintBar {
   from { transform: scaleX(1); }

@@ -1488,7 +1488,7 @@
       return 'Hi Sophie! 💅 Ich würde gerne einen Termin bei dir anfragen. Wann hättest du Zeit?';
     }
 
-    var WAIT = 3;   // seconds to read "copied" before Instagram opens
+    var WAIT = 2;   // seconds to read "copied" before Instagram opens
 
     // A new tab still counts as opened by the tap within a few seconds in
     // most browsers; where it is blocked (Safari), the chat opens right here.
@@ -1679,7 +1679,7 @@
       if (open && done) done();
     }
 
-    // "copied", 3-2-1 in the circle and a running bar, then the chat opens
+    // "copied", 2-1 in the circle and a running bar, then the chat opens
     Hint.countdown = function (ok, secs, done) {
       clearInterval(cdT);
       clearTimeout(flashT);
