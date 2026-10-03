@@ -1005,7 +1005,7 @@
     return Promise.resolve(legacy());
   }
 
-  var Send = { open: function () {} };   // replaced once the sheet is set up
+  var Send = { deliver: null };          // set by initRequests
 
   // Filled in by the calculator once it runs.
   var Calc = {
@@ -1071,6 +1071,9 @@
         if (pressed(b)) items.push({ kind: 'Extra', name: name(b), r: range(b.getAttribute('data-extra')), open: true });
       });
 
+      // A range in the price list ("35-40") is shown by its starting price,
+      // "ab 35 EUR" - one clear figure instead of two.
+      items.forEach(function (it) { if (it.r[0] !== it.r[1]) it.open = true; });
       var min = 0, max = 0, open = false;
       items.forEach(function (it) { min += it.r[0]; max += it.r[1]; open = open || it.open; });
       return { solo: false, items: items, min: min, max: max, open: open };
@@ -1314,7 +1317,7 @@
         a.setAttribute('data-place', sl.place);
         a.setAttribute('aria-label', slotLabel(sl) + ', frei. Anfrage schreiben');
         var d0 = toDate(sl.date);
-        a.setAttribute('data-tip', '✨ Anfrage für ' + SHORT[d0.getDay()] + ' ' + dm(d0) + ', ' + clock(sl.time) + ' schreiben');
+        a.setAttribute('data-tip', '✨ Anfrage für ' + SHORT[d0.getDay()] + ' ' + dm(d0) + ', ' + clock(sl.time) + ' kopieren & Instagram öffnen');
         if (typeof text === 'string') a.textContent = text; else a.appendChild(text);
         return a;
       }
@@ -1334,7 +1337,7 @@
           var icon = el('span', 'cal-hint-icon', '☝︎');
           icon.setAttribute('aria-hidden', 'true');
           hint.appendChild(icon);
-          hint.appendChild(el('span', '', 'Tippe auf eine freie Uhrzeit – deine Anfrage wird automatisch geschrieben.'));
+          hint.appendChild(el('span', '', 'Tippe auf eine freie Uhrzeit – deine Anfrage wird kopiert und Instagram öffnet sich. Dort nur einfügen & senden.'));
           box.appendChild(hint);
         }
 
@@ -1450,7 +1453,7 @@
                   (place ? ' (' + place + ')' : '') + ' noch frei? Den würde ich gerne buchen.';
         var set = Calc.chosenSet && Calc.chosenSet();
         if (set) msg += '\n\nMein Wunsch-Set von deiner Website:\n' + set.join('\n');
-        if (Send.deliver) Send.deliver(a, msg, e);
+        if (Send.deliver) Send.deliver(a, msg);
       });
 
       render();
@@ -1469,17 +1472,27 @@
   }
 
   /* ==========================================================================
-     SEND SHEET
-     Every request button writes the message for the visitor. Instagram
-     cannot pre-fill a message, so the text is copied and a short sheet says
-     so before it opens the chat with Sophie.
+     REQUESTS: ONE TAP
+     Instagram cannot pre-fill a message. A request button therefore copies
+     the finished text and opens the chat with Sophie in the same tap - the
+     buttons say so beforehand ("Nachricht wird kopiert · öffnet Instagram"),
+     and a short status line confirms it. No sheet in between.
 
      data-send="set"      the set from the calculator
      data-send="general"  the set if one was put together, else a hello
      ========================================================================== */
-  function initSendSheet() {
-    var dlg = document.getElementById('dlg-send');
-    var canSheet = !!dlg && typeof dlg.showModal === 'function';
+  function initRequests() {
+    var toast = document.getElementById('toast');
+    var toastText = document.getElementById('toast-text');
+    var toastT;
+
+    function say(text) {
+      if (!toast) return;
+      toastText.textContent = text;
+      toast.classList.add('show');
+      clearTimeout(toastT);
+      toastT = setTimeout(function () { toast.classList.remove('show'); }, 6000);
+    }
 
     function general() {
       var set = Calc.chosenSet && Calc.chosenSet();
@@ -1487,63 +1500,27 @@
       return 'Hi Sophie! 💅 Ich würde gerne einen Termin bei dir anfragen. Wann hättest du Zeit?';
     }
 
-    if (canSheet) {
-      var pre = document.getElementById('send-text');
-      var title = document.getElementById('t-send');
-      var sub = document.getElementById('send-sub');
-      var again = document.getElementById('send-again');
-      var peek = document.getElementById('send-peek');
-      var current = '';
-
-      var state = function (ok) {
-        title.textContent = 'Deine Nachricht ist fertig';
-        sub.textContent = ok
-          ? 'Sie ist schon kopiert. Im Chat nur noch einfügen und senden.'
-          : 'Kopieren hat hier nicht geklappt: Halte den Text unten gedrückt, kopiere ihn und füge ihn im Chat ein.';
-        dlg.classList.toggle('is-manual', !ok);
-        // the text only needs to be on screen when it has to be copied by hand
-        if (peek) peek.open = !ok;
-      };
-
-      Send.open = function (txt) {
-        current = txt;
-        pre.textContent = txt;
-        again.textContent = 'Nochmal kopieren';
-        if (peek) peek.open = false;
-        state(true);
-        copyText(txt).then(state);
-        if (!dlg.open) dlg.showModal();
-      };
-
-      again.addEventListener('click', function () {
-        copyText(current).then(function (ok) {
-          state(ok);
-          again.textContent = ok ? 'Kopiert ✓' : 'Nochmal kopieren';
-        });
-      });
-    }
-
-    // one way in for every request: the buttons below and the calendar slots
-    Send.deliver = function (el, txt, e) {
-      if (!canSheet) return;           // plain link to the Instagram chat
-      e.preventDefault();
+    // copy inside the tap (browsers only allow it there); the link opens the chat
+    Send.deliver = function (el, txt) {
       var menu = document.getElementById('menu');
       if (menu && menu.classList.contains('open')) {
         var close = document.getElementById('menu-close-btn');
         if (close) close.click();
       }
-      Send.open(txt);
+      copyText(txt).then(function (ok) {
+        say(ok ? 'Nachricht kopiert – in Instagram ins Textfeld tippen, einfügen & senden'
+               : 'Instagram öffnet sich – schreib Sophie dort einfach direkt');
+      });
     };
 
     document.addEventListener('click', function (e) {
       var el = e.target.closest('[data-send]');
       if (!el) return;
-      var txt = el.getAttribute('data-send') === 'set' && Calc.request ? Calc.request() : general();
-      Send.deliver(el, txt, e);
+      Send.deliver(el, el.getAttribute('data-send') === 'set' && Calc.request ? Calc.request() : general());
     });
 
     /* With a mouse: say what a click does before it happens. Phones get the
-       visible hints next to the buttons and in the calendar instead. */
+       line on each button and the hint in the calendar instead. */
     if (fine) {
       var tip = document.createElement('div');
       tip.id = 'send-tip';
@@ -1556,7 +1533,7 @@
         if (!el) return;
         clearTimeout(hideT);
         tip.textContent = el.getAttribute('data-tip') ||
-          '✨ Deine Anfrage wird automatisch geschrieben – im Chat nur einfügen';
+          '✨ Kopiert deine fertige Nachricht und öffnet Instagram';
         var r = el.getBoundingClientRect();
         tip.classList.add('on');
         var w = tip.offsetWidth;
@@ -1665,7 +1642,7 @@
       ['HeroShow', initHeroShow], ['ShowcaseOrt', initShowcasePlacement], ['Lightbox', initLightbox],
       ['ServiceThumbs', initServiceThumbs], ['Marquee', initMarqueeAndParallax],
       ['Rechner', initPriceCalculator], ['Preisleiste', initPriceBar],
-      ['Termine', initAppointments], ['Senden', initSendSheet]
+      ['Termine', initAppointments], ['Anfragen', initRequests]
     ].concat(SHOW_VINE_AND_PETALS ? [['Vine', initLivingVine], ['Petals', initFloatingPetals]] : [])
      .forEach(function (pair) { start(pair[0], pair[1]); });
   }

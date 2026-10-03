@@ -117,7 +117,7 @@ h1, h2, h3 {
   position: fixed;
   inset: 0;
   z-index: 100;
-  background: #17130F;
+  background: #14100D;
   color: #EFE3D2;
   display: grid;
   place-items: center;
@@ -328,7 +328,7 @@ html:not(.has-cursor) .cursor-ring {
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  background: linear-gradient(180deg, rgba(23, 19, 15, .87), rgba(23, 19, 15, .78));
+  background: linear-gradient(180deg, rgba(20, 16, 13, .87), rgba(20, 16, 13, .78));
 }
 
 .leo-soft > * {
@@ -554,7 +554,7 @@ dialog.sheet[open] {
 
 .btn:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 2px #17130F, 0 0 0 4px #FF4D86;
+  box-shadow: 0 0 0 2px #14100D, 0 0 0 4px #FF4D86;
 }
 
 .btn-solid {
@@ -578,7 +578,7 @@ dialog.sheet[open] {
 }
 
 .btn-line:hover {
-  color: #17130F;
+  color: #14100D;
   border-color: transparent;
 }
 
@@ -880,7 +880,7 @@ dialog.sheet[open] {
 }
 
 .tile:focus-visible .media {
-  box-shadow: 0 0 0 2px #17130F, 0 0 0 4px #FF4D86;
+  box-shadow: 0 0 0 2px #14100D, 0 0 0 4px #FF4D86;
 }
 
 /* ==========================================================================
@@ -917,7 +917,7 @@ dialog.sheet[open] {
 
 .card-espresso {
   background: #2A221C;
-  color: #17130F;
+  color: #14100D;
   border: 1px solid rgba(200, 151, 79, .25);
   box-shadow: 0 12px 30px -10px rgba(44, 30, 26, .35);
 }
@@ -985,12 +985,12 @@ dialog.sheet[open] {
   pointer-events: none;
   background:
     linear-gradient(to bottom,
-      #17130F 0,
-      rgba(23, 19, 15, .45) 10px,
-      rgba(23, 19, 15, 0) 22px,
-      rgba(23, 19, 15, 0) calc(100% - 22px),
-      rgba(23, 19, 15, .45) calc(100% - 10px),
-      #17130F 100%);
+      #14100D 0,
+      rgba(20, 16, 13, .45) 10px,
+      rgba(20, 16, 13, 0) 22px,
+      rgba(20, 16, 13, 0) calc(100% - 22px),
+      rgba(20, 16, 13, .45) calc(100% - 10px),
+      #14100D 100%);
 }
 
 .band-fade > * {
@@ -1010,21 +1010,21 @@ dialog.sheet[open] {
   inset: 0;
   pointer-events: none;
   background: linear-gradient(to bottom,
-    #17130F 0%,
-    rgba(23, 19, 15, .55) 40%,
-    rgba(23, 19, 15, .8) 78%,
-    #17130F 100%);
+    #14100D 0%,
+    rgba(20, 16, 13, .55) 40%,
+    rgba(20, 16, 13, .8) 78%,
+    #14100D 100%);
 }
 
 /* textured sections: keep the veil light in the middle, opaque at the seams */
 .leo-soft::before {
   background: linear-gradient(180deg,
-    #17130F 0%,
-    rgba(23, 19, 15, .9) 9%,
-    rgba(23, 19, 15, .8) 26%,
-    rgba(23, 19, 15, .8) 74%,
-    rgba(23, 19, 15, .9) 91%,
-    #17130F 100%);
+    #14100D 0%,
+    rgba(20, 16, 13, .9) 9%,
+    rgba(20, 16, 13, .8) 26%,
+    rgba(20, 16, 13, .8) 74%,
+    rgba(20, 16, 13, .9) 91%,
+    #14100D 100%);
 }
 
 /* the contact block ran long before the footer on a phone */
@@ -1090,14 +1090,14 @@ dialog.sheet[open] {
    ========================================================================== */
 .leo-soft::before {
   background: linear-gradient(180deg,
-    #17130F 0%,
-    rgba(23, 19, 15, .96) 5%,
-    rgba(23, 19, 15, .86) 14%,
-    rgba(23, 19, 15, .78) 30%,
-    rgba(23, 19, 15, .78) 70%,
-    rgba(23, 19, 15, .86) 86%,
-    rgba(23, 19, 15, .96) 95%,
-    #17130F 100%);
+    #14100D 0%,
+    rgba(20, 16, 13, .96) 5%,
+    rgba(20, 16, 13, .86) 14%,
+    rgba(20, 16, 13, .78) 30%,
+    rgba(20, 16, 13, .78) 70%,
+    rgba(20, 16, 13, .86) 86%,
+    rgba(20, 16, 13, .96) 95%,
+    #14100D 100%);
 }
 
 
@@ -1234,12 +1234,12 @@ dialog.sheet[open] {
 
 .seam::before {
   top: 0;
-  background: linear-gradient(to bottom, #17130F, rgba(23, 19, 15, 0));
+  background: linear-gradient(to bottom, #14100D, rgba(20, 16, 13, 0));
 }
 
 .seam::after {
   bottom: 0;
-  background: linear-gradient(to top, #17130F, rgba(23, 19, 15, 0));
+  background: linear-gradient(to top, #14100D, rgba(20, 16, 13, 0));
 }
 
 .seam > * {
@@ -1792,7 +1792,7 @@ main > section:first-of-type {
 /* Der Ladebildschirm war noch cremeweiss aus der hellen Fassung - mit
    cremefarbener Zahl darauf war der Zaehler praktisch unsichtbar. */
 #loader {
-  background: radial-gradient(120% 80% at 50% 18%, #241C15 0%, #17130F 62%) !important;
+  background: radial-gradient(120% 80% at 50% 18%, #241C15 0%, #14100D 62%) !important;
 }
 
 #loadname {
@@ -2004,7 +2004,7 @@ main > section:first-of-type {
     content: "";
     position: absolute;
     inset: 0;
-    background: linear-gradient(to bottom, #17130F 0%, rgba(23,19,15,.35) 22%, rgba(23,19,15,.35) 78%, #17130F 100%);
+    background: linear-gradient(to bottom, #14100D 0%, rgba(20, 16, 13,.35) 22%, rgba(20, 16, 13,.35) 78%, #14100D 100%);
   }
 }
 
@@ -2732,116 +2732,6 @@ a.slot:active,
   height: .8rem;
 }
 
-dialog.send-sheet {
-  max-width: min(30rem, 94vw);
-  overflow: hidden;
-}
-
-.send-head {
-  display: flex;
-  align-items: flex-start;
-  gap: .9rem;
-  padding: 1.4rem clamp(1.1rem, 4vw, 1.75rem) .9rem;
-}
-
-.send-check {
-  flex: 0 0 auto;
-  width: 2.75rem;
-  height: 2.75rem;
-  border-radius: 14px;
-  display: grid;
-  place-items: center;
-  color: #fff;
-  background: linear-gradient(135deg, #EE2A6E 0%, #CF1059 100%);
-  box-shadow: 0 10px 24px -10px rgba(229, 20, 95, .7);
-}
-
-.send-check svg { width: 1.45rem; height: 1.45rem; }
-
-.send-sheet.is-manual .send-check {
-  background: rgba(224, 179, 109, .16);
-  color: #E0B36D;
-  box-shadow: none;
-}
-
-.send-head h2 {
-  font-size: 1.25rem;
-  line-height: 1.2;
-  letter-spacing: -.02em;
-}
-
-.send-sub {
-  margin-top: .3rem;
-  font-size: .86rem !important;
-  line-height: 1.5 !important;
-}
-
-.send-body {
-  padding: 0 clamp(1.1rem, 4vw, 1.75rem) clamp(1.2rem, 4vw, 1.6rem);
-  max-height: calc(86vh - 6rem);
-  overflow-y: auto;
-}
-
-.send-text {
-  margin: 0;
-  max-height: 11.5rem;
-  overflow-y: auto;
-  white-space: pre-wrap;
-  word-break: break-word;
-  font-family: Inter, system-ui, sans-serif;
-  font-size: .84rem;
-  line-height: 1.55;
-  color: #F7F2EA;
-  background: rgba(20, 16, 13, .8);
-  border: 1px solid rgba(216, 168, 96, .22);
-  border-radius: 14px;
-  padding: .85rem 1rem;
-  user-select: text;
-  -webkit-user-select: text;
-}
-
-.send-sheet.is-manual .send-text {
-  border-color: rgba(224, 179, 109, .6);
-}
-
-.send-text:focus-visible {
-  outline: 2px solid #FF4D86;
-  outline-offset: 2px;
-}
-
-.send-actions {
-  display: grid;
-  gap: .6rem;
-  margin-top: 1.2rem;
-}
-
-.send-actions .btn { width: 100%; white-space: normal; text-align: center; }
-
-.send-again {
-  justify-self: center;
-  padding: .45rem .75rem;
-  border-radius: 999px;
-  font-size: .82rem;
-  color: #E0B36D;
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  transition: color .25s var(--ease-out);
-}
-
-.send-again:hover { color: #FF4D86; }
-.send-again:focus-visible { outline: 2px solid #FF4D86; outline-offset: 2px; }
-.send-again:active { transform: scale(.97); }
-
-/* on a phone the sheet rises from the bottom edge, where the thumb is */
-@media (max-width: 640px) {
-  dialog.send-sheet {
-    margin: auto auto 0;
-    max-width: 100vw;
-    width: 100vw;
-    border-radius: 22px 22px 0 0;
-    padding-bottom: env(safe-area-inset-bottom);
-  }
-}
 
 /* display rules like .btn { display: inline-flex } beat the browser's own
    [hidden] style - hidden has to mean hidden */
@@ -2930,40 +2820,6 @@ span.slot.is-pink {
 /* ==========================================================================
    ANFRAGEN ERKENNBAR MACHEN
    ========================================================================== */
-/* sheet: one line instead of three steps, the message folded away */
-.send-how {
-  margin-top: .2rem;
-  font-size: .86rem !important;
-  line-height: 1.6 !important;
-  text-align: center;
-  color: #C4B3A3;
-}
-
-.send-how b { color: #F7F2EA; font-weight: 600; }
-
-.send-peek {
-  margin-top: .9rem;
-  text-align: center;
-}
-
-.send-peek summary {
-  display: inline-block;
-  cursor: pointer;
-  padding: .35rem .7rem;
-  border-radius: 999px;
-  font-size: .8rem;
-  color: #918073;
-  list-style: none;
-  transition: color .25s var(--ease-out);
-}
-
-.send-peek summary::-webkit-details-marker { display: none; }
-.send-peek summary::after { content: " \25BE"; }
-.send-peek[open] summary::after { content: " \25B4"; }
-.send-peek summary:hover { color: #E0B36D; }
-.send-peek summary:focus-visible { outline: 2px solid #FF4D86; outline-offset: 2px; }
-.send-peek .send-text { margin-top: .5rem; text-align: left; }
-
 /* mouse users see what a click does */
 #send-tip {
   position: fixed;
@@ -3082,4 +2938,145 @@ a.slot::after {
     font-size: clamp(.72rem, 3.3vw, .8rem);
     white-space: nowrap;
   }
+}
+
+
+/* ==========================================================================
+   UEBERGAENGE
+   Every section background used to stop on a hard line, and part of the
+   gradients ended in #17130F on a #14100D page. Now there is one tone, and
+   each section's own background dissolves at its top and bottom edge, so
+   the page reads as one surface.
+   ========================================================================== */
+.from-void {
+  --tw-gradient-from: #14100D var(--tw-gradient-from-position) !important;
+  --tw-gradient-to: rgba(20, 16, 13, 0) var(--tw-gradient-to-position) !important;
+}
+
+.to-void {
+  --tw-gradient-to: #14100D var(--tw-gradient-to-position) !important;
+}
+
+.bg-void\/30 {
+  background-color: rgba(20, 16, 13, .3) !important;
+}
+
+/* colour glows behind a section fade out before its edges */
+.atmos::before {
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 22%, #000 78%, transparent 100%);
+          mask-image: linear-gradient(to bottom, transparent 0, #000 22%, #000 78%, transparent 100%);
+}
+
+/* the hero glow may run to its top (behind the header), only the foot fades */
+main > section:first-of-type.atmos::before {
+  -webkit-mask-image: linear-gradient(to bottom, #000 0, #000 70%, transparent 100%);
+          mask-image: linear-gradient(to bottom, #000 0, #000 70%, transparent 100%);
+}
+
+/* Studio Policy: the lighter panel becomes a soft band instead of a block */
+#policy {
+  isolation: isolate;
+}
+
+#policy::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: rgba(26, 21, 17, .55);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 18%, #000 82%, transparent 100%);
+          mask-image: linear-gradient(to bottom, transparent 0, #000 18%, #000 82%, transparent 100%);
+}
+
+/* the leopard band dissolves into the page above and below the ticker */
+#band {
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 26%, #000 74%, transparent 100%);
+          mask-image: linear-gradient(to bottom, transparent 0, #000 26%, #000 74%, transparent 100%);
+}
+
+/* contact: the fur starts later and softer, so the section above flows in */
+#kontakt {
+  background: linear-gradient(180deg, #14100D 0%, rgba(20, 16, 13, .96) 10%, rgba(20, 16, 13, .8) 28%, rgba(20, 16, 13, .9) 82%, #14100D 100%),
+              url('../brand_assets/leo_fur.jpg') center/cover !important;
+}
+
+
+/* ==========================================================================
+   EIN TIPP: KOPIEREN UND INSTAGRAM OEFFNEN
+   ========================================================================== */
+/* second line on a request button: what the tap does */
+.btn-sub {
+  display: block;
+  font-family: Inter, system-ui, sans-serif;
+  font-size: .72rem;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1.25;
+  opacity: .88;
+}
+
+.btn.flex-col {
+  gap: .15rem !important;
+}
+
+/* confirmation after the tap - visible when someone comes back to the page */
+#toast {
+  position: fixed;
+  left: 50%;
+  bottom: calc(1rem + env(safe-area-inset-bottom));
+  z-index: 96;
+  display: flex;
+  align-items: center;
+  gap: .7rem;
+  width: max-content;
+  max-width: min(92vw, 38rem);
+  padding: .75rem 1.1rem .75rem .8rem;
+  border-radius: 999px;
+  font-size: .84rem;
+  line-height: 1.35;
+  color: #F7F2EA;
+  background: rgba(20, 16, 13, .96);
+  border: 1px solid rgba(224, 179, 109, .45);
+  box-shadow: 0 16px 40px -12px rgba(0, 0, 0, .8), 0 0 24px -6px rgba(229, 20, 95, .25);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  pointer-events: none;
+  opacity: 0;
+  transform: translate3d(-50%, 130%, 0);
+  transition: transform .45s var(--ease-spring), opacity .3s var(--ease-out);
+}
+
+#toast.show {
+  opacity: 1;
+  transform: translate3d(-50%, 0, 0);
+}
+
+#toast .toast-icon {
+  flex: 0 0 auto;
+  width: 1.7rem;
+  height: 1.7rem;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: .85rem;
+  color: #fff;
+  background: linear-gradient(135deg, #EE2A6E 0%, #CF1059 100%);
+}
+
+/* on a phone the badge sits above the text, so the text gets the full width */
+@media (max-width: 480px) {
+  .send-hint {
+    flex-direction: column;
+    gap: .4rem;
+  }
+}
+
+/* above the price bar while it is showing */
+body:has(#pricebar.on) #toast { bottom: calc(5.2rem + env(safe-area-inset-bottom)); }
+
+/* multiply darkened the fade layer too, so contact began almost black on a
+   #14100D page; only the fur photo is darkened now */
+#kontakt {
+  background-blend-mode: normal, multiply;
 }
