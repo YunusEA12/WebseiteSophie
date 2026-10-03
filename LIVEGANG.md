@@ -9,7 +9,10 @@ Datenschutz Platzhalter enthalten, den provisorischen Link nicht öffentlich tei
 - [ ] `impressum.html`: alle rosa Platzhalter (`class="fill"`) ersetzen, Hinweiskasten löschen
 - [ ] `datenschutz.html`: Verantwortliche, Aufsichtsbehörde eintragen, Hinweiskasten löschen
 - [ ] `datenschutz.html`, Abschnitt 2: Hoster anpassen, falls die Seite nicht bei GitHub Pages bleibt
-- [ ] Ab-Preis geklärt (Set ohne Design ab 35 € oder ab 40 €)
+- [ ] Sophie ist mit den Preisen einverstanden: Spannen aus ihrer Liste stehen mit dem oberen
+      Preis da (Kurz 40 €, Level 1 +10 €, Level 2 +20 €), nur Charms und 3D-Modellierung „ab“
+- [ ] Impressum-Adresse geklärt: keine Wohnadresse nötig, aber eine Adresse, an der Post sie
+      sicher erreicht (kein Postfach), z. B. Studio in Pforzheim oder Geschäftsadresse mit Postweiterleitung
 - [ ] Sophie bestätigt: Fotos selbst gemacht, Kundinnen einverstanden
 - [ ] Impressum und Datenschutz juristisch geprüft
 

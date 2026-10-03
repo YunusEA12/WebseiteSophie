@@ -1071,9 +1071,9 @@
         if (pressed(b)) items.push({ kind: 'Extra', name: name(b), r: range(b.getAttribute('data-extra')), open: true });
       });
 
-      // A range in the price list ("35-40") is shown by its starting price,
-      // "ab 35 EUR" - one clear figure instead of two.
-      items.forEach(function (it) { if (it.r[0] !== it.r[1]) it.open = true; });
+      // A range in a price list ("35-40") counts with its upper price: one
+      // clear figure, and the visitor never pays more than what was shown.
+      items.forEach(function (it) { it.r = [it.r[1], it.r[1]]; });
       var min = 0, max = 0, open = false;
       items.forEach(function (it) { min += it.r[0]; max += it.r[1]; open = open || it.open; });
       return { solo: false, items: items, min: min, max: max, open: open };
@@ -1136,7 +1136,7 @@
         return '• ' + it.kind + ': ' + it.name + ' – ' + euro(it.r, it.open);
       });
       out.push('• Russische Maniküre: inklusive');
-      out.push('• Orientierungspreis: ' + euro([s.min, s.max], s.open));
+      out.push('• Preis laut Rechner: ' + euro([s.min, s.max], s.open));
       return out;
     }
 
@@ -1599,6 +1599,118 @@
     }
   }
 
+  /* Schwebender Tipp am Rechner: Wer dort ankommt, sieht, dass die Anfrage
+     automatisch geschrieben und kopiert wird. Nach einer Auswahl rueckt der
+     Hinweis auf Schritt 2. Geschlossen oder nach einer Anfrage kommt er auf
+     dieser Seite nicht wieder. */
+  function initCoach() {
+    var coach = document.getElementById('coach');
+    var sec = document.getElementById('preise');
+    var cta = document.getElementById('btn-calc-cta');
+    if (!coach || !sec || !cta) return;
+
+    var card = cta.parentNode;
+    var steps = coach.querySelectorAll('.coach-steps li');
+    var desk = window.matchMedia('(min-width: 1024px)');
+    var shown = false, over = false, first = true, ticking = false, timer = null;
+
+    coach.hidden = false;
+    coach.inert = true;
+    coach.setAttribute('aria-hidden', 'true');
+
+    function step(n) {
+      steps.forEach(function (li, i) {
+        li.classList.toggle('is-on', i === n);
+        li.classList.toggle('is-done', i < n);
+      });
+    }
+
+    function place() {
+      var host = desk.matches ? card : document.body;
+      if (coach.parentNode !== host) host.appendChild(coach);
+    }
+
+    function aim() {
+      if (desk.matches) {
+        // under the request button when the window has room, else above it,
+        // beside it only as a last resort (it would cover the options)
+        // (there in its compact form, and never over the price itself)
+        coach.classList.remove('at-top', 'at-side', 'is-compact');
+        var h = coach.offsetHeight;
+        var c = cta.getBoundingClientRect();
+        var spot = 'below';
+        if (c.bottom + 16 + h > innerHeight - 12) {
+          coach.classList.add('is-compact');
+          h = coach.offsetHeight;
+          var total = document.getElementById('total');
+          var roof = Math.max(80, total ? total.getBoundingClientRect().bottom + 10 : 0);
+          spot = c.top - 16 - h >= roof ? 'top' : 'side';
+          coach.classList.add('at-' + spot);
+        }
+        var y = spot === 'below' ? cta.offsetTop + cta.offsetHeight + 16
+              : spot === 'top' ? cta.offsetTop - 16 - h
+              : cta.offsetTop + cta.offsetHeight / 2 - coach.offsetHeight / 2;
+        coach.style.setProperty('--ty', Math.round(y) + 'px');
+      } else {
+        var btn = document.querySelector('#pricebar .btn');
+        if (!btn) return;
+        var b = btn.getBoundingClientRect();
+        coach.style.setProperty('--ax', Math.round(b.left + b.width / 2 - coach.offsetLeft) + 'px');
+      }
+    }
+
+    function wanted() {
+      var r = sec.getBoundingClientRect();
+      if (r.top > innerHeight * 0.45 || r.bottom < innerHeight * 0.6) return false;
+      var c = cta.getBoundingClientRect();
+      if (desk.matches) return c.top > 70 && c.bottom < innerHeight - 20;
+      // on a phone the button says it itself once it is in view
+      return c.top > innerHeight || c.bottom < 0;
+    }
+
+    function show(on) {
+      if (on === shown) return;
+      shown = on;
+      if (on) aim();
+      coach.classList.toggle('show', on);
+      coach.inert = !on;
+      coach.setAttribute('aria-hidden', on ? 'false' : 'true');
+    }
+
+    function check() {
+      ticking = false;
+      if (over) return;
+      if (!wanted()) { clearTimeout(timer); timer = null; show(false); return; }
+      if (shown || timer) return;
+      timer = setTimeout(function () {
+        timer = null;
+        if (!over && wanted()) { first = false; show(true); }
+      }, first ? 700 : 200);
+    }
+
+    function soon() {
+      if (!ticking) { ticking = true; requestAnimationFrame(check); }
+    }
+
+    function finish() {
+      over = true;
+      clearTimeout(timer);
+      show(false);
+    }
+
+    coach.querySelector('.coach-x').addEventListener('click', finish);
+    document.addEventListener('click', function (e) {
+      if (e.target.closest('[data-send]')) finish();
+      else if (e.target.closest('#preise .opt')) step(1);
+    });
+    addEventListener('scroll', soon, { passive: true });
+    addEventListener('resize', function () { place(); if (shown) aim(); soon(); });
+
+    place();
+    step(0);
+    soon();
+  }
+
   /* Am Desktop steht die Slideshow besser unten bei "Let's do your nails",
      wo sie das feste Bild ersetzt. Auf dem Handy bleibt sie oben, wo sie
      randlos wirkt. Der Knoten wandert, statt ihn doppelt anzulegen - so
@@ -1641,7 +1753,7 @@
       ['Cursor', initCustomCursor], ['ServicePeek', initServicePeek],
       ['HeroShow', initHeroShow], ['ShowcaseOrt', initShowcasePlacement], ['Lightbox', initLightbox],
       ['ServiceThumbs', initServiceThumbs], ['Marquee', initMarqueeAndParallax],
-      ['Rechner', initPriceCalculator], ['Preisleiste', initPriceBar],
+      ['Rechner', initPriceCalculator], ['Preisleiste', initPriceBar], ['Tipp', initCoach],
       ['Termine', initAppointments], ['Anfragen', initRequests]
     ].concat(SHOW_VINE_AND_PETALS ? [['Vine', initLivingVine], ['Petals', initFloatingPetals]] : [])
      .forEach(function (pair) { start(pair[0], pair[1]); });
