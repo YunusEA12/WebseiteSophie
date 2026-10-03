@@ -41,7 +41,7 @@
 <link rel="preload" href="fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="fonts/fonts.css?v=6096b837">
 <link rel="stylesheet" href="css/tailwind-base.css?v=af7c1978">
-<link rel="stylesheet" href="css/style.css?v=9469ed67">
+<link rel="stylesheet" href="css/style.css?v=5c33cf1f">
 <link rel="stylesheet" href="css/tailwind-utils.css?v=0b47f978">
 </head>
 <body class="antialiased">
@@ -919,44 +919,19 @@
   </div>
 </dialog>
 
-<!-- ============ KOPIERT ============ -->
-<!-- Instagram cannot pre-fill a message: a request button copies the text and
-     opens the chat in one tap. The buttons say so beforehand; this line
-     confirms it without getting in the way. -->
-<div id="toast" role="status" aria-live="polite">
-  <span class="toast-icon" aria-hidden="true">&#10003;</span>
-  <span id="toast-text">Nachricht kopiert &ndash; in Instagram einfügen &amp; senden</span>
-</div>
-
-<!-- Floating tip at the price calculator: appears once the calculator is in
-     view and shows that the request is written and copied automatically.
-     The script places it and moves the highlight to step 2 after a choice. -->
-<aside id="coach" aria-label="Tipp zum Preisrechner" hidden>
-  <div class="coach-in">
-    <span class="coach-arrow" aria-hidden="true"></span>
-    <div class="coach-head">
-      <span class="send-badge"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.5l1.9 5.6 5.6 1.9-5.6 1.9L12 17.5l-1.9-5.6L4.5 10l5.6-1.9L12 2.5zM19 15l.9 2.1 2.1.9-2.1.9L19 21l-.9-2.1-2.1-.9 2.1-.9L19 15z"/></svg>Automatisch</span>
-      <button type="button" class="coach-x" aria-label="Tipp schließen">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
-      </button>
-    </div>
-    <p class="coach-title">Stell dein Set zusammen &ndash; die Nachricht an Sophie schreiben wir automatisch</p>
-    <ol class="coach-steps">
-      <li class="is-on">
-        <span class="coach-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M21 4h-7M10 4H3M21 12h-9M8 12H3M21 20h-5M12 20H3M14 2v4M8 10v4M16 18v4"/></svg></span>
-        <b>Set wählen</b><span>Länge &amp; Design</span>
-      </li>
-      <li>
-        <span class="coach-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></span>
-        <b>Anfragen tippen</b><span>Nachricht wird kopiert</span>
-      </li>
-      <li>
-        <span class="coach-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 2 11 13"/><path d="M22 2 15 22 11 13 2 9 22 2z"/></svg></span>
-        <b>In Instagram</b><span>einfügen &amp; senden</span>
-      </li>
-    </ol>
-  </div>
-</aside>
+<!-- ============ HINWEIS ============ -->
+<!-- Small line floating under the header from the first second on: says
+     that the request message is written and copied automatically. The text
+     follows the section in view; after a tap it confirms the copy. -->
+<a id="hint" href="#preise" hidden>
+  <span class="hint-ico" aria-hidden="true">
+    <svg class="i-spark" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.5l1.9 5.6 5.6 1.9-5.6 1.9L12 17.5l-1.9-5.6L4.5 10l5.6-1.9L12 2.5zM19 15l.9 2.1 2.1.9-2.1.9L19 21l-.9-2.1-2.1-.9 2.1-.9L19 15z"/></svg>
+    <svg class="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>
+  </span>
+  <span class="hint-text"><span class="l"><b>Stell dein Set zusammen</b> &ndash; deine Nachricht an Sophie wird automatisch erstellt</span><span class="s"><b>Set erstellen</b> &ndash; Nachricht kommt automatisch</span></span>
+  <svg class="hint-go" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+</a>
+<p id="hint-live" class="sr-only" role="status" aria-live="polite"></p>
 
 <!-- ============ FOOTER ============ -->
 <div class="leo-tex foot-fade" aria-hidden="true"></div>
@@ -986,6 +961,6 @@
 </footer>
 
 
-<script src="js/main.js?v=263074fe" defer></script>
+<script src="js/main.js?v=d82edb18" defer></script>
 </body>
 </html>

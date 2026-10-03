@@ -978,9 +978,8 @@
   /* ==========================================================================
      SHARED: COPY A REQUEST AND SAY SO
      Instagram has no way to pre-fill a message. Every request button copies a
-     ready text instead and opens a sheet that shows it, says it is on the
-     clipboard and leads into the chat. A toast on the page went unseen: the
-     chat opened over it in the same moment.
+     ready text in the same tap and opens the chat; the hint line under the
+     header confirms the copy and is still there when someone comes back.
      ========================================================================== */
   var DM = 'https://ig.me/m/gerberxnails';   // opens the chat, not just the profile
 
@@ -1006,6 +1005,7 @@
   }
 
   var Send = { deliver: null };          // set by initRequests
+  var Hint = { flash: null };            // set by initHint
 
   // Filled in by the calculator once it runs.
   var Calc = {
@@ -1482,18 +1482,6 @@
      data-send="general"  the set if one was put together, else a hello
      ========================================================================== */
   function initRequests() {
-    var toast = document.getElementById('toast');
-    var toastText = document.getElementById('toast-text');
-    var toastT;
-
-    function say(text) {
-      if (!toast) return;
-      toastText.textContent = text;
-      toast.classList.add('show');
-      clearTimeout(toastT);
-      toastT = setTimeout(function () { toast.classList.remove('show'); }, 6000);
-    }
-
     function general() {
       var set = Calc.chosenSet && Calc.chosenSet();
       if (set && Calc.request) return Calc.request();
@@ -1508,8 +1496,7 @@
         if (close) close.click();
       }
       copyText(txt).then(function (ok) {
-        say(ok ? 'Nachricht kopiert – in Instagram ins Textfeld tippen, einfügen & senden'
-               : 'Instagram öffnet sich – schreib Sophie dort einfach direkt');
+        if (Hint.flash) Hint.flash(ok);
       });
     };
 
@@ -1548,6 +1535,121 @@
       });
       addEventListener('scroll', function () { tip.classList.remove('on'); }, { passive: true });
     }
+  }
+
+  /* Kleine Zeile unter dem Kopf: sagt von Anfang an und beim ganzen Scrollen,
+     dass die Anfrage automatisch geschrieben und kopiert wird. Der Text passt
+     sich dem Abschnitt an; nach einem Tipp bestaetigt sie das Kopieren und
+     fuehrt zurueck zu Instagram. */
+  function initHint() {
+    var el = document.getElementById('hint');
+    if (!el) return;
+    var textEl = el.querySelector('.hint-text');
+    var live = document.getElementById('hint-live');
+
+    // [bold part, rest] - long for wider screens, short for phones
+    var TEXTS = {
+      start:   { href: '#preise',
+                 l: ['Stell dein Set zusammen', ' – deine Nachricht an Sophie wird automatisch erstellt'],
+                 s: ['Set erstellen', ' – Nachricht kommt automatisch'] },
+      preise:  { href: '#btn-calc-cta',
+                 l: ['Fertig?', ' Tippe auf „anfragen“ – deine Nachricht wird automatisch kopiert'],
+                 s: ['Fertig?', ' „anfragen“ tippen – wird kopiert'] },
+      termine: { href: '#cal',
+                 l: ['Freie Uhrzeit antippen', ' – deine Anfrage wird automatisch geschrieben'],
+                 s: ['Uhrzeit antippen', ' – Anfrage kommt automatisch'] },
+      kontakt: { href: '#kontakt',
+                 l: ['Ein Tipp genügt', ' – Nachricht wird kopiert, Instagram öffnet sich'],
+                 s: ['Ein Tipp', ' – Nachricht kopiert, Instagram öffnet'] },
+      copied:  { href: DM, out: true,
+                 l: ['Nachricht kopiert', ' – in Instagram ins Textfeld tippen, einfügen & senden'],
+                 s: ['Kopiert', ' – in Instagram einfügen & senden'] },
+      failed:  { href: DM, out: true,
+                 l: ['Instagram öffnet sich', ' – schreib Sophie dort einfach direkt'],
+                 s: ['Instagram öffnet sich', ' – schreib direkt'] }
+    };
+    var ZONES = ['preise', 'termine', 'kontakt'];
+    var cur = null, flashing = false, flashT = null, swapT = null, ticking = false;
+
+    function part(cls, t) {
+      var span = document.createElement('span');
+      span.className = cls;
+      var b = document.createElement('b');
+      b.textContent = t[0];
+      span.appendChild(b);
+      span.appendChild(document.createTextNode(t[1]));
+      return span;
+    }
+
+    function render(key) {
+      var t = TEXTS[key];
+      textEl.textContent = '';
+      textEl.appendChild(part('l', t.l));
+      textEl.appendChild(part('s', t.s));
+      el.setAttribute('href', t.href);
+      if (t.out) { el.setAttribute('target', '_blank'); el.setAttribute('rel', 'noopener noreferrer'); }
+      else { el.removeAttribute('target'); el.removeAttribute('rel'); }
+      el.classList.toggle('is-done', key === 'copied');
+      // one soft light sweep across the new wording
+      el.classList.remove('sweep');
+      void el.offsetWidth;
+      el.classList.add('sweep');
+    }
+
+    function set(key) {
+      if (key === cur) return;
+      var firstTime = cur === null;
+      cur = key;
+      clearTimeout(swapT);
+      if (firstTime || reduce) { render(key); return; }
+      el.classList.add('swap');
+      swapT = setTimeout(function () { render(key); el.classList.remove('swap'); }, 170);
+    }
+
+    function zone() {
+      var y = innerHeight * 0.45;
+      for (var i = 0; i < ZONES.length; i++) {
+        var sec = document.getElementById(ZONES[i]);
+        if (!sec) continue;
+        var r = sec.getBoundingClientRect();
+        if (r.top <= y && r.bottom > y) return ZONES[i];
+      }
+      return 'start';
+    }
+
+    function check() {
+      ticking = false;
+      if (!flashing) set(zone());
+    }
+
+    function settle(ms) {
+      clearTimeout(flashT);
+      flashT = setTimeout(function () { flashing = false; check(); }, ms);
+    }
+
+    Hint.flash = function (ok) {
+      flashing = true;
+      set(ok ? 'copied' : 'failed');
+      if (live) {
+        live.textContent = ok ? 'Nachricht kopiert. In Instagram einfügen und senden.'
+                              : 'Instagram öffnet sich. Schreib Sophie dort direkt.';
+      }
+      settle(9000);
+    };
+
+    // back from Instagram: the confirmation should still be readable
+    document.addEventListener('visibilitychange', function () {
+      if (!document.hidden && flashing) settle(7000);
+    });
+
+    addEventListener('scroll', function () {
+      if (!ticking) { ticking = true; requestAnimationFrame(check); }
+    }, { passive: true });
+
+    el.hidden = false;
+    check();
+    // after the loading flower has gone
+    setTimeout(function () { el.classList.add('on'); }, reduce ? 0 : 1400);
   }
 
   /* ==========================================================================
@@ -1599,118 +1701,6 @@
     }
   }
 
-  /* Schwebender Tipp am Rechner: Wer dort ankommt, sieht, dass die Anfrage
-     automatisch geschrieben und kopiert wird. Nach einer Auswahl rueckt der
-     Hinweis auf Schritt 2. Geschlossen oder nach einer Anfrage kommt er auf
-     dieser Seite nicht wieder. */
-  function initCoach() {
-    var coach = document.getElementById('coach');
-    var sec = document.getElementById('preise');
-    var cta = document.getElementById('btn-calc-cta');
-    if (!coach || !sec || !cta) return;
-
-    var card = cta.parentNode;
-    var steps = coach.querySelectorAll('.coach-steps li');
-    var desk = window.matchMedia('(min-width: 1024px)');
-    var shown = false, over = false, first = true, ticking = false, timer = null;
-
-    coach.hidden = false;
-    coach.inert = true;
-    coach.setAttribute('aria-hidden', 'true');
-
-    function step(n) {
-      steps.forEach(function (li, i) {
-        li.classList.toggle('is-on', i === n);
-        li.classList.toggle('is-done', i < n);
-      });
-    }
-
-    function place() {
-      var host = desk.matches ? card : document.body;
-      if (coach.parentNode !== host) host.appendChild(coach);
-    }
-
-    function aim() {
-      if (desk.matches) {
-        // under the request button when the window has room, else above it,
-        // beside it only as a last resort (it would cover the options)
-        // (there in its compact form, and never over the price itself)
-        coach.classList.remove('at-top', 'at-side', 'is-compact');
-        var h = coach.offsetHeight;
-        var c = cta.getBoundingClientRect();
-        var spot = 'below';
-        if (c.bottom + 16 + h > innerHeight - 12) {
-          coach.classList.add('is-compact');
-          h = coach.offsetHeight;
-          var total = document.getElementById('total');
-          var roof = Math.max(80, total ? total.getBoundingClientRect().bottom + 10 : 0);
-          spot = c.top - 16 - h >= roof ? 'top' : 'side';
-          coach.classList.add('at-' + spot);
-        }
-        var y = spot === 'below' ? cta.offsetTop + cta.offsetHeight + 16
-              : spot === 'top' ? cta.offsetTop - 16 - h
-              : cta.offsetTop + cta.offsetHeight / 2 - coach.offsetHeight / 2;
-        coach.style.setProperty('--ty', Math.round(y) + 'px');
-      } else {
-        var btn = document.querySelector('#pricebar .btn');
-        if (!btn) return;
-        var b = btn.getBoundingClientRect();
-        coach.style.setProperty('--ax', Math.round(b.left + b.width / 2 - coach.offsetLeft) + 'px');
-      }
-    }
-
-    function wanted() {
-      var r = sec.getBoundingClientRect();
-      if (r.top > innerHeight * 0.45 || r.bottom < innerHeight * 0.6) return false;
-      var c = cta.getBoundingClientRect();
-      if (desk.matches) return c.top > 70 && c.bottom < innerHeight - 20;
-      // on a phone the button says it itself once it is in view
-      return c.top > innerHeight || c.bottom < 0;
-    }
-
-    function show(on) {
-      if (on === shown) return;
-      shown = on;
-      if (on) aim();
-      coach.classList.toggle('show', on);
-      coach.inert = !on;
-      coach.setAttribute('aria-hidden', on ? 'false' : 'true');
-    }
-
-    function check() {
-      ticking = false;
-      if (over) return;
-      if (!wanted()) { clearTimeout(timer); timer = null; show(false); return; }
-      if (shown || timer) return;
-      timer = setTimeout(function () {
-        timer = null;
-        if (!over && wanted()) { first = false; show(true); }
-      }, first ? 700 : 200);
-    }
-
-    function soon() {
-      if (!ticking) { ticking = true; requestAnimationFrame(check); }
-    }
-
-    function finish() {
-      over = true;
-      clearTimeout(timer);
-      show(false);
-    }
-
-    coach.querySelector('.coach-x').addEventListener('click', finish);
-    document.addEventListener('click', function (e) {
-      if (e.target.closest('[data-send]')) finish();
-      else if (e.target.closest('#preise .opt')) step(1);
-    });
-    addEventListener('scroll', soon, { passive: true });
-    addEventListener('resize', function () { place(); if (shown) aim(); soon(); });
-
-    place();
-    step(0);
-    soon();
-  }
-
   /* Am Desktop steht die Slideshow besser unten bei "Let's do your nails",
      wo sie das feste Bild ersetzt. Auf dem Handy bleibt sie oben, wo sie
      randlos wirkt. Der Knoten wandert, statt ihn doppelt anzulegen - so
@@ -1753,8 +1743,8 @@
       ['Cursor', initCustomCursor], ['ServicePeek', initServicePeek],
       ['HeroShow', initHeroShow], ['ShowcaseOrt', initShowcasePlacement], ['Lightbox', initLightbox],
       ['ServiceThumbs', initServiceThumbs], ['Marquee', initMarqueeAndParallax],
-      ['Rechner', initPriceCalculator], ['Preisleiste', initPriceBar], ['Tipp', initCoach],
-      ['Termine', initAppointments], ['Anfragen', initRequests]
+      ['Rechner', initPriceCalculator], ['Preisleiste', initPriceBar],
+      ['Termine', initAppointments], ['Hinweis', initHint], ['Anfragen', initRequests]
     ].concat(SHOW_VINE_AND_PETALS ? [['Vine', initLivingVine], ['Petals', initFloatingPetals]] : [])
      .forEach(function (pair) { start(pair[0], pair[1]); });
   }

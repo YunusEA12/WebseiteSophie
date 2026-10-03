@@ -3020,50 +3020,6 @@ main > section:first-of-type.atmos::before {
   gap: .15rem !important;
 }
 
-/* confirmation after the tap - visible when someone comes back to the page */
-#toast {
-  position: fixed;
-  left: 50%;
-  bottom: calc(1rem + env(safe-area-inset-bottom));
-  z-index: 96;
-  display: flex;
-  align-items: center;
-  gap: .7rem;
-  width: max-content;
-  max-width: min(92vw, 38rem);
-  padding: .75rem 1.1rem .75rem .8rem;
-  border-radius: 999px;
-  font-size: .84rem;
-  line-height: 1.35;
-  color: #F7F2EA;
-  background: rgba(20, 16, 13, .96);
-  border: 1px solid rgba(224, 179, 109, .45);
-  box-shadow: 0 16px 40px -12px rgba(0, 0, 0, .8), 0 0 24px -6px rgba(229, 20, 95, .25);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  pointer-events: none;
-  opacity: 0;
-  transform: translate3d(-50%, 130%, 0);
-  transition: transform .45s var(--ease-spring), opacity .3s var(--ease-out);
-}
-
-#toast.show {
-  opacity: 1;
-  transform: translate3d(-50%, 0, 0);
-}
-
-#toast .toast-icon {
-  flex: 0 0 auto;
-  width: 1.7rem;
-  height: 1.7rem;
-  border-radius: 50%;
-  display: grid;
-  place-items: center;
-  font-size: .85rem;
-  color: #fff;
-  background: linear-gradient(135deg, #EE2A6E 0%, #CF1059 100%);
-}
-
 /* on a phone the badge sits above the text, so the text gets the full width */
 @media (max-width: 480px) {
   .send-hint {
@@ -3071,9 +3027,6 @@ main > section:first-of-type.atmos::before {
     gap: .4rem;
   }
 }
-
-/* above the price bar while it is showing */
-body:has(#pricebar.on) #toast { bottom: calc(5.2rem + env(safe-area-inset-bottom)); }
 
 /* multiply darkened the fade layer too, so contact began almost black on a
    #14100D page; only the fur photo is darkened now */
@@ -3083,252 +3036,146 @@ body:has(#pricebar.on) #toast { bottom: calc(5.2rem + env(safe-area-inset-bottom
 
 
 /* ==========================================================================
-   TIPP AM PREISRECHNER
-   Schwebt ein, sobald der Rechner im Bild ist: Am Handy ueber der
-   Preisleiste mit Pfeil auf ihren Knopf, am Computer unter dem Knopf der
-   Preiskarte (bei niedrigen Fenstern darueber, notfalls daneben).
+   HINWEIS-ZEILE
+   Klein und ruhig unter dem Kopf, von Anfang an: sagt, dass die Nachricht
+   automatisch entsteht. Der Text folgt dem Abschnitt, nach einem Tipp
+   bestaetigt dieselbe Zeile das Kopieren.
    ========================================================================== */
-#coach {
+#hint {
   position: fixed;
-  left: .75rem;
-  right: .75rem;
-  bottom: calc(1rem + env(safe-area-inset-bottom));
-  z-index: 69;
-  max-width: 26rem;
+  top: calc(3.95rem + env(safe-area-inset-top));
+  left: 0;
+  right: 0;
+  z-index: 79;
+  width: max-content;
+  max-width: calc(100vw - 1.5rem);
   margin-inline: auto;
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  padding: .28rem .7rem .28rem .28rem;
+  overflow: hidden;
+  border-radius: 999px;
+  font-family: Inter, system-ui, sans-serif;
+  font-size: .76rem;
+  line-height: 1.3;
+  white-space: nowrap;
+  text-decoration: none;
+  color: #CDBFAE;
+  background: rgba(20, 16, 13, .93);
+  border: 1px solid rgba(224, 179, 109, .26);
+  box-shadow:
+    inset 0 1px 0 rgba(247, 242, 234, .05),
+    0 10px 26px -14px rgba(0, 0, 0, .85),
+    0 6px 18px -12px rgba(229, 20, 95, .35);
+  backdrop-filter: blur(18px) saturate(1.2);
+  -webkit-backdrop-filter: blur(18px) saturate(1.2);
   opacity: 0;
-  transform: translate3d(0, 18px, 0) scale(.96);
-  transform-origin: var(--ax, 80%) 100%;
-  pointer-events: none;
-  transition: opacity .3s var(--ease-out), transform .6s var(--ease-spring);
+  transform: translate3d(0, -8px, 0);
+  transition: opacity .45s var(--ease-out), transform .6s var(--ease-spring);
 }
 
-#coach.show {
+@media (min-width: 640px) {
+  #hint { top: calc(4.35rem + env(safe-area-inset-top)); }
+}
+
+#hint.on {
   opacity: 1;
   transform: none;
-  pointer-events: auto;
 }
 
-@media (max-width: 1023px) {
-  body:has(#pricebar.on) #coach { bottom: calc(5.4rem + env(safe-area-inset-bottom)); }
-  body:not(:has(#pricebar.on)) #coach .coach-arrow { opacity: 0; }
-}
-
-.coach-in {
-  position: relative;
-  padding: .85rem 1rem 1rem;
-  border-radius: 20px;
-  color: #F7F2EA;
-  background:
-    radial-gradient(120% 90% at 0% 0%, rgba(229, 20, 95, .17) 0%, rgba(229, 20, 95, 0) 60%),
-    radial-gradient(90% 80% at 100% 100%, rgba(224, 179, 109, .13) 0%, rgba(224, 179, 109, 0) 60%),
-    rgba(26, 21, 17, .95);
-  border: 1px solid rgba(224, 179, 109, .34);
-  box-shadow:
-    inset 0 1px 0 rgba(247, 242, 234, .06),
-    0 24px 50px -18px rgba(0, 0, 0, .9),
-    0 14px 36px -18px rgba(229, 20, 95, .55);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-  animation: coachFloat 5s ease-in-out infinite;
-}
-
-@keyframes coachFloat {
-  0%, 100% { transform: translate3d(0, 0, 0); }
-  50%      { transform: translate3d(0, -4px, 0); }
-}
-
-/* small diamond pointing at the request button */
-.coach-arrow {
-  position: absolute;
-  bottom: -7px;
-  left: calc(var(--ax, 80%) - 7px);
-  width: 14px;
-  height: 14px;
-  background: #221B15;
-  border: solid rgba(224, 179, 109, .34);
-  border-width: 0 1px 1px 0;
-  transform: rotate(45deg);
-  transition: opacity .2s var(--ease-out);
-}
-
-.coach-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: .75rem;
-}
-
-.coach-x {
-  flex: 0 0 auto;
-  width: 2.25rem;
-  height: 2.25rem;
-  margin: -.35rem -.45rem -.35rem 0;
-  display: grid;
-  place-items: center;
-  border-radius: 50%;
-  color: #CDBFAE;
-  background: rgba(247, 242, 234, .06);
-  border: 1px solid rgba(247, 242, 234, .1);
-  cursor: pointer;
-  transition: transform .35s var(--ease-spring);
-}
-
-.coach-x svg { width: 1rem; height: 1rem; }
-.coach-x:hover { color: #F7F2EA; background: rgba(247, 242, 234, .12); transform: rotate(90deg); }
-.coach-x:focus-visible { outline: 2px solid #E0B36D; outline-offset: 2px; }
-.coach-x:active { transform: rotate(90deg) scale(.88); }
-
-.coach-title {
-  margin-top: .6rem;
-  font-family: "Space Grotesk", sans-serif;
-  font-size: .98rem;
-  font-weight: 700;
-  line-height: 1.3;
-  letter-spacing: -.01em;
-  color: #F7F2EA;
-}
-
-.coach-steps {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: .4rem;
-  margin: .9rem 0 0;
-  padding: 0;
-  list-style: none;
-}
-
-.coach-steps li {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  font-size: .7rem;
-  line-height: 1.3;
-  color: #A8998A;
-}
-
-.coach-steps b {
-  font-size: .76rem;
+#hint b {
   font-weight: 600;
   color: #F7F2EA;
 }
 
-/* dotted line from the previous step's circle to this one */
-.coach-steps li + li::before {
-  content: "";
-  position: absolute;
-  top: 1.1rem;
-  right: calc(50% + 1.1rem);
-  width: calc(100% - 1.8rem);
-  height: 1px;
-  background: repeating-linear-gradient(90deg, rgba(224, 179, 109, .5) 0 4px, rgba(224, 179, 109, 0) 4px 8px);
+#hint:hover { background: rgba(30, 24, 19, .96); border-color: rgba(224, 179, 109, .45); }
+#hint:focus-visible { outline: 2px solid #E0B36D; outline-offset: 3px; }
+#hint.on:active { transform: scale(.97); }
+
+.hint-text {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: opacity .16s var(--ease-out), transform .35s var(--ease-spring);
 }
 
-.coach-ico {
-  position: relative;
-  width: 2.2rem;
-  height: 2.2rem;
-  margin-bottom: .35rem;
+#hint.swap .hint-text {
+  opacity: 0;
+  transform: translate3d(0, 3px, 0);
+}
+
+/* short wording on phones */
+.hint-text .s { display: none; }
+
+@media (max-width: 639px) {
+  #hint { font-size: .73rem; }
+  .hint-text .l { display: none; }
+  .hint-text .s { display: inline; }
+}
+
+.hint-ico {
+  flex: 0 0 auto;
+  width: 1.5rem;
+  height: 1.5rem;
   display: grid;
   place-items: center;
   border-radius: 50%;
-  color: #E0B36D;
-  background: rgba(224, 179, 109, .08);
-  border: 1px solid rgba(224, 179, 109, .3);
-}
-
-.coach-ico svg { width: 1rem; height: 1rem; }
-
-.coach-steps li.is-done .coach-ico {
   color: #14100D;
-  background: #E0B36D;
-  border-color: transparent;
+  background: linear-gradient(135deg, #F0C983 0%, #C8974F 100%);
+  box-shadow: 0 3px 10px -4px rgba(224, 179, 109, .7);
 }
 
-.coach-steps li.is-on .coach-ico {
-  color: #fff;
-  background: linear-gradient(135deg, #EE2A6E 0%, #CF1059 100%);
-  border-color: transparent;
-  box-shadow: 0 6px 16px -6px rgba(229, 20, 95, .75);
+.hint-ico svg {
+  grid-area: 1 / 1;
+  width: .82rem;
+  height: .82rem;
+  transition: opacity .2s var(--ease-out), transform .4s var(--ease-spring);
 }
 
-.coach-steps li.is-on .coach-ico::after {
+.hint-ico .i-spark { animation: hintTwinkle 7s ease-in-out infinite; }
+.hint-ico .i-check { opacity: 0; transform: scale(.4); }
+
+@keyframes hintTwinkle {
+  0%, 86%, 100% { transform: none; }
+  91%           { transform: scale(1.22) rotate(18deg); }
+}
+
+.hint-go {
+  flex: 0 0 auto;
+  width: .85rem;
+  height: .85rem;
+  margin-left: -.1rem;
+  color: #E0B36D;
+  transition: transform .35s var(--ease-spring);
+}
+
+#hint:hover .hint-go { transform: translate3d(3px, 0, 0); }
+
+/* after a tap: the copy is confirmed in pink */
+#hint.is-done { border-color: rgba(238, 42, 110, .55); }
+#hint.is-done .hint-ico { color: #fff; background: linear-gradient(135deg, #EE2A6E 0%, #CF1059 100%); box-shadow: 0 3px 10px -4px rgba(229, 20, 95, .8); }
+#hint.is-done .i-spark { opacity: 0; transform: scale(.4) rotate(-40deg); animation: none; }
+#hint.is-done .i-check { opacity: 1; transform: none; }
+
+/* one soft light sweep whenever the wording changes */
+#hint::after {
   content: "";
   position: absolute;
-  inset: -4px;
-  border-radius: 50%;
-  border: 1.5px solid rgba(238, 42, 110, .65);
-  animation: coachPulse 1.8s var(--ease-out) infinite;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(100deg, rgba(247, 242, 234, 0) 30%, rgba(247, 242, 234, .13) 50%, rgba(247, 242, 234, 0) 70%);
+  transform: translate3d(-110%, 0, 0);
 }
 
-@keyframes coachPulse {
-  0%   { transform: scale(.85); opacity: .9; }
-  100% { transform: scale(1.4);  opacity: 0; }
-}
+#hint.sweep::after { animation: hintSweep 1.1s var(--ease-out); }
 
-/* computer: right under the request button, over the hint that says the
-   same, pointing up at the button */
-@media (min-width: 1024px) {
-  #coach {
-    position: absolute;
-    top: var(--ty, calc(100% + 18px));
-    bottom: auto;
-    left: 1.75rem;
-    right: 1.75rem;
-    max-width: none;
-    transform: translate3d(0, -10px, 0) scale(.97);
-    transform-origin: 50% 0;
-  }
-
-  #coach .coach-arrow {
-    top: -7px;
-    bottom: auto;
-    left: calc(50% - 7px);
-    border-width: 1px 0 0 1px;
-    background: #2A1A19;
-  }
-
-  #coach.is-compact .coach-title { display: none; }
-  #coach.is-compact .coach-steps { margin-top: .75rem; }
-
-  /* window too low for that: above the button, pointing down */
-  #coach.at-top {
-    transform: translate3d(0, 10px, 0) scale(.97);
-    transform-origin: 50% 100%;
-  }
-
-  #coach.at-top .coach-arrow {
-    top: auto;
-    bottom: -7px;
-    border-width: 0 1px 1px 0;
-    background: #221B15;
-  }
-
-  /* not even that: beside the button, pointing right */
-  #coach.at-side {
-    top: var(--ty, 50%);
-    left: auto;
-    right: calc(100% + 20px);
-    width: 21rem;
-    transform: translate3d(12px, 0, 0) scale(.97);
-    transform-origin: 100% 50%;
-  }
-
-  #coach.at-side .coach-arrow {
-    top: calc(50% - 7px);
-    left: auto;
-    right: -7px;
-    border-width: 1px 1px 0 0;
-    background: #211A15;
-  }
-
-  #coach.show { transform: none; }
+@keyframes hintSweep {
+  to { transform: translate3d(110%, 0, 0); }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  #coach { transition: opacity .2s linear; }
-  .coach-in { animation: none; }
-  .coach-steps li.is-on .coach-ico::after { animation: none; opacity: 0; }
+  #hint, .hint-text { transition: opacity .2s linear; }
+  .hint-ico .i-spark { animation: none; }
+  #hint.sweep::after { animation: none; }
 }
