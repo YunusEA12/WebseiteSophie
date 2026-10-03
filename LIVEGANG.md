@@ -20,10 +20,44 @@ Datenschutz Platzhalter enthalten, den provisorischen Link nicht öffentlich tei
 
 - [ ] In `index.html`, `impressum.html`, `datenschutz.html` die Zeile
       `<meta name="robots" content="noindex, nofollow">` samt Kommentar entfernen
-- [ ] Domain `gerberxnails.de` auf den Hoster zeigen lassen; bei GitHub Pages eine
-      Datei `CNAME` mit `gerberxnails.de` anlegen und „Enforce HTTPS“ aktivieren
+- [ ] Domain `gerberxnails.de` verbinden (siehe Abschnitt „Domain bei IONOS“ unten)
 - [ ] `node stamp.mjs` ausführen, dann committen und pushen
 - [ ] Freie Termine: Google-Tabelle anlegen und als CSV im Web veröffentlichen; den Link trägt Claude in `tools/termine-quelle.txt` ein
+
+## Domain bei IONOS
+
+Kauf: nur die Domain. Kein Hosting, kein Baukasten, kein SSL-Zertifikat (HTTPS macht
+GitHub kostenlos). Als Inhaberin Sophie eintragen. Bei `.de` sind die Daten von
+Privatpersonen im öffentlichen Whois nicht sichtbar.
+
+Verbinden (erst, wenn Impressum und Datenschutz ausgefüllt sind):
+
+1. GitHub zuerst: Repository → Settings → Pages → Custom domain `gerberxnails.de`
+   eintragen (legt die Datei `CNAME` an). Erst danach die DNS-Einträge setzen,
+   so kann niemand die Domain zwischendurch für eine eigene Seite nutzen.
+2. IONOS → Domains → `gerberxnails.de` → DNS: die vorhandenen A- und AAAA-Einträge
+   für `@` (IONOS-Parkseite) löschen und diese setzen:
+
+   | Typ | Hostname | Wert |
+   | --- | --- | --- |
+   | A | @ | 185.199.108.153 |
+   | A | @ | 185.199.109.153 |
+   | A | @ | 185.199.110.153 |
+   | A | @ | 185.199.111.153 |
+   | AAAA | @ | 2606:50c0:8000::153 |
+   | AAAA | @ | 2606:50c0:8001::153 |
+   | AAAA | @ | 2606:50c0:8002::153 |
+   | AAAA | @ | 2606:50c0:8003::153 |
+   | CNAME | www | yunusea12.github.io |
+
+   MX-Einträge (E-Mail) nicht anfassen. Keine IONOS-„Weiterleitung“ auf github.io
+   benutzen, nur diese Einträge.
+3. Warten, bis GitHub unter Settings → Pages „DNS check successful“ zeigt (Minuten
+   bis wenige Stunden), dann „Enforce HTTPS“ anhaken.
+4. Domain bei GitHub verifizieren: Profil → Settings → Pages → „Add a domain“; den
+   angezeigten TXT-Eintrag bei IONOS anlegen.
+5. Falls eine IONOS-E-Mail genutzt wird: im IONOS-Konto den
+   Auftragsverarbeitungsvertrag (AVV) abschließen; Datenschutz Abschnitt 7 ergänzen.
 
 ## Sicherheit: die Konten schützen
 
@@ -34,8 +68,7 @@ keine Formulare). Angreifbar sind die Konten, über die sie läuft:
 - [ ] Google-Konto mit der Termin-Tabelle: Zwei-Faktor an; Tabelle nur für Sophie (und Yunus)
       bearbeitbar, nie „Jeder mit dem Link kann bearbeiten“
 - [ ] Instagram (Sophie): Zwei-Faktor an – alle Anfragen laufen dorthin
-- [ ] Domain-Anbieter: Zwei-Faktor und Domain-Sperre an; die Domain zusätzlich bei GitHub
-      verifizieren (Profil → Settings → Pages → „Add a domain“), damit sie niemand übernehmen kann
+- [ ] IONOS-Konto: Zwei-Faktor an; automatische Verlängerung der Domain anlassen
 - [ ] Im Impressum eine eigene Geschäfts-E-Mail nutzen (Spam-Roboter lesen sie mit)
 
 ## Nach dem Start
