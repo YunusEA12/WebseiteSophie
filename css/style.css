@@ -1120,14 +1120,14 @@ dialog.sheet[open] {
   }
 
   .card-espresso .t-display {
-    font-size: .78rem;
+    font-size: .8rem;
     line-height: 1.15;
   }
 
   .card-espresso span:last-child {
-    font-size: .6rem;
-    line-height: 1.25;
-    margin-top: .25rem;
+    font-size: .7rem;
+    line-height: 1.3;
+    margin-top: .3rem;
   }
 
   .card-espresso > div:first-child {
@@ -1678,15 +1678,22 @@ header.is-stuck .t-script {
   padding: calc(env(safe-area-inset-top) + 4.5rem) 1.5rem calc(env(safe-area-inset-bottom) + 2rem);
 }
 
+/* centred on the menu button it replaces (header padding + button) */
 #menu-close-btn {
   position: fixed !important;
-  top: max(1rem, env(safe-area-inset-top));
-  right: 1rem;
+  top: calc(.5rem + env(safe-area-inset-top));
+  right: 1.55rem;
   width: 2.75rem !important;
   height: 2.75rem !important;
   font-size: 1.35rem;
   z-index: 2;
 }
+
+@media (min-width: 640px) {
+  #menu-close-btn { top: calc(.7rem + env(safe-area-inset-top)); right: 2.2rem; }
+}
+
+#menu-close-btn:active { transform: scale(.9); }
 
 #menu nav {
   gap: .15rem !important;
@@ -2393,6 +2400,17 @@ header.legal-head {
 }
 
 .cal-empty a:hover { color: var(--pink); }
+
+/* nothing free: a way to ask anyway */
+.cal-empty .btn {
+  margin-top: 1.1rem;
+  padding: .8rem 1.4rem;
+  font-size: .88rem;
+  color: #fff;
+  text-decoration: none;
+}
+
+.cal-empty .btn:hover { color: #fff; }
 
 /* quick picks above the month */
 .cal-next {
@@ -3149,4 +3167,36 @@ main > section:first-of-type.atmos::before {
 @keyframes hintBar {
   from { transform: scaleX(1); }
   to   { transform: scaleX(0); }
+}
+
+/* 404 page */
+.not-found { text-align: center; }
+.not-found .not-found-script {
+  font-size: clamp(2.6rem, 9vw, 3.8rem);
+  line-height: 1;
+  color: #E0B36D;
+  margin-bottom: .4rem;
+}
+.not-found .btn { margin-top: .6rem; text-decoration: none; color: #fff; }
+.not-found .btn:hover { color: #fff; }
+
+/* the phone would not open Instagram by itself: the line asks for a tap */
+.hint-ico { position: relative; }
+
+#hint.is-tap .hint-ico::after {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(238, 42, 110, .7);
+  animation: hintPulse 1.6s var(--ease-out) infinite;
+}
+
+@keyframes hintPulse {
+  0%   { transform: scale(.85); opacity: .9; }
+  100% { transform: scale(1.5);  opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #hint.is-tap .hint-ico::after { animation: none; opacity: .8; }
 }

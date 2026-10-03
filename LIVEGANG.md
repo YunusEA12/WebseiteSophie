@@ -27,5 +27,6 @@ Datenschutz Platzhalter enthalten, den provisorischen Link nicht öffentlich tei
 
 ## Nach dem Start
 
-- [ ] Instagram-Bio: Link auf `https://gerberxnails.de/impressum.html` (Impressumspflicht)
+- [ ] Instagram-Bio: Link auf `https://gerberxnails.de/` und zusätzlich auf
+      `https://gerberxnails.de/impressum.html` (Impressumspflicht)
 - [ ] Vorschau testen: Link per Chat an sich selbst schicken und das Vorschaubild prüfen

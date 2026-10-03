@@ -41,7 +41,7 @@
 <link rel="preload" href="fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="fonts/fonts.css?v=6096b837">
 <link rel="stylesheet" href="css/tailwind-base.css?v=af7c1978">
-<link rel="stylesheet" href="css/style.css?v=01d1a76c">
+<link rel="stylesheet" href="css/style.css?v=9b4cdeac">
 <link rel="stylesheet" href="css/tailwind-utils.css?v=0b47f978">
 </head>
 <body class="antialiased">
@@ -187,12 +187,12 @@
 
 <!-- ============ OVERLAY MENU ============ -->
 <div id="menu" inert>
+  <!-- sits exactly where the menu button was, outside the animated card -->
+  <button id="menu-close-btn" type="button" aria-label="Menü schließen"
+          class="rounded-full border border-sand-gold/25 bg-white/5 text-chalk hover:text-neon-pink flex items-center justify-center text-sm">
+    <span>&times;</span>
+  </button>
   <div class="menu-card text-center relative">
-    <!-- Close button inside card -->
-    <button id="menu-close-btn" type="button" aria-label="Menü schließen"
-            class="absolute top-4 right-4 w-7 h-7 rounded-full border border-sand-gold/25 bg-white/5 text-chalk hover:text-neon-pink flex items-center justify-center text-sm transition-colors">
-      <span>&times;</span>
-    </button>
 
     <div class="pt-1 pb-1">
       <div class="inline-flex items-center justify-center gap-2 mb-1">
@@ -922,6 +922,7 @@
      the request message is written and copied automatically. The text
      follows the section in view; after a tap it confirms the copy and counts
      down before Instagram opens. -->
+<aside aria-label="Hinweis zur Anfrage">
 <a id="hint" href="#preise" hidden>
   <span class="hint-ico" aria-hidden="true">
     <svg class="i-spark" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.5l1.9 5.6 5.6 1.9-5.6 1.9L12 17.5l-1.9-5.6L4.5 10l5.6-1.9L12 2.5zM19 15l.9 2.1 2.1.9-2.1.9L19 21l-.9-2.1-2.1-.9 2.1-.9L19 15z"/></svg>
@@ -933,6 +934,7 @@
   <span class="hint-bar" aria-hidden="true"></span>
 </a>
 <p id="hint-live" class="sr-only" role="status" aria-live="polite"></p>
+</aside>
 
 <!-- ============ FOOTER ============ -->
 <div class="leo-tex foot-fade" aria-hidden="true"></div>
@@ -962,6 +964,6 @@
 </footer>
 
 
-<script src="js/main.js?v=3cdeae95" defer></script>
+<script src="js/main.js?v=95ed62e2" defer></script>
 </body>
 </html>

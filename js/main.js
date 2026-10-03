@@ -1005,7 +1005,7 @@
   }
 
   var Send = { deliver: null };          // set by initRequests
-  var Hint = { countdown: null };        // set by initHint
+  var Hint = { countdown: null, needTap: null };   // set by initHint
 
   // Filled in by the calculator once it runs.
   var Calc = {
@@ -1326,7 +1326,15 @@
         box.innerHTML = '';
 
         if (!upcoming.length) {
-          var empty = el('p', 'cal-empty', 'Gerade sind keine neuen Termine eingetragen. Schreib mir trotzdem gern per DM \u2013 ich melde mich, sobald es freie Slots gibt.');
+          var empty = el('div', 'cal-empty');
+          empty.appendChild(el('p', '', 'Gerade sind keine neuen Termine eingetragen. Schreib mir trotzdem gern \u2013 ich melde mich, sobald es freie Slots gibt.'));
+          var ask = el('a', 'btn btn-solid');
+          ask.href = DM;
+          ask.target = '_blank';
+          ask.rel = 'noopener noreferrer';
+          ask.setAttribute('data-send', 'general');
+          ask.appendChild(el('span', '', 'Per Instagram-DM anfragen'));
+          empty.appendChild(ask);
           box.appendChild(empty);
           return;
         }
@@ -1481,12 +1489,15 @@
     var WAIT = 2;   // seconds to read "copied" before Instagram opens
 
     // A new tab still counts as opened by the tap within a few seconds in
-    // most browsers; where it is blocked (Safari), the chat opens right here.
+    // most browsers. Where it is blocked (Safari): on a computer the chat
+    // opens right here; a phone only hands a link to the Instagram app when
+    // it is tapped, so the hint line asks for that one tap.
     function openChat() {
       var w = null;
       try { w = window.open(DM, '_blank'); } catch (err) { w = null; }
-      if (w) { try { w.opener = null; } catch (err) { /* cross-origin */ } }
-      else location.href = DM;
+      if (w) { try { w.opener = null; } catch (err) { /* cross-origin */ } return; }
+      if (fine || !Hint.needTap) location.href = DM;
+      else Hint.needTap();
     }
 
     // copy inside the tap (browsers only allow it there), say so, then the chat
@@ -1545,8 +1556,8 @@
      automatisch geschrieben und kopiert wird. Der Text passt sich dem
      Abschnitt an. Nach einem Tipp bestaetigt sie das Kopieren und zaehlt
      kurz herunter, bevor Instagram aufgeht - so bleibt Zeit, es zu lesen.
-     Am Handy sitzt sie im Rechner ueber der Preisleiste; am Seitenende
-     macht sie den Links im Fuss Platz. */
+     Am Handy sitzt sie im Rechner ueber der Preisleiste; ueber einem
+     Anfrage-Knopf und am Seitenende (Links im Fuss) tritt sie zur Seite. */
   function initHint() {
     var el = document.getElementById('hint');
     if (!el) return;
@@ -1573,6 +1584,9 @@
       waitNo:  { href: DM, out: true,
                  l: ['Instagram öffnet sich gleich', ' – schreib Sophie dort einfach direkt'],
                  s: ['Instagram öffnet sich gleich', ''] },
+      tap:     { href: DM, out: true,
+                 l: ['Kopiert', ' – jetzt hier tippen, dann öffnet sich Instagram'],
+                 s: ['Kopiert', ' – hier tippen für Instagram'] },
       copied:  { href: DM, out: true,
                  l: ['Nachricht kopiert', ' – in Instagram ins Textfeld tippen, einfügen & senden'],
                  s: ['Kopiert', ' – in Instagram einfügen & senden'] },
@@ -1605,7 +1619,8 @@
       el.setAttribute('href', t.href);
       if (t.out) { el.setAttribute('target', '_blank'); el.setAttribute('rel', 'noopener noreferrer'); }
       else { el.removeAttribute('target'); el.removeAttribute('rel'); }
-      el.classList.toggle('is-done', key === 'copied' || key === 'wait');
+      el.classList.toggle('is-done', key === 'copied' || key === 'wait' || key === 'tap');
+      el.classList.toggle('is-tap', key === 'tap');
       // one soft light sweep across the new wording; the countdown bar restarts
       el.classList.remove('sweep', 'is-counting');
       void el.offsetWidth;
@@ -1632,15 +1647,31 @@
         var sec = document.getElementById(ZONES[i]);
         if (!sec) continue;
         var r = sec.getBoundingClientRect();
-        if (r.top <= y && r.bottom > y) return ZONES[i];
+        if (r.top <= y && r.bottom > y) {
+          // no free time to tap: point to the contact button instead
+          if (ZONES[i] === 'termine' && !document.querySelector('#cal a[data-date]')) return 'kontakt';
+          return ZONES[i];
+        }
       }
       return 'start';
+    }
+
+    // a request button right under the line says it itself - step aside
+    // rather than cover it
+    var buttons = [].slice.call(document.querySelectorAll('main [data-send]'));
+    function overButton() {
+      var r = el.getBoundingClientRect();
+      for (var i = 0; i < buttons.length; i++) {
+        var q = buttons[i].getBoundingClientRect();
+        if (q.bottom > r.top - 8 && q.top < r.bottom + 8 && q.right > r.left && q.left < r.right) return true;
+      }
+      return false;
     }
 
     function check() {
       ticking = false;
       var z = zone();
-      var aside = z === 'foot' || z === 'before';
+      var aside = z === 'foot' || z === 'before' || overButton();
       el.classList.toggle('away', aside && !flashing);
       if (!flashing && !aside) set(z);
     }
@@ -1693,8 +1724,23 @@
       }, 1000);
     };
 
-    // while it counts, the line is the link: a tap opens the chat at once
-    el.addEventListener('click', function () { if (cdT) stopCount(false); });
+    // the browser would not open the chat by itself: one tap on the line
+    Hint.needTap = function () {
+      clearTimeout(swapT);
+      clearTimeout(flashT);
+      flashing = true;
+      el.classList.remove('away', 'swap');
+      cur = 'tap';
+      render('tap');
+      if (live) live.textContent = 'Tippe auf den Hinweis unten, um Instagram zu öffnen.';
+      settle(20000);
+    };
+
+    // while it counts (or waits for a tap), the line is the link to the chat
+    el.addEventListener('click', function () {
+      if (cdT) stopCount(false);
+      else if (cur === 'tap') { set('copied'); settle(9000); }
+    });
 
     // back from Instagram: the confirmation should still be readable
     document.addEventListener('visibilitychange', function () {
@@ -1736,6 +1782,8 @@
 
     var bar = document.createElement('div');
     bar.id = 'pricebar';
+    bar.setAttribute('role', 'region');
+    bar.setAttribute('aria-label', 'Dein Preis');
     bar.innerHTML =
       '<div class="inner">' +
         '<div><div class="lbl">Dein Preis</div><div class="amount"><b id="pb-total"></b> <span>&euro;</span></div></div>' +

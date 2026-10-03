@@ -3,7 +3,7 @@
 import fs from "fs";
 import crypto from "crypto";
 
-const pages = ["index.html", "impressum.html", "datenschutz.html"];
+const pages = ["index.html", "impressum.html", "datenschutz.html", "404.html"];
 
 const hash = f => crypto.createHash("md5")
   .update(fs.readFileSync(f)).digest("hex").slice(0, 8);
