@@ -826,8 +826,8 @@ dialog.sheet[open] {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  border-radius: inherit;
   transition: transform .9s var(--ease-out);
-  will-change: transform;
 }
 
 .media::before {
@@ -1774,7 +1774,7 @@ main > section:first-of-type {
 /* Der randlose Showcase braucht keinen Rahmen, nur weiche Kanten nach
    oben und unten, damit er in die Seite uebergeht. */
 #showcase .hero-slide {
-  border-radius: 0;
+  border-radius: inherit;
 }
 
 #showcase .hero-cap {
@@ -2865,4 +2865,81 @@ dialog.send-sheet {
    [hidden] style - hidden has to mean hidden */
 [hidden] {
   display: none !important;
+}
+
+
+/* ==========================================================================
+   IPHONE-KONTROLLE
+   ========================================================================== */
+
+/* Safari does not clip a child that sits on its own layer (a running
+   transition, will-change) to its parent's rounded corners - the portfolio
+   photos showed square corners. Every layer carries the radius itself, and
+   the mask makes Safari clip the frame for real. The mask would also cut
+   off a box-shadow focus ring, so the ring moves to an outline on the tile. */
+.media {
+  -webkit-mask-image: -webkit-radial-gradient(white, black);
+          mask-image: radial-gradient(white, black);
+}
+
+.media::before,
+.media::after {
+  border-radius: inherit;
+}
+
+.tile:focus-visible .media {
+  box-shadow: none;
+}
+
+.tile:focus-visible {
+  outline: 2px solid #FF4D86;
+  outline-offset: 3px;
+  border-radius: 34px;
+}
+
+@media (min-width: 640px) {
+  .tile:focus-visible { border-radius: 38px; }
+}
+
+/* A tapped option kept the hover lift and pink border on touch screens. */
+@media (hover: none), (pointer: coarse) {
+  .opt:not([aria-checked="true"]):not([aria-pressed="true"]):hover {
+    transform: none;
+    border-color: rgba(216, 168, 96, .2) !important;
+    background: rgba(26, 21, 17, .8) !important;
+  }
+}
+
+/* Calendar: every week row the same height and every time the same pill,
+   free or taken, so the month reads as one even grid. */
+.cal-grid {
+  grid-auto-rows: 1fr;
+}
+
+.cal-day {
+  justify-content: flex-start;
+}
+
+.slot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: clamp(24px, 2.2vw, 28px);
+  min-height: 0;
+  padding: 0 .1rem;
+  border: 1px solid transparent;
+  flex: 0 0 auto;
+}
+
+span.slot {
+  border-color: rgba(239, 227, 210, .08);
+  background: rgba(239, 227, 210, .025);
+}
+
+span.slot.is-pink {
+  border-color: rgba(255, 77, 134, .14);
+}
+
+.cal-day {
+  gap: clamp(.22rem, .6vw, .35rem);
 }
