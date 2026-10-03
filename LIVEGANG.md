@@ -21,7 +21,7 @@ Datenschutz Platzhalter enthalten, den provisorischen Link nicht öffentlich tei
 - [ ] Domain `gerberxnails.de` auf den Hoster zeigen lassen; bei GitHub Pages eine
       Datei `CNAME` mit `gerberxnails.de` anlegen und „Enforce HTTPS“ aktivieren
 - [ ] `node stamp.mjs` ausführen, dann committen und pushen
-- [ ] Freie Termine: Google-Tabelle einrichten, Variable `TERMINE_CSV_URL` setzen
+- [ ] Freie Termine: Google-Tabelle anlegen und als CSV im Web veröffentlichen; den Link trägt Claude in `tools/termine-quelle.txt` ein
 
 ## Nach dem Start
 

@@ -1,0 +1,3 @@
+# Link zu Sophies Termin-Tabelle: Google Tabelle > Datei > Freigeben >
+# Im Web veroeffentlichen > Kommagetrennte Werte (.csv) > Link hier einfuegen.
+# Nur die erste Zeile, die mit https:// beginnt, zaehlt.

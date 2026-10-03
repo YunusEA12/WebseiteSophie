@@ -1,6 +1,6 @@
 # Holt Sophies Termin-Tabelle und aktualisiert termine.json.
-# Aktiv erst, wenn unter Settings > Secrets and variables > Actions > Variables
-# die Variable TERMINE_CSV_URL gesetzt ist (Link "Im Web veroeffentlichen" als CSV).
+# Der Link zur Tabelle ("Im Web veroeffentlichen" als CSV) steht in
+# tools/termine-quelle.txt; solange dort keiner steht, tut der Job nichts.
 # Jede echte Aenderung wird committet; GitHub Pages baut die Seite dann neu.
 name: Termine aktualisieren
 
@@ -19,7 +19,6 @@ concurrency:
 
 jobs:
   sync:
-    if: ${{ vars.TERMINE_CSV_URL != '' }}
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
@@ -31,8 +30,6 @@ jobs:
 
       - name: Tabelle holen
         run: node tools/termine-sync.mjs
-        env:
-          TERMINE_CSV_URL: ${{ vars.TERMINE_CSV_URL }}
 
       - name: Aenderung speichern
         run: |

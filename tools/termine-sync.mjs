@@ -2,7 +2,7 @@
 // und schreibt daraus termine.json fuer die Website.
 //
 // Laeuft als GitHub Action (.github/workflows/termine.yml), geht aber auch lokal:
-//   TERMINE_CSV_URL="https://docs.google.com/.../pub?output=csv" node tools/termine-sync.mjs
+//   node tools/termine-sync.mjs        (Link aus tools/termine-quelle.txt)
 //
 // Die Website selbst fragt Google nie an - Besucher laden nur termine.json von
 // diesem Server. Die Datei wird nur neu geschrieben, wenn sich Termine geaendert
@@ -20,10 +20,22 @@ import { fileURLToPath } from "url";
 
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), "..");
 const FILE = path.join(ROOT, "termine.json");
-const URL_ = process.env.TERMINE_CSV_URL;
+
+// Where the sheet lives: the repository variable TERMINE_CSV_URL if set,
+// otherwise the first line of tools/termine-quelle.txt. A sheet published as
+// CSV is public by design and holds only dates and times, so the link may
+// sit in the repository - that way nobody has to touch the GitHub settings.
+function sourceUrl() {
+  if (process.env.TERMINE_CSV_URL) return process.env.TERMINE_CSV_URL.trim();
+  const f = path.join(ROOT, "tools", "termine-quelle.txt");
+  if (!fs.existsSync(f)) return "";
+  const line = fs.readFileSync(f, "utf8").split(/\r?\n/).map(l => l.trim()).find(l => /^https:\/\//.test(l));
+  return line || "";
+}
+const URL_ = sourceUrl();
 
 if (!URL_) {
-  console.log("TERMINE_CSV_URL ist nicht gesetzt - nichts zu tun.");
+  console.log("Noch keine Tabelle verknuepft (tools/termine-quelle.txt) - nichts zu tun.");
   process.exit(0);
 }
 
