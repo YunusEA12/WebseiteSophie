@@ -1486,7 +1486,7 @@
       return 'Hi Sophie! 💅 Ich würde gerne einen Termin bei dir anfragen. Wann hättest du Zeit?';
     }
 
-    var WAIT = 2;   // seconds to read "copied" before Instagram opens
+    var WAIT = 2.5;   // seconds to read the copied message before Instagram opens
 
     // A new tab still counts as opened by the tap within a few seconds in
     // most browsers. Where it is blocked (Safari): on a computer the chat
@@ -1722,7 +1722,8 @@
       if (open && done) done();
     }
 
-    // "copied", 2-1 in the circle and a running bar, then the chat opens
+    // "copied" with the message above, 2-1 in the circle and a running bar,
+    // then the chat opens and the message card is gone
     Hint.countdown = function (ok, secs, done, txt) {
       lastTxt = txt || '';
       lastOk = ok;
@@ -1731,7 +1732,8 @@
       clearTimeout(swapT);
       flashing = true;
       cdDone = done;
-      var left = secs;
+      var left = Math.max(1, Math.floor(secs));   // 2 -> 1, spread over the wait
+      var step = secs * 1000 / left;
       if (num) num.textContent = left;
       el.style.setProperty('--wait', secs + 's');
       el.classList.remove('away', 'swap');
@@ -1739,14 +1741,13 @@
       render(cur);
       showPeek();
       if (live) {
-        live.textContent = (ok ? 'Nachricht kopiert. ' : '') +
-                           'Instagram öffnet sich in ' + secs + ' Sekunden.';
+        live.textContent = (ok ? 'Nachricht kopiert. ' : '') + 'Instagram öffnet sich gleich.';
       }
       cdT = setInterval(function () {
         left -= 1;
         if (left > 0) { if (num) num.textContent = left; }
         else stopCount(true);
-      }, 1000);
+      }, step);
     };
 
     // the browser would not open the chat by itself: one tap on the line
@@ -1758,6 +1759,8 @@
       cur = 'tap';
       render('tap');
       showPeek();
+      // the card may cover the page briefly - the small line keeps asking
+      setTimeout(function () { if (cur === 'tap') hidePeek(); }, 3500);
       if (live) live.textContent = 'Tippe auf den Hinweis unten, um Instagram zu öffnen.';
       settle(20000);
     };
@@ -1768,9 +1771,12 @@
       else if (cur === 'tap') { hidePeek(); set('copied'); settle(9000); }
     });
 
-    // back from Instagram: the confirmation should still be readable
+    // back from Instagram: no message card any more, only the small line
+    // confirms it for a few seconds
     document.addEventListener('visibilitychange', function () {
-      if (!document.hidden && flashing) settle(7000);
+      if (document.hidden || cdT) return;
+      hidePeek();
+      if (flashing) settle(7000);
     });
 
     addEventListener('scroll', soon, { passive: true });
