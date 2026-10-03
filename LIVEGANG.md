@@ -9,7 +9,6 @@ Datenschutz Platzhalter enthalten, den provisorischen Link nicht öffentlich tei
 - [ ] `impressum.html`: alle rosa Platzhalter (`class="fill"`) ersetzen, Hinweiskasten löschen
 - [ ] `datenschutz.html`: Verantwortliche, Aufsichtsbehörde eintragen, Hinweiskasten löschen
 - [ ] `datenschutz.html`, Abschnitt 2: Hoster anpassen, falls die Seite nicht bei GitHub Pages bleibt
-- [ ] `index.html`: WhatsApp-Nummer statt `wa.me/49XXXXXXXXXX`
 - [ ] Ab-Preis geklärt (Set ohne Design ab 35 € oder ab 40 €)
 - [ ] Sophie bestätigt: Fotos selbst gemacht, Kundinnen einverstanden
 - [ ] Impressum und Datenschutz juristisch geprüft
@@ -26,4 +25,4 @@ Datenschutz Platzhalter enthalten, den provisorischen Link nicht öffentlich tei
 ## Nach dem Start
 
 - [ ] Instagram-Bio: Link auf `https://gerberxnails.de/impressum.html` (Impressumspflicht)
-- [ ] Vorschau testen: Link in WhatsApp an sich selbst schicken
+- [ ] Vorschau testen: Link per Chat an sich selbst schicken und das Vorschaubild prüfen
