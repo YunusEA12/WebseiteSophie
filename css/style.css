@@ -3200,3 +3200,159 @@ main > section:first-of-type.atmos::before {
 @media (prefers-reduced-motion: reduce) {
   #hint.is-tap .hint-ico::after { animation: none; opacity: .8; }
 }
+
+
+/* ==========================================================================
+   DEINE NACHRICHT
+   Die Nachricht als Chat-Blase: live im Preisrechner und kurz ueber der
+   Hinweis-Zeile nach dem Tippen. So sieht man, dass ein fertiger Text
+   entsteht - Instagram kann ihn nicht selbst einsetzen.
+   ========================================================================== */
+.msg-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: .25rem .75rem;
+  font-size: .72rem;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: #8E7F6C;
+}
+
+.msg-auto {
+  display: inline-flex;
+  align-items: center;
+  gap: .3rem;
+  letter-spacing: .01em;
+  text-transform: none;
+  color: #E0B36D;
+}
+
+.msg-auto::before {
+  content: "\2726";
+  font-size: .8rem;
+}
+
+/* an outgoing message: brand pink, the little corner on the sender side */
+.msg-bubble,
+.peek-bubble {
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+  color: #fff;
+  background: linear-gradient(140deg, #E5145F 0%, #A3185C 100%);
+  border-radius: 18px 18px 5px 18px;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, .14),
+    0 12px 26px -14px rgba(229, 20, 95, .75),
+    0 4px 10px -6px rgba(0, 0, 0, .5);
+}
+
+.msg-bubble {
+  margin: .65rem 0 0 1.25rem;
+  padding: .8rem .95rem;
+  font-size: .84rem;
+  line-height: 1.5;
+}
+
+.msg-bubble.bump { animation: msgBump .5s var(--ease-spring); }
+
+@keyframes msgBump {
+  from { opacity: .6; transform: translate3d(0, 4px, 0) scale(.985); }
+  to   { opacity: 1;  transform: none; }
+}
+
+/* after a tap: the copied text above the hint line */
+#msg-peek {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: calc(1rem + 2.9rem + env(safe-area-inset-bottom));
+  z-index: 79;
+  width: min(calc(100vw - 1.5rem), 23rem);
+  margin-inline: auto;
+  opacity: 0;
+  transform: translate3d(0, 12px, 0) scale(.96);
+  transform-origin: 50% 100%;
+  pointer-events: none;
+  transition: opacity .3s var(--ease-out), transform .55s var(--ease-spring);
+}
+
+#msg-peek.show {
+  opacity: 1;
+  transform: none;
+}
+
+@media (max-width: 1023px) {
+  body:has(#pricebar.on) #msg-peek { bottom: calc(5.6rem + 2.9rem + env(safe-area-inset-bottom)); }
+}
+
+.peek-card {
+  padding: .7rem .75rem .65rem;
+  border-radius: 20px;
+  background: rgba(20, 16, 13, .94);
+  border: 1px solid rgba(238, 42, 110, .45);
+  box-shadow:
+    inset 0 1px 0 rgba(247, 242, 234, .05),
+    0 18px 40px -16px rgba(0, 0, 0, .9),
+    0 10px 28px -16px rgba(229, 20, 95, .5);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+.peek-label {
+  display: flex;
+  align-items: center;
+  gap: .45rem;
+  font-size: .78rem;
+  font-weight: 600;
+  color: #F7F2EA;
+}
+
+.peek-check {
+  flex: 0 0 auto;
+  width: 1.15rem;
+  height: 1.15rem;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  font-size: .62rem;
+  color: #fff;
+  background: linear-gradient(135deg, #EE2A6E 0%, #CF1059 100%);
+}
+
+#msg-peek.is-fail .peek-check { background: #8E7F6C; }
+
+.peek-bubble {
+  margin: .5rem 0 0 1.5rem;
+  padding: .6rem .8rem;
+  font-size: .78rem;
+  line-height: 1.45;
+  max-height: calc(1.45em * 4.6 + 1.2rem);
+  overflow: hidden;
+}
+
+/* a longer message fades out softly instead of being cut mid-line */
+.peek-bubble.is-long {
+  -webkit-mask-image: linear-gradient(to bottom, #000 62%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 62%, transparent 100%);
+}
+
+.peek-how {
+  margin-top: .45rem;
+  font-size: .72rem;
+  line-height: 1.35;
+  color: #CDBFAE;
+  text-align: right;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .msg-bubble.bump { animation: none; }
+  #msg-peek { transition: opacity .2s linear; }
+}
+
+/* low laptop screens: the taller price card would hang below the window
+   while it sticks, button and all - there it simply scrolls along */
+@media (min-width: 1024px) and (max-height: 779px) {
+  #preise .lg\:sticky { position: relative !important; top: auto !important; }
+}

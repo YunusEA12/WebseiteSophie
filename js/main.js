@@ -1027,9 +1027,9 @@
   function initPriceCalculator() {
     var totalEl = document.getElementById('total');
     var preEl = document.getElementById('total-pre');
-    var listEl = document.getElementById('breakdown');
+    var bubbleEl = document.getElementById('msg-bubble');
     var ctaEl = document.getElementById('cta-label');
-    if (!totalEl || !listEl || !ctaEl) return;
+    if (!totalEl || !ctaEl) return;
 
     var touched = false;
 
@@ -1093,22 +1093,18 @@
     function render() {
       var s = state();
 
-      listEl.innerHTML = '';
-      s.items.forEach(function (it) {
-        var li = document.createElement('li');
-        li.className = 'flex items-baseline gap-3';
-        var a = document.createElement('span');
-        a.textContent = it.name + (it.note || '');
-        var b = document.createElement('span');
-        b.className = 'flex-1 border-b border-dotted border-chalk/20';
-        var c = document.createElement('span');
-        c.className = 't-display text-chalk whitespace-nowrap';
-        c.textContent = euro(it.r, it.open);
-        li.appendChild(a);
-        li.appendChild(b);
-        li.appendChild(c);
-        listEl.appendChild(li);
-      });
+      // the live message: exactly the text a tap on the button copies
+      if (bubbleEl) {
+        var text = buildInquiryText(s);
+        if (bubbleEl.textContent !== text) {
+          bubbleEl.textContent = text;
+          if (!reduce && shown) {
+            bubbleEl.classList.remove('bump');
+            void bubbleEl.offsetWidth;
+            bubbleEl.classList.add('bump');
+          }
+        }
+      }
 
       if (preEl) preEl.hidden = !s.open;
       ctaEl.textContent = (s.solo ? 'Soak Off' : 'Set') + (s.open ? ' ' : ' für ') +
@@ -1513,7 +1509,7 @@
         if (close) close.click();
       }
       copyText(txt).then(function (ok) {
-        if (Hint.countdown) Hint.countdown(ok, WAIT, openChat);
+        if (Hint.countdown) Hint.countdown(ok, WAIT, openChat, txt);
         else openChat();
       });
     };
@@ -1602,8 +1598,28 @@
     var foot = document.querySelector('footer');
     var calc = document.getElementById('preise');
     var num = el.querySelector('.i-num');
+    var peek = document.getElementById('msg-peek');
+    var peekText = peek && peek.querySelector('.peek-bubble');
+    var peekTitle = peek && peek.querySelector('.peek-title');
     var cur = null, flashing = false, flashT = null, swapT = null, ticking = false;
-    var cdT = null, cdDone = null;
+    var cdT = null, cdDone = null, lastTxt = '', lastOk = true;
+
+    // the copied text as a chat bubble above the line: this is your message
+    function showPeek() {
+      if (!peek || !lastTxt) return;
+      peekTitle.textContent = lastOk ? 'Deine Nachricht ist kopiert'
+                                     : 'Kopieren ging nicht – schreib Sophie zum Beispiel:';
+      peekText.textContent = lastTxt;
+      peek.classList.toggle('is-fail', !lastOk);
+      peek.hidden = false;
+      peekText.classList.toggle('is-long', peekText.scrollHeight > peekText.clientHeight + 2);
+      void peek.offsetWidth;
+      peek.classList.add('show');
+    }
+
+    function hidePeek() {
+      if (peek) peek.classList.remove('show');
+    }
 
     function part(cls, t) {
       var span = document.createElement('span');
@@ -1689,6 +1705,7 @@
       flashT = setTimeout(function () {
         if (cdT) return;
         flashing = false;
+        hidePeek();
         check();
       }, ms);
     }
@@ -1699,13 +1716,16 @@
       var done = cdDone;
       cdDone = null;
       el.classList.remove('is-counting');
+      hidePeek();
       set(cur === 'waitNo' ? 'failed' : 'copied');
       settle(9000);
       if (open && done) done();
     }
 
     // "copied", 2-1 in the circle and a running bar, then the chat opens
-    Hint.countdown = function (ok, secs, done) {
+    Hint.countdown = function (ok, secs, done, txt) {
+      lastTxt = txt || '';
+      lastOk = ok;
       clearInterval(cdT);
       clearTimeout(flashT);
       clearTimeout(swapT);
@@ -1717,6 +1737,7 @@
       el.classList.remove('away', 'swap');
       cur = ok ? 'wait' : 'waitNo';
       render(cur);
+      showPeek();
       if (live) {
         live.textContent = (ok ? 'Nachricht kopiert. ' : '') +
                            'Instagram öffnet sich in ' + secs + ' Sekunden.';
@@ -1736,6 +1757,7 @@
       el.classList.remove('away', 'swap');
       cur = 'tap';
       render('tap');
+      showPeek();
       if (live) live.textContent = 'Tippe auf den Hinweis unten, um Instagram zu öffnen.';
       settle(20000);
     };
@@ -1743,7 +1765,7 @@
     // while it counts (or waits for a tap), the line is the link to the chat
     el.addEventListener('click', function () {
       if (cdT) stopCount(false);
-      else if (cur === 'tap') { set('copied'); settle(9000); }
+      else if (cur === 'tap') { hidePeek(); set('copied'); settle(9000); }
     });
 
     // back from Instagram: the confirmation should still be readable
