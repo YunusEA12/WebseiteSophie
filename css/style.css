@@ -3190,3 +3190,39 @@ main > section:first-of-type.atmos::before {
   .hint-ico .i-spark { animation: none; }
   #hint.sweep::after { animation: none; }
 }
+
+/* countdown after a tap: number in the circle, a bar running out below */
+.hint-ico .i-num {
+  grid-area: 1 / 1;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: .8rem;
+  font-weight: 700;
+  line-height: 1;
+  opacity: 0;
+  transform: scale(.4);
+  transition: opacity .2s var(--ease-out), transform .4s var(--ease-spring);
+}
+
+#hint.is-counting .hint-ico { color: #fff; background: linear-gradient(135deg, #EE2A6E 0%, #CF1059 100%); }
+#hint.is-counting .i-spark,
+#hint.is-counting .i-check { opacity: 0; transform: scale(.4); animation: none; }
+#hint.is-counting .i-num { opacity: 1; transform: none; }
+
+.hint-bar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  pointer-events: none;
+  background: linear-gradient(90deg, #EE2A6E 0%, #E0B36D 100%);
+  transform: scaleX(0);
+  transform-origin: left center;
+}
+
+#hint.is-counting .hint-bar { animation: hintBar var(--wait, 3s) linear forwards; }
+
+@keyframes hintBar {
+  from { transform: scaleX(1); }
+  to   { transform: scaleX(0); }
+}

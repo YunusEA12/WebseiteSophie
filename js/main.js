@@ -1005,7 +1005,7 @@
   }
 
   var Send = { deliver: null };          // set by initRequests
-  var Hint = { flash: null };            // set by initHint
+  var Hint = { countdown: null };        // set by initHint
 
   // Filled in by the calculator once it runs.
   var Calc = {
@@ -1442,7 +1442,7 @@
         }
       }
 
-      // one listener for every free slot: prepare the request in the send sheet
+      // one listener for every free slot: copy the request, then the chat
       box.addEventListener('click', function (e) {
         var a = e.target.closest('a[data-date]');
         if (!a) return;
@@ -1453,7 +1453,7 @@
                   (place ? ' (' + place + ')' : '') + ' noch frei? Den würde ich gerne buchen.';
         var set = Calc.chosenSet && Calc.chosenSet();
         if (set) msg += '\n\nMein Wunsch-Set von deiner Website:\n' + set.join('\n');
-        if (Send.deliver) Send.deliver(a, msg);
+        if (Send.deliver) Send.deliver(a, msg, e);
       });
 
       render();
@@ -1488,22 +1488,35 @@
       return 'Hi Sophie! 💅 Ich würde gerne einen Termin bei dir anfragen. Wann hättest du Zeit?';
     }
 
-    // copy inside the tap (browsers only allow it there); the link opens the chat
-    Send.deliver = function (el, txt) {
+    var WAIT = 3;   // seconds to read "copied" before Instagram opens
+
+    // A new tab still counts as opened by the tap within a few seconds in
+    // most browsers; where it is blocked (Safari), the chat opens right here.
+    function openChat() {
+      var w = null;
+      try { w = window.open(DM, '_blank'); } catch (err) { w = null; }
+      if (w) { try { w.opener = null; } catch (err) { /* cross-origin */ } }
+      else location.href = DM;
+    }
+
+    // copy inside the tap (browsers only allow it there), say so, then the chat
+    Send.deliver = function (el, txt, e) {
+      if (e) e.preventDefault();
       var menu = document.getElementById('menu');
       if (menu && menu.classList.contains('open')) {
         var close = document.getElementById('menu-close-btn');
         if (close) close.click();
       }
       copyText(txt).then(function (ok) {
-        if (Hint.flash) Hint.flash(ok);
+        if (Hint.countdown) Hint.countdown(ok, WAIT, openChat);
+        else openChat();
       });
     };
 
     document.addEventListener('click', function (e) {
       var el = e.target.closest('[data-send]');
       if (!el) return;
-      Send.deliver(el, el.getAttribute('data-send') === 'set' && Calc.request ? Calc.request() : general());
+      Send.deliver(el, el.getAttribute('data-send') === 'set' && Calc.request ? Calc.request() : general(), e);
     });
 
     /* With a mouse: say what a click does before it happens. Phones get the
@@ -1539,9 +1552,10 @@
 
   /* Kleine Zeile unten am Bildschirm: sagt von Anfang an und beim ganzen
      Scrollen, dass die Anfrage automatisch geschrieben und kopiert wird. Der
-     Text passt sich dem Abschnitt an; nach einem Tipp bestaetigt sie das
-     Kopieren und fuehrt zurueck zu Instagram. Sie weicht der Preisleiste am
-     Handy (die sagt es selbst) und den Links im Fuss. */
+     Text passt sich dem Abschnitt an. Nach einem Tipp bestaetigt sie das
+     Kopieren und zaehlt kurz herunter, bevor Instagram aufgeht - so bleibt
+     Zeit, es zu lesen. Sie weicht der Preisleiste am Handy (die sagt es
+     selbst) und den Links im Fuss. */
   function initHint() {
     var el = document.getElementById('hint');
     if (!el) return;
@@ -1562,6 +1576,12 @@
       kontakt: { href: '#kontakt',
                  l: ['Ein Tipp genügt', ' – Nachricht wird kopiert, Instagram öffnet sich'],
                  s: ['Ein Tipp', ' – Nachricht kopiert, Instagram öffnet'] },
+      wait:    { href: DM, out: true,
+                 l: ['Nachricht kopiert', ' – gleich öffnet sich Instagram, dort nur einfügen & senden'],
+                 s: ['Kopiert', ' – gleich öffnet sich Instagram'] },
+      waitNo:  { href: DM, out: true,
+                 l: ['Instagram öffnet sich gleich', ' – schreib Sophie dort einfach direkt'],
+                 s: ['Instagram öffnet sich gleich', ''] },
       copied:  { href: DM, out: true,
                  l: ['Nachricht kopiert', ' – in Instagram ins Textfeld tippen, einfügen & senden'],
                  s: ['Kopiert', ' – in Instagram einfügen & senden'] },
@@ -1573,7 +1593,9 @@
     var foot = document.querySelector('footer');
     var bar = document.getElementById('pricebar');
     var phone = window.matchMedia('(max-width: 1023px)');
+    var num = el.querySelector('.i-num');
     var cur = null, flashing = false, flashT = null, swapT = null, ticking = false;
+    var cdT = null, cdDone = null;
 
     function part(cls, t) {
       var span = document.createElement('span');
@@ -1593,11 +1615,12 @@
       el.setAttribute('href', t.href);
       if (t.out) { el.setAttribute('target', '_blank'); el.setAttribute('rel', 'noopener noreferrer'); }
       else { el.removeAttribute('target'); el.removeAttribute('rel'); }
-      el.classList.toggle('is-done', key === 'copied');
-      // one soft light sweep across the new wording
-      el.classList.remove('sweep');
+      el.classList.toggle('is-done', key === 'copied' || key === 'wait');
+      // one soft light sweep across the new wording; the countdown bar restarts
+      el.classList.remove('sweep', 'is-counting');
       void el.offsetWidth;
       el.classList.add('sweep');
+      if (key === 'wait' || key === 'waitNo') el.classList.add('is-counting');
     }
 
     function set(key) {
@@ -1636,19 +1659,50 @@
 
     function settle(ms) {
       clearTimeout(flashT);
-      flashT = setTimeout(function () { flashing = false; check(); }, ms);
+      flashT = setTimeout(function () {
+        if (cdT) return;
+        flashing = false;
+        check();
+      }, ms);
     }
 
-    Hint.flash = function (ok) {
-      flashing = true;
-      el.classList.remove('away');
-      set(ok ? 'copied' : 'failed');
-      if (live) {
-        live.textContent = ok ? 'Nachricht kopiert. In Instagram einfügen und senden.'
-                              : 'Instagram öffnet sich. Schreib Sophie dort direkt.';
-      }
+    function stopCount(open) {
+      clearInterval(cdT);
+      cdT = null;
+      var done = cdDone;
+      cdDone = null;
+      el.classList.remove('is-counting');
+      set(cur === 'waitNo' ? 'failed' : 'copied');
       settle(9000);
+      if (open && done) done();
+    }
+
+    // "copied", 3-2-1 in the circle and a running bar, then the chat opens
+    Hint.countdown = function (ok, secs, done) {
+      clearInterval(cdT);
+      clearTimeout(flashT);
+      clearTimeout(swapT);
+      flashing = true;
+      cdDone = done;
+      var left = secs;
+      if (num) num.textContent = left;
+      el.style.setProperty('--wait', secs + 's');
+      el.classList.remove('away', 'swap');
+      cur = ok ? 'wait' : 'waitNo';
+      render(cur);
+      if (live) {
+        live.textContent = (ok ? 'Nachricht kopiert. ' : '') +
+                           'Instagram öffnet sich in ' + secs + ' Sekunden.';
+      }
+      cdT = setInterval(function () {
+        left -= 1;
+        if (left > 0) { if (num) num.textContent = left; }
+        else stopCount(true);
+      }, 1000);
     };
+
+    // while it counts, the line is the link: a tap opens the chat at once
+    el.addEventListener('click', function () { if (cdT) stopCount(false); });
 
     // back from Instagram: the confirmation should still be readable
     document.addEventListener('visibilitychange', function () {
