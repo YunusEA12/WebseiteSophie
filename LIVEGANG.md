@@ -25,6 +25,19 @@ Datenschutz Platzhalter enthalten, den provisorischen Link nicht öffentlich tei
 - [ ] `node stamp.mjs` ausführen, dann committen und pushen
 - [ ] Freie Termine: Google-Tabelle anlegen und als CSV im Web veröffentlichen; den Link trägt Claude in `tools/termine-quelle.txt` ein
 
+## Sicherheit: die Konten schützen
+
+Die Website selbst hat nichts, was man knacken könnte (kein Login, keine Datenbank,
+keine Formulare). Angreifbar sind die Konten, über die sie läuft:
+
+- [ ] GitHub-Konto (Yunus): Zwei-Faktor-Anmeldung an – wer das Konto hat, kann die Seite ändern
+- [ ] Google-Konto mit der Termin-Tabelle: Zwei-Faktor an; Tabelle nur für Sophie (und Yunus)
+      bearbeitbar, nie „Jeder mit dem Link kann bearbeiten“
+- [ ] Instagram (Sophie): Zwei-Faktor an – alle Anfragen laufen dorthin
+- [ ] Domain-Anbieter: Zwei-Faktor und Domain-Sperre an; die Domain zusätzlich bei GitHub
+      verifizieren (Profil → Settings → Pages → „Add a domain“), damit sie niemand übernehmen kann
+- [ ] Im Impressum eine eigene Geschäfts-E-Mail nutzen (Spam-Roboter lesen sie mit)
+
 ## Nach dem Start
 
 - [ ] Instagram-Bio: Link auf `https://gerberxnails.de/` und zusätzlich auf

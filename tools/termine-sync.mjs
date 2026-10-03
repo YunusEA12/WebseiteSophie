@@ -127,6 +127,9 @@ const current = JSON.parse(fs.readFileSync(FILE, "utf8"));
 const places = current.orte || [];
 const defaultPlace = places[0] ? places[0].name : "";
 
+// the place is shown as plain text on the site; keep it short and plain
+const clean = v => String(v || "").replace(/[\u0000-\u001f\u007f<>]/g, "").replace(/\s+/g, " ").trim().slice(0, 30);
+
 const termine = [];
 const problems = [];
 rows.slice(1).forEach((r, i) => {
@@ -135,7 +138,7 @@ rows.slice(1).forEach((r, i) => {
   if (!datum || !zeit) { problems.push(`Zeile ${i + 2}: "${r.join(" | ")}"`); return; }
   // keep the file small: anything older than a month is history
   if (daysBetween(datum, TODAY) > 31) return;
-  const ort = (C.place >= 0 && r[C.place]) || defaultPlace;
+  const ort = clean(C.place >= 0 && r[C.place]) || defaultPlace;
   if (ort && !places.some(p => p.name.toLowerCase() === ort.toLowerCase())) places.push({ name: ort, farbe: "gold" });
   const known = places.find(p => p.name.toLowerCase() === ort.toLowerCase());
   termine.push({ datum, zeit, ort: known ? known.name : ort, vergeben: C.taken >= 0 && TAKEN.test(r[C.taken] || "") });

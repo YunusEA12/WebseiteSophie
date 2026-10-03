@@ -576,7 +576,11 @@
       var sub = t.querySelectorAll('.media-cap > span')[1];
       img.src = src.getAttribute('src');
       img.alt = src.getAttribute('alt') || '';
-      cap.innerHTML = '<b>' + (title ? title.textContent : '') + '</b>' + (sub ? sub.textContent : '');
+      cap.textContent = '';
+      var strong = document.createElement('b');
+      strong.textContent = title ? title.textContent : '';
+      cap.appendChild(strong);
+      cap.appendChild(document.createTextNode(sub ? sub.textContent : ''));
     }
 
     function open(i) {
