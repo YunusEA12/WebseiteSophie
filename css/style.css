@@ -2692,47 +2692,6 @@ a.slot:active,
 }
 
 
-/* ==========================================================================
-   NACHRICHT BEREIT
-   Hinweis an den Knoepfen und das Fenster nach dem Klick: zeigt die
-   kopierte Nachricht und fuehrt in den Chat.
-   ========================================================================== */
-.send-hint {
-  display: flex;
-  align-items: flex-start;
-  gap: .6rem;
-  font-size: .82rem;
-  line-height: 1.5;
-  color: #E9DCCB;
-  padding: .65rem .8rem;
-  border-radius: 14px;
-  border: 1px solid rgba(224, 179, 109, .28);
-  background: rgba(224, 179, 109, .07);
-}
-
-.send-badge {
-  flex: 0 0 auto;
-  display: inline-flex;
-  align-items: center;
-  gap: .3rem;
-  margin-top: .05rem;
-  padding: .12rem .5rem .12rem .4rem;
-  border-radius: 999px;
-  font-family: "Space Grotesk", sans-serif;
-  font-size: .68rem;
-  font-weight: 700;
-  letter-spacing: .06em;
-  text-transform: uppercase;
-  color: #14100D;
-  background: #E0B36D;
-}
-
-.send-badge svg {
-  width: .8rem;
-  height: .8rem;
-}
-
-
 /* display rules like .btn { display: inline-flex } beat the browser's own
    [hidden] style - hidden has to mean hidden */
 [hidden] {
@@ -2844,33 +2803,6 @@ span.slot.is-pink {
 #send-tip.on {
   opacity: 1;
   transform: none;
-}
-
-/* the calendar says it can be tapped */
-.cal-hint {
-  display: flex;
-  align-items: center;
-  gap: .55rem;
-  margin-bottom: 1rem;
-  padding: .6rem .85rem;
-  border-radius: 14px;
-  font-size: .84rem;
-  line-height: 1.4;
-  color: #F7F2EA;
-  background: linear-gradient(90deg, rgba(255, 77, 134, .14), rgba(224, 179, 109, .08));
-  border: 1px solid rgba(255, 77, 134, .3);
-}
-
-.cal-hint-icon {
-  flex: 0 0 auto;
-  width: 1.7rem;
-  height: 1.7rem;
-  border-radius: 50%;
-  display: grid;
-  place-items: center;
-  font-size: .95rem;
-  color: #14100D;
-  background: #E0B36D;
 }
 
 .cal-chip::after {
@@ -3018,14 +2950,6 @@ main > section:first-of-type.atmos::before {
 
 .btn.flex-col {
   gap: .15rem !important;
-}
-
-/* on a phone the badge sits above the text, so the text gets the full width */
-@media (max-width: 480px) {
-  .send-hint {
-    flex-direction: column;
-    gap: .4rem;
-  }
 }
 
 /* multiply darkened the fade layer too, so contact began almost black on a

@@ -1331,16 +1331,6 @@
           return;
         }
 
-        // say it in the calendar itself: free times are buttons
-        if (free.length) {
-          var hint = el('p', 'cal-hint');
-          var icon = el('span', 'cal-hint-icon', '☝︎');
-          icon.setAttribute('aria-hidden', 'true');
-          hint.appendChild(icon);
-          hint.appendChild(el('span', '', 'Tippe auf eine freie Uhrzeit – deine Anfrage wird kopiert und Instagram öffnet sich. Dort nur einfügen & senden.'));
-          box.appendChild(hint);
-        }
-
         // quick picks: the next free slots, big enough to hit on a phone
         if (free.length) {
           var next = el('div', 'cal-next');
@@ -1474,9 +1464,9 @@
   /* ==========================================================================
      REQUESTS: ONE TAP
      Instagram cannot pre-fill a message. A request button therefore copies
-     the finished text and opens the chat with Sophie in the same tap - the
-     buttons say so beforehand ("Nachricht wird kopiert · öffnet Instagram"),
-     and a short status line confirms it. No sheet in between.
+     the finished text in the tap; the hint line says "Kopiert" for two
+     seconds and then the chat with Sophie opens. The buttons say so
+     beforehand ("Nachricht wird kopiert · öffnet Instagram").
 
      data-send="set"      the set from the calculator
      data-send="general"  the set if one was put together, else a hello
