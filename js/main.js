@@ -1312,7 +1312,9 @@
         a.setAttribute('data-date', sl.date);
         a.setAttribute('data-time', sl.time);
         a.setAttribute('data-place', sl.place);
-        a.setAttribute('aria-label', slotLabel(sl) + ', frei. Anfrage vorbereiten');
+        a.setAttribute('aria-label', slotLabel(sl) + ', frei. Anfrage schreiben');
+        var d0 = toDate(sl.date);
+        a.setAttribute('data-tip', '✨ Anfrage für ' + SHORT[d0.getDay()] + ' ' + dm(d0) + ', ' + clock(sl.time) + ' schreiben');
         if (typeof text === 'string') a.textContent = text; else a.appendChild(text);
         return a;
       }
@@ -1324,6 +1326,16 @@
           var empty = el('p', 'cal-empty', 'Gerade sind keine neuen Termine eingetragen. Schreib mir trotzdem gern per DM \u2013 ich melde mich, sobald es freie Slots gibt.');
           box.appendChild(empty);
           return;
+        }
+
+        // say it in the calendar itself: free times are buttons
+        if (free.length) {
+          var hint = el('p', 'cal-hint');
+          var icon = el('span', 'cal-hint-icon', '☝︎');
+          icon.setAttribute('aria-hidden', 'true');
+          hint.appendChild(icon);
+          hint.appendChild(el('span', '', 'Tippe auf eine freie Uhrzeit – deine Anfrage wird automatisch geschrieben.'));
+          box.appendChild(hint);
         }
 
         // quick picks: the next free slots, big enough to hit on a phone
@@ -1431,7 +1443,6 @@
       box.addEventListener('click', function (e) {
         var a = e.target.closest('a[data-date]');
         if (!a) return;
-        e.preventDefault();
         var d = toDate(a.getAttribute('data-date'));
         var time = clock(a.getAttribute('data-time'));
         var place = a.getAttribute('data-place');
@@ -1439,33 +1450,46 @@
                   (place ? ' (' + place + ')' : '') + ' noch frei? Den würde ich gerne buchen.';
         var set = Calc.chosenSet && Calc.chosenSet();
         if (set) msg += '\n\nMein Wunsch-Set von deiner Website:\n' + set.join('\n');
-        Send.open(msg);
+        if (Send.deliver) Send.deliver(a, msg, 'auto', e);
       });
 
       render();
+
+      // once, when the month comes into view: the free times glow briefly
+      if (!reduce && 'IntersectionObserver' in window) {
+        var seen = new IntersectionObserver(function (es) {
+          if (!es[0].isIntersecting) return;
+          seen.disconnect();
+          box.classList.add('is-hinting');
+          setTimeout(function () { box.classList.remove('is-hinting'); }, 3200);
+        }, { threshold: .35 });
+        seen.observe(box);
+      }
     }
   }
 
   /* ==========================================================================
      SEND SHEET
-     data-send="set"      the set from the calculator
-     data-send="general"  the set if one was put together, else a short hello
-     data-send="whatsapp" WhatsApp takes the text in the link itself; until
-                          Sophie's number is in, it falls back to Instagram
+     Every request button writes the message for the visitor.
+
+     WhatsApp can carry text in the link: once Sophie's number is in the
+     WhatsApp button, every request goes straight into her WhatsApp chat with
+     the message already typed - no sheet, just "Senden".
+     Instagram cannot be pre-filled. Until then (and for the explicit
+     Instagram button) the text is copied and a short sheet says so, then
+     opens the Instagram chat.
+
+     data-send="set"        the set from the calculator
+     data-send="general"    the set if one was put together, else a hello
+     data-send="whatsapp"   the WhatsApp button
+     data-channel="instagram" keeps a button on Instagram
      ========================================================================== */
   function initSendSheet() {
     var dlg = document.getElementById('dlg-send');
-    if (!dlg || typeof dlg.showModal !== 'function') return;   // links keep working as plain links
-
-    var pre = document.getElementById('send-text');
-    var title = document.getElementById('t-send');
-    var sub = document.getElementById('send-sub');
-    var wa = document.getElementById('send-wa');
-    var again = document.getElementById('send-again');
     var waBtn = document.getElementById('btn-whatsapp');
     var waBase = waBtn ? (waBtn.getAttribute('href') || '').split('?')[0] : '';
     var hasWa = /wa\.me\/\d{8,}$/.test(waBase);
-    var current = '';
+    var canSheet = !!dlg && typeof dlg.showModal === 'function';
 
     function general() {
       var set = Calc.chosenSet && Calc.chosenSet();
@@ -1475,55 +1499,109 @@
 
     function waLink(txt) { return waBase + '?text=' + encodeURIComponent(txt); }
 
-    function state(ok) {
-      if (ok) {
-        title.textContent = 'Deine Nachricht ist kopiert';
-        sub.textContent = 'Sie liegt in deiner Zwischenablage. Du musst sie nur noch einfügen und abschicken.';
-      } else {
-        title.textContent = 'Deine Nachricht ist fertig';
-        sub.textContent = 'Kopieren hat hier nicht geklappt: Halte den Text unten gedrückt oder markiere ihn, kopiere ihn und füge ihn im Chat ein.';
-      }
-      dlg.classList.toggle('is-manual', !ok);
+    var pre, title, sub, wa, again, peek, current = '';
+    if (canSheet) {
+      pre = document.getElementById('send-text');
+      title = document.getElementById('t-send');
+      sub = document.getElementById('send-sub');
+      wa = document.getElementById('send-wa');
+      again = document.getElementById('send-again');
+      peek = document.getElementById('send-peek');
+
+      var state = function (ok) {
+        if (ok) {
+          title.textContent = 'Deine Nachricht ist fertig';
+          sub.textContent = 'Sie ist schon kopiert. Im Chat nur noch einfügen und senden.';
+        } else {
+          title.textContent = 'Deine Nachricht ist fertig';
+          sub.textContent = 'Kopieren hat hier nicht geklappt: Halte den Text unten gedrückt, kopiere ihn und füge ihn im Chat ein.';
+        }
+        dlg.classList.toggle('is-manual', !ok);
+        // the text only needs to be on screen when it has to be copied by hand
+        if (peek) peek.open = !ok;
+      };
+
+      Send.open = function (txt) {
+        current = txt;
+        pre.textContent = txt;
+        again.textContent = 'Nochmal kopieren';
+        wa.hidden = !hasWa;
+        if (hasWa) wa.href = waLink(txt);
+        if (peek) peek.open = false;
+        state(true);
+        copyText(txt).then(state);
+        if (!dlg.open) dlg.showModal();
+      };
+
+      again.addEventListener('click', function () {
+        copyText(current).then(function (ok) {
+          state(ok);
+          again.textContent = ok ? 'Kopiert ✓' : 'Nochmal kopieren';
+        });
+      });
     }
 
-    Send.open = function (txt) {
-      current = txt;
-      pre.textContent = txt;
-      again.textContent = 'Nochmal kopieren';
-      wa.hidden = !hasWa;
-      if (hasWa) wa.href = waLink(txt);
-      state(true);
-      copyText(txt).then(state);
-      if (!dlg.open) dlg.showModal();
-    };
-
-    again.addEventListener('click', function () {
-      copyText(current).then(function (ok) {
-        state(ok);
-        again.textContent = ok ? 'Kopiert ✓' : 'Nochmal kopieren';
-      });
-    });
-
-    document.addEventListener('click', function (e) {
-      var el = e.target.closest('[data-send]');
-      if (!el) return;
-      var kind = el.getAttribute('data-send');
-
-      if (kind === 'whatsapp' && hasWa) {
-        // the text travels in the link, nothing to paste
-        el.setAttribute('href', waLink(general()));
+    // one way in for every request: the buttons below and the calendar slots
+    Send.deliver = function (el, txt, channel, e) {
+      if (hasWa && channel !== 'instagram') {
+        // WhatsApp opens with the message typed; nothing to paste
+        el.setAttribute('href', waLink(txt));
+        el.setAttribute('target', '_blank');
         return;
       }
-
+      if (!canSheet) return;           // plain link to the Instagram chat
       e.preventDefault();
-      // the overlay menu would sit under the sheet
       var menu = document.getElementById('menu');
       if (menu && menu.classList.contains('open')) {
         var close = document.getElementById('menu-close-btn');
         if (close) close.click();
       }
-      Send.open(kind === 'set' && Calc.request ? Calc.request() : general());
+      Send.open(txt);
+    };
+
+    document.addEventListener('click', function (e) {
+      var el = e.target.closest('[data-send]');
+      if (!el) return;
+      var kind = el.getAttribute('data-send');
+      var txt = kind === 'set' && Calc.request ? Calc.request() : general();
+      var channel = el.getAttribute('data-channel') || (kind === 'whatsapp' ? 'whatsapp' : 'auto');
+      Send.deliver(el, txt, channel, e);
     });
+
+    /* With a mouse: say what a click does before it happens. Phones get the
+       visible hints next to the buttons and in the calendar instead. */
+    if (fine) {
+      var tip = document.createElement('div');
+      tip.id = 'send-tip';
+      tip.setAttribute('aria-hidden', 'true');
+      document.body.appendChild(tip);
+      var hideT;
+      var label = function (el) {
+        if (el.hasAttribute('data-tip')) return el.getAttribute('data-tip');
+        var toIg = !hasWa || el.getAttribute('data-channel') === 'instagram';
+        return toIg ? '✨ Deine Anfrage wird automatisch geschrieben – im Chat nur einfügen'
+                    : '✨ WhatsApp öffnet sich – deine Nachricht steht schon drin';
+      };
+      document.addEventListener('mouseover', function (e) {
+        var el = e.target.closest('[data-send], a.slot[data-date], a.cal-chip');
+        if (!el) return;
+        clearTimeout(hideT);
+        tip.textContent = label(el);
+        var r = el.getBoundingClientRect();
+        tip.classList.add('on');
+        var w = tip.offsetWidth;
+        var x = Math.max(8, Math.min(innerWidth - w - 8, r.left + r.width / 2 - w / 2));
+        var above = r.top > 60;
+        tip.style.left = x + 'px';
+        tip.style.top = (above ? r.top - tip.offsetHeight - 10 : r.bottom + 10) + 'px';
+      });
+      document.addEventListener('mouseout', function (e) {
+        var el = e.target.closest('[data-send], a.slot[data-date], a.cal-chip');
+        if (!el || el.contains(e.relatedTarget)) return;
+        hideT = setTimeout(function () { tip.classList.remove('on'); }, 60);
+      });
+      addEventListener('scroll', function () { tip.classList.remove('on'); }, { passive: true });
+    }
   }
 
   /* ==========================================================================

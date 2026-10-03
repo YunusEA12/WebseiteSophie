@@ -2700,18 +2700,36 @@ a.slot:active,
 .send-hint {
   display: flex;
   align-items: flex-start;
-  gap: .5rem;
-  font-size: .8rem;
+  gap: .6rem;
+  font-size: .82rem;
   line-height: 1.5;
-  color: #C4B3A3;
+  color: #E9DCCB;
+  padding: .65rem .8rem;
+  border-radius: 14px;
+  border: 1px solid rgba(224, 179, 109, .28);
+  background: rgba(224, 179, 109, .07);
 }
 
-.send-hint svg {
+.send-badge {
   flex: 0 0 auto;
-  width: 1.05rem;
-  height: 1.05rem;
-  margin-top: .1rem;
-  color: #E0B36D;
+  display: inline-flex;
+  align-items: center;
+  gap: .3rem;
+  margin-top: .05rem;
+  padding: .12rem .5rem .12rem .4rem;
+  border-radius: 999px;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: .68rem;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: #14100D;
+  background: #E0B36D;
+}
+
+.send-badge svg {
+  width: .8rem;
+  height: .8rem;
 }
 
 dialog.send-sheet {
@@ -2790,42 +2808,6 @@ dialog.send-sheet {
   outline: 2px solid #FF4D86;
   outline-offset: 2px;
 }
-
-.send-steps {
-  list-style: none;
-  counter-reset: step;
-  margin: 1rem 0 0;
-  padding: 0;
-  display: grid;
-  gap: .45rem;
-}
-
-.send-steps li {
-  counter-increment: step;
-  position: relative;
-  padding-left: 2rem;
-  font-size: .86rem !important;
-  line-height: 1.5 !important;
-}
-
-.send-steps li::before {
-  content: counter(step);
-  position: absolute;
-  left: 0;
-  top: .05rem;
-  width: 1.4rem;
-  height: 1.4rem;
-  border-radius: 50%;
-  display: grid;
-  place-items: center;
-  font-family: "Space Grotesk", sans-serif;
-  font-size: .72rem;
-  font-weight: 700;
-  color: #14100D;
-  background: #E0B36D;
-}
-
-.send-steps b { color: #F7F2EA; font-weight: 600; }
 
 .send-actions {
   display: grid;
@@ -2942,4 +2924,162 @@ span.slot.is-pink {
 
 .cal-day {
   gap: clamp(.22rem, .6vw, .35rem);
+}
+
+
+/* ==========================================================================
+   ANFRAGEN ERKENNBAR MACHEN
+   ========================================================================== */
+/* sheet: one line instead of three steps, the message folded away */
+.send-how {
+  margin-top: .2rem;
+  font-size: .86rem !important;
+  line-height: 1.6 !important;
+  text-align: center;
+  color: #C4B3A3;
+}
+
+.send-how b { color: #F7F2EA; font-weight: 600; }
+
+.send-peek {
+  margin-top: .9rem;
+  text-align: center;
+}
+
+.send-peek summary {
+  display: inline-block;
+  cursor: pointer;
+  padding: .35rem .7rem;
+  border-radius: 999px;
+  font-size: .8rem;
+  color: #918073;
+  list-style: none;
+  transition: color .25s var(--ease-out);
+}
+
+.send-peek summary::-webkit-details-marker { display: none; }
+.send-peek summary::after { content: " \25BE"; }
+.send-peek[open] summary::after { content: " \25B4"; }
+.send-peek summary:hover { color: #E0B36D; }
+.send-peek summary:focus-visible { outline: 2px solid #FF4D86; outline-offset: 2px; }
+.send-peek .send-text { margin-top: .5rem; text-align: left; }
+
+/* mouse users see what a click does */
+#send-tip {
+  position: fixed;
+  z-index: 97;
+  max-width: 19rem;
+  padding: .45rem .75rem;
+  border-radius: 10px;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: .76rem;
+  font-weight: 600;
+  line-height: 1.35;
+  color: #F7F2EA;
+  background: rgba(20, 16, 13, .96);
+  border: 1px solid rgba(224, 179, 109, .45);
+  box-shadow: 0 12px 28px -12px rgba(0, 0, 0, .8);
+  pointer-events: none;
+  opacity: 0;
+  transform: translate3d(0, 4px, 0);
+  transition: opacity .18s var(--ease-out), transform .25s var(--ease-out);
+}
+
+#send-tip.on {
+  opacity: 1;
+  transform: none;
+}
+
+/* the calendar says it can be tapped */
+.cal-hint {
+  display: flex;
+  align-items: center;
+  gap: .55rem;
+  margin-bottom: 1rem;
+  padding: .6rem .85rem;
+  border-radius: 14px;
+  font-size: .84rem;
+  line-height: 1.4;
+  color: #F7F2EA;
+  background: linear-gradient(90deg, rgba(255, 77, 134, .14), rgba(224, 179, 109, .08));
+  border: 1px solid rgba(255, 77, 134, .3);
+}
+
+.cal-hint-icon {
+  flex: 0 0 auto;
+  width: 1.7rem;
+  height: 1.7rem;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: .95rem;
+  color: #14100D;
+  background: #E0B36D;
+}
+
+.cal-chip::after {
+  content: "\2192";
+  margin-left: .1rem;
+  opacity: .7;
+}
+
+/* when the month first scrolls into view, every free time glows twice */
+a.slot,
+.cal-chip {
+  position: relative;
+}
+
+a.slot::after {
+  content: "";
+  position: absolute;
+  inset: -3px;
+  border-radius: inherit;
+  border: 2px solid currentColor;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.cal.is-hinting a.slot::after {
+  animation: slotGlow 1.5s var(--ease-out) 2;
+}
+
+.cal.is-hinting .cal-chip {
+  animation: chipNudge 1.5s var(--ease-spring) 2;
+}
+
+@keyframes slotGlow {
+  0%   { opacity: 0;  transform: scale(.9); }
+  35%  { opacity: .9; transform: scale(1); }
+  100% { opacity: 0;  transform: scale(1.18); }
+}
+
+@keyframes chipNudge {
+  0%, 100% { transform: none; }
+  30%      { transform: translate3d(0, -3px, 0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cal.is-hinting a.slot::after,
+  .cal.is-hinting .cal-chip { animation: none; }
+}
+
+/* two quick picks per row on a phone, arrow included */
+@media (max-width: 640px) {
+  .cal-next { gap: .4rem; }
+  .cal-chip { padding: .4rem .65rem; font-size: .8rem; gap: .35rem; }
+  .cal-next-label { flex-basis: 100%; }
+}
+
+@media (max-width: 640px) {
+  .cal-next {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+  .cal-next-label { grid-column: 1 / -1; }
+  .cal-chip {
+    justify-content: center;
+    padding: .4rem .4rem;
+    font-size: clamp(.72rem, 3.3vw, .8rem);
+    white-space: nowrap;
+  }
 }
