@@ -3037,10 +3037,10 @@ main > section:first-of-type.atmos::before {
 
 /* ==========================================================================
    HINWEIS-ZEILE
-   Klein und ruhig unten am Bildschirm, von Anfang an: sagt, dass die
+   Klein und ruhig unten am Bildschirm, ab dem Preisrechner: sagt, dass die
    Nachricht automatisch entsteht. Der Text folgt dem Abschnitt, nach einem
-   Tipp bestaetigt dieselbe Zeile das Kopieren. Am Handy weicht sie im
-   Rechner der Preisleiste, am Seitenende den Links im Fuss.
+   Tipp bestaetigt dieselbe Zeile das Kopieren. Am Handy sitzt sie ueber der
+   Preisleiste, am Seitenende macht sie den Links im Fuss Platz.
    ========================================================================== */
 #hint {
   position: fixed;
@@ -3083,14 +3083,14 @@ main > section:first-of-type.atmos::before {
   pointer-events: auto;
 }
 
-/* stepping aside (price bar on a phone, footer links) */
+/* stepping aside (above the calculator, at the footer links) */
 #hint.on.away {
   opacity: 0;
   transform: translate3d(0, 12px, 0);
   pointer-events: none;
 }
 
-/* a confirmation while the price bar is up sits just above it */
+/* while the price bar is up, the line sits just above it */
 @media (max-width: 1023px) {
   body:has(#pricebar.on) #hint { bottom: calc(5.6rem + env(safe-area-inset-bottom)); }
 }

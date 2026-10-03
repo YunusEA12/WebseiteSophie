@@ -1550,12 +1550,13 @@
     }
   }
 
-  /* Kleine Zeile unten am Bildschirm: sagt von Anfang an und beim ganzen
-     Scrollen, dass die Anfrage automatisch geschrieben und kopiert wird. Der
-     Text passt sich dem Abschnitt an. Nach einem Tipp bestaetigt sie das
-     Kopieren und zaehlt kurz herunter, bevor Instagram aufgeht - so bleibt
-     Zeit, es zu lesen. Sie weicht der Preisleiste am Handy (die sagt es
-     selbst) und den Links im Fuss. */
+  /* Kleine Zeile unten am Bildschirm: taucht auf, sobald der Preisrechner
+     erreicht ist, und sagt ab dort beim Scrollen, dass die Anfrage
+     automatisch geschrieben und kopiert wird. Der Text passt sich dem
+     Abschnitt an. Nach einem Tipp bestaetigt sie das Kopieren und zaehlt
+     kurz herunter, bevor Instagram aufgeht - so bleibt Zeit, es zu lesen.
+     Am Handy sitzt sie im Rechner ueber der Preisleiste; am Seitenende
+     macht sie den Links im Fuss Platz. */
   function initHint() {
     var el = document.getElementById('hint');
     if (!el) return;
@@ -1568,8 +1569,8 @@
                  l: ['Stell dein Set zusammen', ' – deine Nachricht an Sophie wird automatisch erstellt'],
                  s: ['Set erstellen', ' – Nachricht kommt automatisch'] },
       preise:  { href: '#btn-calc-cta',
-                 l: ['Fertig?', ' Tippe auf „anfragen“ – deine Nachricht wird automatisch kopiert'],
-                 s: ['Fertig?', ' „anfragen“ tippen – wird kopiert'] },
+                 l: ['Set zusammenstellen & anfragen', ' – deine Nachricht an Sophie wird automatisch erstellt'],
+                 s: ['Set wählen', ' – Nachricht kommt automatisch'] },
       termine: { href: '#cal',
                  l: ['Freie Uhrzeit antippen', ' – deine Anfrage wird automatisch geschrieben'],
                  s: ['Uhrzeit antippen', ' – Anfrage kommt automatisch'] },
@@ -1591,8 +1592,7 @@
     };
     var ZONES = ['preise', 'termine', 'kontakt'];
     var foot = document.querySelector('footer');
-    var bar = document.getElementById('pricebar');
-    var phone = window.matchMedia('(max-width: 1023px)');
+    var calc = document.getElementById('preise');
     var num = el.querySelector('.i-num');
     var cur = null, flashing = false, flashT = null, swapT = null, ticking = false;
     var cdT = null, cdDone = null;
@@ -1636,6 +1636,8 @@
     function zone() {
       if (foot && foot.getBoundingClientRect().top < innerHeight - 10) return 'foot';
       var y = innerHeight * 0.45;
+      // nothing to say before the price calculator
+      if (calc && calc.getBoundingClientRect().top > y) return 'before';
       for (var i = 0; i < ZONES.length; i++) {
         var sec = document.getElementById(ZONES[i]);
         if (!sec) continue;
@@ -1648,9 +1650,9 @@
     function check() {
       ticking = false;
       var z = zone();
-      var aside = z === 'foot' || (phone.matches && !!bar && bar.classList.contains('on'));
+      var aside = z === 'foot' || z === 'before';
       el.classList.toggle('away', aside && !flashing);
-      if (!flashing && z !== 'foot') set(z);
+      if (!flashing && !aside) set(z);
     }
 
     function soon() {
@@ -1711,7 +1713,6 @@
 
     addEventListener('scroll', soon, { passive: true });
     addEventListener('resize', soon);
-    if (bar) new MutationObserver(soon).observe(bar, { attributes: true, attributeFilter: ['class'] });
 
     el.hidden = false;
     check();
