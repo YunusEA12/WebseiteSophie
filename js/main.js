@@ -1537,10 +1537,11 @@
     }
   }
 
-  /* Kleine Zeile unter dem Kopf: sagt von Anfang an und beim ganzen Scrollen,
-     dass die Anfrage automatisch geschrieben und kopiert wird. Der Text passt
-     sich dem Abschnitt an; nach einem Tipp bestaetigt sie das Kopieren und
-     fuehrt zurueck zu Instagram. */
+  /* Kleine Zeile unten am Bildschirm: sagt von Anfang an und beim ganzen
+     Scrollen, dass die Anfrage automatisch geschrieben und kopiert wird. Der
+     Text passt sich dem Abschnitt an; nach einem Tipp bestaetigt sie das
+     Kopieren und fuehrt zurueck zu Instagram. Sie weicht der Preisleiste am
+     Handy (die sagt es selbst) und den Links im Fuss. */
   function initHint() {
     var el = document.getElementById('hint');
     if (!el) return;
@@ -1569,6 +1570,9 @@
                  s: ['Instagram öffnet sich', ' – schreib direkt'] }
     };
     var ZONES = ['preise', 'termine', 'kontakt'];
+    var foot = document.querySelector('footer');
+    var bar = document.getElementById('pricebar');
+    var phone = window.matchMedia('(max-width: 1023px)');
     var cur = null, flashing = false, flashT = null, swapT = null, ticking = false;
 
     function part(cls, t) {
@@ -1607,6 +1611,7 @@
     }
 
     function zone() {
+      if (foot && foot.getBoundingClientRect().top < innerHeight - 10) return 'foot';
       var y = innerHeight * 0.45;
       for (var i = 0; i < ZONES.length; i++) {
         var sec = document.getElementById(ZONES[i]);
@@ -1619,7 +1624,14 @@
 
     function check() {
       ticking = false;
-      if (!flashing) set(zone());
+      var z = zone();
+      var aside = z === 'foot' || (phone.matches && !!bar && bar.classList.contains('on'));
+      el.classList.toggle('away', aside && !flashing);
+      if (!flashing && z !== 'foot') set(z);
+    }
+
+    function soon() {
+      if (!ticking) { ticking = true; requestAnimationFrame(check); }
     }
 
     function settle(ms) {
@@ -1629,6 +1641,7 @@
 
     Hint.flash = function (ok) {
       flashing = true;
+      el.classList.remove('away');
       set(ok ? 'copied' : 'failed');
       if (live) {
         live.textContent = ok ? 'Nachricht kopiert. In Instagram einfügen und senden.'
@@ -1642,9 +1655,9 @@
       if (!document.hidden && flashing) settle(7000);
     });
 
-    addEventListener('scroll', function () {
-      if (!ticking) { ticking = true; requestAnimationFrame(check); }
-    }, { passive: true });
+    addEventListener('scroll', soon, { passive: true });
+    addEventListener('resize', soon);
+    if (bar) new MutationObserver(soon).observe(bar, { attributes: true, attributeFilter: ['class'] });
 
     el.hidden = false;
     check();
@@ -1682,7 +1695,8 @@
       '<div class="inner">' +
         '<div><div class="lbl">Dein Preis</div><div class="amount"><b id="pb-total"></b> <span>&euro;</span></div></div>' +
         '<a href="' + DM + '" target="_blank" rel="noopener noreferrer" data-send="set" ' +
-        'class="btn btn-solid px-5 py-3 text-[.85rem]"><span id="pb-cta">Set anfragen</span></a>' +
+        'class="btn btn-solid px-5 py-2.5 text-[.85rem] flex-col !gap-0.5"><span id="pb-cta">Set anfragen</span>' +
+        '<span class="btn-sub">Nachricht wird kopiert</span></a>' +
       '</div>';
     document.body.appendChild(bar);
 

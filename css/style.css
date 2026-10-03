@@ -3037,13 +3037,14 @@ main > section:first-of-type.atmos::before {
 
 /* ==========================================================================
    HINWEIS-ZEILE
-   Klein und ruhig unter dem Kopf, von Anfang an: sagt, dass die Nachricht
-   automatisch entsteht. Der Text folgt dem Abschnitt, nach einem Tipp
-   bestaetigt dieselbe Zeile das Kopieren.
+   Klein und ruhig unten am Bildschirm, von Anfang an: sagt, dass die
+   Nachricht automatisch entsteht. Der Text folgt dem Abschnitt, nach einem
+   Tipp bestaetigt dieselbe Zeile das Kopieren. Am Handy weicht sie im
+   Rechner der Preisleiste, am Seitenende den Links im Fuss.
    ========================================================================== */
 #hint {
   position: fixed;
-  top: calc(3.95rem + env(safe-area-inset-top));
+  bottom: calc(1rem + env(safe-area-inset-bottom));
   left: 0;
   right: 0;
   z-index: 79;
@@ -3071,17 +3072,27 @@ main > section:first-of-type.atmos::before {
   backdrop-filter: blur(18px) saturate(1.2);
   -webkit-backdrop-filter: blur(18px) saturate(1.2);
   opacity: 0;
-  transform: translate3d(0, -8px, 0);
-  transition: opacity .45s var(--ease-out), transform .6s var(--ease-spring);
-}
-
-@media (min-width: 640px) {
-  #hint { top: calc(4.35rem + env(safe-area-inset-top)); }
+  transform: translate3d(0, 12px, 0);
+  pointer-events: none;
+  transition: opacity .4s var(--ease-out), transform .6s var(--ease-spring);
 }
 
 #hint.on {
   opacity: 1;
   transform: none;
+  pointer-events: auto;
+}
+
+/* stepping aside (price bar on a phone, footer links) */
+#hint.on.away {
+  opacity: 0;
+  transform: translate3d(0, 12px, 0);
+  pointer-events: none;
+}
+
+/* a confirmation while the price bar is up sits just above it */
+@media (max-width: 1023px) {
+  body:has(#pricebar.on) #hint { bottom: calc(5.6rem + env(safe-area-inset-bottom)); }
 }
 
 #hint b {
