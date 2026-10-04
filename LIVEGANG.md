@@ -15,7 +15,7 @@ Datenschutz Platzhalter enthalten, den provisorischen Link nicht öffentlich tei
       sicher erreicht (kein Postfach), z. B. Studio in Pforzheim oder Geschäftsadresse mit Postweiterleitung
 - [ ] Sophie bestätigt: Fotos selbst gemacht, Kundinnen einverstanden
 - [ ] Keine Kundentermine an Sonntagen und Feiertagen (Feiertagsgesetz BW) – auch nicht in
-      Instagram-Stories anbieten. Der Kalender blendet solche Tage automatisch aus.
+      Instagram-Stories anbieten. Termine werden nur auf Anfrage per DM vereinbart.
 - [ ] Impressum und Datenschutz juristisch geprüft
 
 ## Technik
@@ -24,7 +24,6 @@ Datenschutz Platzhalter enthalten, den provisorischen Link nicht öffentlich tei
       `<meta name="robots" content="noindex, nofollow">` samt Kommentar entfernen
 - [ ] Domain `gerberxnails.de` verbinden (siehe Abschnitt „Domain bei IONOS“ unten)
 - [ ] `node stamp.mjs` ausführen, dann committen und pushen
-- [ ] Freie Termine: Google-Tabelle anlegen und als CSV im Web veröffentlichen; den Link trägt Claude in `tools/termine-quelle.txt` ein
 
 ## Domain bei IONOS
 
@@ -67,8 +66,6 @@ Die Website selbst hat nichts, was man knacken könnte (kein Login, keine Datenb
 keine Formulare). Angreifbar sind die Konten, über die sie läuft:
 
 - [ ] GitHub-Konto (Yunus): Zwei-Faktor-Anmeldung an – wer das Konto hat, kann die Seite ändern
-- [ ] Google-Konto mit der Termin-Tabelle: Zwei-Faktor an; Tabelle nur für Sophie (und Yunus)
-      bearbeitbar, nie „Jeder mit dem Link kann bearbeiten“
 - [ ] Instagram (Sophie): Zwei-Faktor an – alle Anfragen laufen dorthin
 - [ ] IONOS-Konto: Zwei-Faktor an; automatische Verlängerung der Domain anlassen
 - [ ] Im Impressum eine eigene Geschäfts-E-Mail nutzen (Spam-Roboter lesen sie mit)

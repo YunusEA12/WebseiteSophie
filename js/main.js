@@ -1222,280 +1222,6 @@
   }
 
   /* ==========================================================================
-     FREE APPOINTMENTS
-     Reads termine.json from this server - no third party sees the visitor -
-     and draws a month view like Sophie's story. Free slots copy a request
-     and open Instagram; taken ones are struck through; past days fade.
-     Nothing is booked here, Sophie still confirms every appointment.
-     ========================================================================== */
-  function initAppointments() {
-    var box = document.getElementById('cal');
-    if (!box || !window.fetch) return;
-
-    var MONTHS = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli',
-                  'August', 'September', 'Oktober', 'November', 'Dezember'];
-    var DAYS = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'];
-    var SHORT = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
-
-    function pad(n) { return (n < 10 ? '0' : '') + n; }
-    function iso(d) { return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); }
-    function toDate(s) { var p = s.split('-'); return new Date(+p[0], +p[1] - 1, +p[2]); }
-    function clock(t) { return t.replace(/^0(\d)/, '$1'); }            // "09:30" -> "9:30"
-    function dm(d) { return d.getDate() + '.' + (d.getMonth() + 1) + '.'; }
-
-    function el(tag, cls, text) {
-      var e = document.createElement(tag);
-      if (cls) e.className = cls;
-      if (text != null) e.textContent = text;
-      return e;
-    }
-
-    var now = new Date();
-    var today = iso(now);
-    var nowTime = pad(now.getHours()) + ':' + pad(now.getMinutes());
-
-    fetch('termine.json', { cache: 'no-cache' })
-      .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
-      .then(setup)
-      .catch(function (err) {
-        // the fallback text in the markup stays: "see my Instagram stories"
-        if (window.console) console.warn('[gerberxnails] Termine:', err);
-      });
-
-    /* No customer appointments on Sundays and public holidays in
-       Baden-Wuerttemberg (Feiertagsgesetz): such slots never show, even if
-       they stand in the sheet. The sync script skips them as well. */
-    function easter(y) {   // Gauss/Meeus, Gregorian calendar
-      var a = y % 19, b = Math.floor(y / 100), c = y % 100, d = Math.floor(b / 4), e = b % 4;
-      var f = Math.floor((b + 8) / 25), g = Math.floor((b - f + 1) / 3);
-      var h = (19 * a + b - d - g + 15) % 30, i = Math.floor(c / 4), k = c % 4;
-      var l = (32 + 2 * e + 2 * i - h - k) % 7, m = Math.floor((a + 11 * h + 22 * l) / 451);
-      var month = Math.floor((h + l - 7 * m + 114) / 31), day = ((h + l - 7 * m + 114) % 31) + 1;
-      return new Date(y, month - 1, day);
-    }
-    var restCache = {};
-    function restDays(y) {   // BW public holidays of year y, as "YYYY-MM-DD"
-      if (restCache[y]) return restCache[y];
-      var set = {};
-      ['01-01', '01-06', '05-01', '10-03', '11-01', '12-25', '12-26'].forEach(function (md) { set[y + '-' + md] = true; });
-      var e = easter(y);
-      [-2, 1, 39, 50, 60].forEach(function (off) {   // Good Friday ... Corpus Christi
-        set[iso(new Date(e.getFullYear(), e.getMonth(), e.getDate() + off))] = true;
-      });
-      return (restCache[y] = set);
-    }
-    function isRestDay(s) {
-      return toDate(s).getDay() === 0 || !!restDays(+s.slice(0, 4))[s];
-    }
-
-    function setup(data) {
-      var pink = {};
-      var places = (data.orte || []).filter(function (o) { return o && o.name; });
-      places.forEach(function (o) { if (o.farbe === 'pink') pink[o.name] = true; });
-
-      var slots = (data.termine || []).filter(function (t) {
-        return t && /^\d{4}-\d\d-\d\d$/.test(t.datum) && /^\d\d:\d\d$/.test(t.zeit) && !isRestDay(t.datum);
-      }).map(function (t) {
-        return {
-          date: t.datum, time: t.zeit, place: t.ort || (places[0] && places[0].name) || '',
-          taken: !!t.vergeben,
-          past: t.datum < today || (t.datum === today && t.zeit <= nowTime)
-        };
-      }).sort(function (a, b) { return (a.date + a.time) < (b.date + b.time) ? -1 : 1; });
-
-      var byDay = {};
-      slots.forEach(function (sl) { (byDay[sl.date] = byDay[sl.date] || []).push(sl); });
-
-      var upcoming = slots.filter(function (sl) { return !sl.past; });
-      var free = upcoming.filter(function (sl) { return !sl.taken; });
-
-      // months from now to the last one that still has something to show
-      var months = [];
-      var cur = new Date(now.getFullYear(), now.getMonth(), 1);
-      var last = upcoming.length ? toDate(upcoming[upcoming.length - 1].date) : cur;
-      while (cur <= last) {
-        months.push(new Date(cur));
-        cur = new Date(cur.getFullYear(), cur.getMonth() + 1, 1);
-      }
-
-      // open on the month of the next free slot, else the current one
-      var at = 0;
-      if (free.length) {
-        var f = toDate(free[0].date);
-        months.forEach(function (m, i) {
-          if (m.getFullYear() === f.getFullYear() && m.getMonth() === f.getMonth()) at = i;
-        });
-      }
-
-      function slotLabel(sl) {
-        var d = toDate(sl.date);
-        return DAYS[d.getDay()] + ', ' + d.getDate() + '. ' + MONTHS[d.getMonth()] + ', ' + clock(sl.time) +
-               ' Uhr' + (sl.place ? ', ' + sl.place : '');
-      }
-
-      function freeLink(sl, cls, text) {
-        var a = el('a', cls + (pink[sl.place] ? ' is-pink' : ''));
-        a.href = DM;
-        a.target = '_blank';
-        a.rel = 'noopener noreferrer';
-        a.setAttribute('data-date', sl.date);
-        a.setAttribute('data-time', sl.time);
-        a.setAttribute('data-place', sl.place);
-        a.setAttribute('aria-label', slotLabel(sl) + ', frei. Anfrage schreiben');
-        var d0 = toDate(sl.date);
-        a.setAttribute('data-tip', '✨ Anfrage für ' + SHORT[d0.getDay()] + ' ' + dm(d0) + ', ' + clock(sl.time) + ' kopieren & Instagram öffnen');
-        if (typeof text === 'string') a.textContent = text; else a.appendChild(text);
-        return a;
-      }
-
-      function render(focusNav) {
-        box.innerHTML = '';
-
-        if (!upcoming.length) {
-          var empty = el('div', 'cal-empty');
-          empty.appendChild(el('p', '', 'Gerade sind keine neuen Termine eingetragen. Schreib mir trotzdem gern \u2013 ich melde mich, sobald es freie Slots gibt.'));
-          var ask = el('a', 'btn btn-solid');
-          ask.href = DM;
-          ask.target = '_blank';
-          ask.rel = 'noopener noreferrer';
-          ask.setAttribute('data-send', 'general');
-          ask.appendChild(el('span', '', 'Per Instagram-DM anfragen'));
-          empty.appendChild(ask);
-          box.appendChild(empty);
-          return;
-        }
-
-        // quick picks: the next free slots, big enough to hit on a phone
-        if (free.length) {
-          var next = el('div', 'cal-next');
-          next.appendChild(el('span', 'cal-next-label', 'Nächste freie Termine'));
-          free.slice(0, 4).forEach(function (sl) {
-            var d = toDate(sl.date);
-            var frag = document.createDocumentFragment();
-            frag.appendChild(el('i'));
-            frag.appendChild(document.createTextNode(SHORT[d.getDay()] + ' ' + dm(d) + ' \u00b7 ' + clock(sl.time)));
-            next.appendChild(freeLink(sl, 'cal-chip', frag));
-          });
-          box.appendChild(next);
-        }
-
-        var m = months[at];
-        var head = el('div', 'cal-head');
-        var title = el('h3', 'cal-title');
-        title.appendChild(el('span', 't-script', MONTHS[m.getMonth()]));
-        title.appendChild(el('span', 'cal-year', String(m.getFullYear())));
-        head.appendChild(title);
-        if (months.length > 1) {
-          var navs = el('div', 'cal-navs');
-          var prev = el('button', 'cal-nav', '\u2039');
-          prev.type = 'button';
-          prev.setAttribute('aria-label', 'Vorheriger Monat');
-          prev.disabled = at === 0;
-          prev.addEventListener('click', function () { if (at > 0) { at--; render('prev'); } });
-          var nxt = el('button', 'cal-nav', '\u203a');
-          nxt.type = 'button';
-          nxt.setAttribute('aria-label', 'Nächster Monat');
-          nxt.disabled = at === months.length - 1;
-          nxt.addEventListener('click', function () { if (at < months.length - 1) { at++; render('next'); } });
-          navs.appendChild(prev);
-          navs.appendChild(nxt);
-          head.appendChild(navs);
-        }
-        box.appendChild(head);
-
-        var week = el('div', 'cal-week');
-        week.setAttribute('aria-hidden', 'true');
-        ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'].forEach(function (w) { week.appendChild(el('span', '', w)); });
-        box.appendChild(week);
-
-        var grid = el('div', 'cal-grid');
-        var offset = (m.getDay() + 6) % 7;                       // Monday first
-        for (var b = 0; b < offset; b++) grid.appendChild(el('div', 'cal-day is-blank'));
-
-        var daysIn = new Date(m.getFullYear(), m.getMonth() + 1, 0).getDate();
-        for (var day = 1; day <= daysIn; day++) {
-          var d = new Date(m.getFullYear(), m.getMonth(), day);
-          var key = iso(d);
-          var list = (byDay[key] || []).filter(function (sl) { return !sl.past; });
-          var cell = el('div', 'cal-day');
-          if (key < today) cell.classList.add('is-past');
-          if (key === today) cell.classList.add('is-today');
-          if (list.some(function (sl) { return !sl.taken; })) cell.classList.add('has-free');
-
-          var num = el('span', 'cal-num', String(day));
-          num.setAttribute('aria-hidden', 'true');
-          cell.appendChild(num);
-          if (list.length) cell.appendChild(el('span', 'sr-only', DAYS[d.getDay()] + ', ' + day + '. ' + MONTHS[d.getMonth()] + ':'));
-
-          list.forEach(function (sl) {
-            if (sl.taken) {
-              var t = el('span', 'slot' + (pink[sl.place] ? ' is-pink' : ''), clock(sl.time));
-              t.appendChild(el('span', 'sr-only', ' vergeben'));
-              cell.appendChild(t);
-            } else {
-              cell.appendChild(freeLink(sl, 'slot', clock(sl.time)));
-            }
-          });
-          grid.appendChild(cell);
-        }
-        box.appendChild(grid);
-
-        var foot = el('div', 'cal-foot');
-        var legend = el('div', 'cal-legend');
-        places.forEach(function (o) {
-          var it = el('span', o.farbe === 'pink' ? 'is-pink' : '');
-          it.appendChild(el('i'));
-          it.appendChild(document.createTextNode(o.name));
-          legend.appendChild(it);
-        });
-        var taken = el('span');
-        taken.appendChild(el('s', '', '12:30'));
-        taken.appendChild(document.createTextNode(' vergeben'));
-        legend.appendChild(taken);
-        foot.appendChild(legend);
-        if (data.stand && /^\d{4}-\d\d-\d\d$/.test(data.stand)) {
-          var st = toDate(data.stand);
-          foot.appendChild(el('span', 'cal-stand', 'Zuletzt aktualisiert: ' + st.getDate() + '. ' +
-            MONTHS[st.getMonth()] + (st.getFullYear() !== now.getFullYear() ? ' ' + st.getFullYear() : '')));
-        }
-        box.appendChild(foot);
-
-        if (focusNav) {
-          var again = box.querySelector('.cal-nav[aria-label="' + (focusNav === 'prev' ? 'Vorheriger Monat' : 'Nächster Monat') + '"]');
-          if (again && !again.disabled) again.focus(); else { var any = box.querySelector('.cal-nav:not([disabled])'); if (any) any.focus(); }
-        }
-      }
-
-      // one listener for every free slot: copy the request, then the chat
-      box.addEventListener('click', function (e) {
-        var a = e.target.closest('a[data-date]');
-        if (!a) return;
-        var d = toDate(a.getAttribute('data-date'));
-        var time = clock(a.getAttribute('data-time'));
-        var place = a.getAttribute('data-place');
-        var msg = 'Hi Sophie! 💅 Ist dein Termin am ' + DAYS[d.getDay()] + ', ' + dm(d) + ' um ' + time + ' Uhr' +
-                  (place ? ' (' + place + ')' : '') + ' noch frei? Den würde ich gerne buchen.';
-        var set = Calc.chosenSet && Calc.chosenSet();
-        if (set) msg += '\n\nMein Wunsch-Set von deiner Website:\n' + set.join('\n');
-        if (Send.deliver) Send.deliver(a, msg, e);
-      });
-
-      render();
-
-      // once, when the month comes into view: the free times glow briefly
-      if (!reduce && 'IntersectionObserver' in window) {
-        var seen = new IntersectionObserver(function (es) {
-          if (!es[0].isIntersecting) return;
-          seen.disconnect();
-          box.classList.add('is-hinting');
-          setTimeout(function () { box.classList.remove('is-hinting'); }, 3200);
-        }, { threshold: .35 });
-        seen.observe(box);
-      }
-    }
-  }
-
-  /* ==========================================================================
      REQUESTS: ONE TAP
      Instagram cannot pre-fill a message. A request button therefore copies
      the finished text in the tap; the hint line says "Kopiert" for two
@@ -1547,14 +1273,14 @@
     });
 
     /* With a mouse: say what a click does before it happens. Phones get the
-       line on each button and the hint in the calendar instead. */
+       line on each button and the hint line instead. */
     if (fine) {
       var tip = document.createElement('div');
       tip.id = 'send-tip';
       tip.setAttribute('aria-hidden', 'true');
       document.body.appendChild(tip);
       var hideT;
-      var TARGETS = '[data-send], a.slot[data-date], a.cal-chip';
+      var TARGETS = '[data-send]';
       document.addEventListener('mouseover', function (e) {
         var el = e.target.closest(TARGETS);
         if (!el) return;
@@ -1598,9 +1324,6 @@
       preise:  { href: '#btn-calc-cta',
                  l: ['Set zusammenstellen & anfragen', ' – deine Nachricht an Sophie wird automatisch erstellt'],
                  s: ['Set wählen', ' – Nachricht kommt automatisch'] },
-      termine: { href: '#cal',
-                 l: ['Freie Uhrzeit antippen', ' – deine Anfrage wird automatisch geschrieben'],
-                 s: ['Uhrzeit antippen', ' – Anfrage kommt automatisch'] },
       kontakt: { href: '#kontakt',
                  l: ['Ein Tipp genügt', ' – Nachricht wird kopiert, Instagram öffnet sich'],
                  s: ['Ein Tipp', ' – Nachricht kopiert, Instagram öffnet'] },
@@ -1620,7 +1343,7 @@
                  l: ['Instagram öffnet sich', ' – schreib Sophie dort einfach direkt'],
                  s: ['Instagram öffnet sich', ' – schreib direkt'] }
     };
-    var ZONES = ['preise', 'termine', 'kontakt'];
+    var ZONES = ['preise', 'kontakt'];
     var foot = document.querySelector('footer');
     var calc = document.getElementById('preise');
     var num = el.querySelector('.i-num');
@@ -1693,11 +1416,7 @@
         var sec = document.getElementById(ZONES[i]);
         if (!sec) continue;
         var r = sec.getBoundingClientRect();
-        if (r.top <= y && r.bottom > y) {
-          // no free time to tap: point to the contact button instead
-          if (ZONES[i] === 'termine' && !document.querySelector('#cal a[data-date]')) return 'kontakt';
-          return ZONES[i];
-        }
+        if (r.top <= y && r.bottom > y) return ZONES[i];
       }
       return 'start';
     }
@@ -1909,7 +1628,7 @@
       ['HeroShow', initHeroShow], ['ShowcaseOrt', initShowcasePlacement], ['Lightbox', initLightbox],
       ['ServiceThumbs', initServiceThumbs], ['Marquee', initMarqueeAndParallax],
       ['Rechner', initPriceCalculator], ['Preisleiste', initPriceBar],
-      ['Termine', initAppointments], ['Hinweis', initHint], ['Anfragen', initRequests]
+      ['Hinweis', initHint], ['Anfragen', initRequests]
     ].concat(SHOW_VINE_AND_PETALS ? [['Vine', initLivingVine], ['Petals', initFloatingPetals]] : [])
      .forEach(function (pair) { start(pair[0], pair[1]); });
   }

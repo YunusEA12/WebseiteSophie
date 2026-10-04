@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- Security: the browser may only run code and load files from this site.
      Inline scripts are allowed by their exact hash only. -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; frame-src 'none'; form-action 'none'; upgrade-insecure-requests; script-src 'self' 'sha256-/x7W7R75k8Roq0WaVRQX9blP4OufE5xbAdzklGxsgpw='; base-uri 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'none'; object-src 'none'; frame-src 'none'; form-action 'none'; upgrade-insecure-requests; script-src 'self' 'sha256-/x7W7R75k8Roq0WaVRQX9blP4OufE5xbAdzklGxsgpw='; base-uri 'self'">
 <title>gerberxnails — Sophie Gerber | Nageldesign</title>
 <meta name="description" content="Nageldesign von Sophie Gerber. Russische Maniküre bei jeder Behandlung inklusive. Termine per Instagram-DM.">
 <meta name="theme-color" content="#14100D">
@@ -44,7 +44,7 @@
 <link rel="preload" href="fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="fonts/fonts.css?v=6096b837">
 <link rel="stylesheet" href="css/tailwind-base.css?v=af7c1978">
-<link rel="stylesheet" href="css/style.css?v=7fe54b04">
+<link rel="stylesheet" href="css/style.css?v=6c5cf398">
 <link rel="stylesheet" href="css/tailwind-utils.css?v=0b47f978">
 </head>
 <body class="antialiased">
@@ -172,7 +172,6 @@
       <a href="#preise"     class="navlink text-[.84rem] hover:text-white transition-colors">Preisrechner</a>
       <a href="#arbeiten"   class="navlink text-[.84rem] hover:text-white transition-colors">Arbeiten</a>
       <a href="#policy"     class="navlink text-[.84rem] hover:text-white transition-colors">Studio Policy</a>
-      <a href="#termine"    class="navlink text-[.84rem] hover:text-white transition-colors">Termine</a>
       <a href="#kontakt"    class="navlink text-[.84rem] hover:text-white transition-colors">Kontakt</a>
     </nav>
 
@@ -212,7 +211,6 @@
       <a href="#preise"     class="menu-link t-display text-[1.12rem] tracking-[-.01em] text-[#F7F2EA] hover:text-neon-pink transition-colors py-1.5 w-full">Preisrechner</a>
       <a href="#arbeiten"   class="menu-link t-display text-[1.12rem] tracking-[-.01em] text-[#F7F2EA] hover:text-neon-pink transition-colors py-1.5 w-full">Arbeiten</a>
       <a href="#policy"     class="menu-link t-display text-[1.12rem] tracking-[-.01em] text-[#F7F2EA] hover:text-neon-pink transition-colors py-1.5 w-full">Studio Policy</a>
-      <a href="#termine"    class="menu-link t-display text-[1.12rem] tracking-[-.01em] text-[#F7F2EA] hover:text-neon-pink transition-colors py-1.5 w-full">Freie Termine</a>
       <a href="#kontakt"    class="menu-link t-display text-[1.12rem] tracking-[-.01em] text-[#F7F2EA] hover:text-neon-pink transition-colors py-1.5 w-full">Kontakt</a>
     </nav>
 
@@ -745,38 +743,6 @@
   </div>
 </section>
 
-<!-- ============ TERMINE ============ -->
-<!-- Read-only overview of open slots. The data lives in termine.json, which
-     Sophie maintains (by hand or through the Google Sheet sync in tools/).
-     Nothing is booked here: a free slot copies a request for a DM. -->
-<section id="termine" class="atmos relative px-5 sm:px-8 py-[clamp(4.5rem,10vw,8rem)] scroll-mt-20">
-  <div class="mx-auto max-w-[88rem]">
-    <div class="grid lg:grid-cols-[.34fr_.66fr] gap-8 lg:gap-16">
-    <div class="js-rv lg:sticky lg:top-24 self-start">
-      <div class="inline-flex items-center gap-2 mb-2">
-        <span class="w-2.5 h-2.5 rounded-full bg-neon-pink"></span>
-        <p class="t-editorial text-[.78rem] font-semibold uppercase tracking-[.26em] text-sand-gold">Verfügbarkeit</p>
-      </div>
-      <p class="t-script text-[clamp(2.4rem,7vw,4.2rem)] text-sand-bronze leading-none">Wann passt es&nbsp;dir?</p>
-      <h2 class="t-display mt-2 text-[clamp(1.9rem,5vw,4rem)] tracking-[-.04em]" data-split>Freie Termine</h2>
-      <p class="rv mt-3 max-w-[40rem] text-chalk-dim text-[.95rem] sm:text-[1.02rem] leading-relaxed">
-        Such dir eine freie Uhrzeit aus und tippe sie an. Fest gebucht ist der Termin, sobald ich ihn
-        dir bestätige.
-      </p>
-    </div>
-
-    <div class="js-rv rv">
-      <div id="cal" class="cal">
-        <p class="cal-empty">
-          Die aktuellen Termine findest du auch in meinen
-          <a href="https://www.instagram.com/gerberxnails/" target="_blank" rel="noopener noreferrer">Instagram-Stories</a>.
-        </p>
-      </div>
-    </div>
-    </div>
-  </div>
-</section>
-
 <!-- ============ KONTAKT ============ -->
 <section id="kontakt" class="relative px-5 sm:px-8 py-[clamp(5rem,14vw,11rem)] scroll-mt-20 overflow-hidden" style="background: url('brand_assets/leo_fur.jpg') center/cover;">
   <!-- Soft Warm Silk Ivory Overlay for maximum readability with bright plush fur atmosphere -->
@@ -806,8 +772,8 @@
           <span class="block mt-1">Hol dir deinen Termin.</span>
         </p>
         <p class="rv mt-4 max-w-[36rem] text-[1.02rem] text-chalk-dim leading-relaxed">
-          Schreib mir deine Wunschlänge, dein Design-Level und ein paar Wunschtermine &mdash; dann finden wir schnell deinen passenden Slot.
-          Welche Termine gerade frei sind, siehst du <a href="#termine" class="underline underline-offset-2 hover:text-neon-pink focus-visible:outline-none focus-visible:text-neon-pink">in der Übersicht</a>.
+          Deine Nachricht mit Wunsch-Set ist schon vorbereitet &mdash; ergänze in Instagram einfach ein paar
+          Tage, die dir passen. Dann finden wir schnell deinen Termin.
         </p>
 
         <!-- who you are actually writing to -->
@@ -963,7 +929,6 @@
       <a href="#preise"     class="navlink">Preisrechner</a>
       <a href="#arbeiten"   class="navlink">Arbeiten</a>
       <a href="#policy"     class="navlink">Studio Policy</a>
-      <a href="#termine"    class="navlink">Termine</a>
       <a href="#kontakt"    class="navlink">Kontakt</a>
     </nav>
     <div class="text-[.78rem] text-chalk-mute text-center lg:text-right">
@@ -978,6 +943,6 @@
 </footer>
 
 
-<script src="js/main.js?v=4243139f" defer></script>
+<script src="js/main.js?v=ee95895b" defer></script>
 </body>
 </html>
