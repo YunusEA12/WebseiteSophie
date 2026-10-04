@@ -1262,13 +1262,39 @@
         if (window.console) console.warn('[gerberxnails] Termine:', err);
       });
 
+    /* No customer appointments on Sundays and public holidays in
+       Baden-Wuerttemberg (Feiertagsgesetz): such slots never show, even if
+       they stand in the sheet. The sync script skips them as well. */
+    function easter(y) {   // Gauss/Meeus, Gregorian calendar
+      var a = y % 19, b = Math.floor(y / 100), c = y % 100, d = Math.floor(b / 4), e = b % 4;
+      var f = Math.floor((b + 8) / 25), g = Math.floor((b - f + 1) / 3);
+      var h = (19 * a + b - d - g + 15) % 30, i = Math.floor(c / 4), k = c % 4;
+      var l = (32 + 2 * e + 2 * i - h - k) % 7, m = Math.floor((a + 11 * h + 22 * l) / 451);
+      var month = Math.floor((h + l - 7 * m + 114) / 31), day = ((h + l - 7 * m + 114) % 31) + 1;
+      return new Date(y, month - 1, day);
+    }
+    var restCache = {};
+    function restDays(y) {   // BW public holidays of year y, as "YYYY-MM-DD"
+      if (restCache[y]) return restCache[y];
+      var set = {};
+      ['01-01', '01-06', '05-01', '10-03', '11-01', '12-25', '12-26'].forEach(function (md) { set[y + '-' + md] = true; });
+      var e = easter(y);
+      [-2, 1, 39, 50, 60].forEach(function (off) {   // Good Friday ... Corpus Christi
+        set[iso(new Date(e.getFullYear(), e.getMonth(), e.getDate() + off))] = true;
+      });
+      return (restCache[y] = set);
+    }
+    function isRestDay(s) {
+      return toDate(s).getDay() === 0 || !!restDays(+s.slice(0, 4))[s];
+    }
+
     function setup(data) {
       var pink = {};
       var places = (data.orte || []).filter(function (o) { return o && o.name; });
       places.forEach(function (o) { if (o.farbe === 'pink') pink[o.name] = true; });
 
       var slots = (data.termine || []).filter(function (t) {
-        return t && /^\d{4}-\d\d-\d\d$/.test(t.datum) && /^\d\d:\d\d$/.test(t.zeit);
+        return t && /^\d{4}-\d\d-\d\d$/.test(t.datum) && /^\d\d:\d\d$/.test(t.zeit) && !isRestDay(t.datum);
       }).map(function (t) {
         return {
           date: t.datum, time: t.zeit, place: t.ort || (places[0] && places[0].name) || '',

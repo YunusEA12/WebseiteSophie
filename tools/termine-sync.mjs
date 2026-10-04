@@ -130,14 +130,34 @@ const defaultPlace = places[0] ? places[0].name : "";
 // the place is shown as plain text on the site; keep it short and plain
 const clean = v => String(v || "").replace(/[\u0000-\u001f\u007f<>]/g, "").replace(/\s+/g, " ").trim().slice(0, 30);
 
+// No customer appointments on Sundays and public holidays in Baden-Wuerttemberg
+// (Feiertagsgesetz) - such rows are skipped. The website filters them as well.
+function easter(y) {   // Gauss/Meeus, Gregorian calendar
+  const a = y % 19, b = Math.floor(y / 100), c = y % 100, d = Math.floor(b / 4), e = b % 4;
+  const f = Math.floor((b + 8) / 25), g = Math.floor((b - f + 1) / 3);
+  const h = (19 * a + b - d - g + 15) % 30, i = Math.floor(c / 4), k = c % 4;
+  const l = (32 + 2 * e + 2 * i - h - k) % 7, m = Math.floor((a + 11 * h + 22 * l) / 451);
+  return new Date(Date.UTC(y, Math.floor((h + l - 7 * m + 114) / 31) - 1, ((h + l - 7 * m + 114) % 31) + 1));
+}
+function isRestDay(iso) {
+  const [y, mo, d] = iso.split("-").map(Number);
+  const date = new Date(Date.UTC(y, mo - 1, d));
+  if (date.getUTCDay() === 0) return true;
+  if (["01-01", "01-06", "05-01", "10-03", "11-01", "12-25", "12-26"].includes(iso.slice(5))) return true;
+  const e = easter(y);
+  return [-2, 1, 39, 50, 60].some(off => new Date(e.getTime() + off * 864e5).toISOString().slice(0, 10) === iso);
+}
+
 const termine = [];
 const problems = [];
+const restSkipped = [];
 rows.slice(1).forEach((r, i) => {
   const datum = parseDate(r[C.date] || "");
   const zeit = parseTime(r[C.time] || "");
   if (!datum || !zeit) { problems.push(`Zeile ${i + 2}: "${r.join(" | ")}"`); return; }
   // keep the file small: anything older than a month is history
   if (daysBetween(datum, TODAY) > 31) return;
+  if (isRestDay(datum)) { restSkipped.push(`${datum} ${zeit}`); return; }
   const ort = clean(C.place >= 0 && r[C.place]) || defaultPlace;
   if (ort && !places.some(p => p.name.toLowerCase() === ort.toLowerCase())) places.push({ name: ort, farbe: "gold" });
   const known = places.find(p => p.name.toLowerCase() === ort.toLowerCase());
@@ -145,6 +165,7 @@ rows.slice(1).forEach((r, i) => {
 });
 
 if (problems.length) console.warn(`Uebersprungen (Datum oder Uhrzeit unlesbar):\n  ${problems.join("\n  ")}`);
+if (restSkipped.length) console.warn(`Uebersprungen (Sonntag oder Feiertag in BW, keine Kundentermine):\n  ${restSkipped.join("\n  ")}`);
 // a broken sheet must not wipe the calendar
 if (!termine.length && rows.length > 1) {
   console.error("Keine einzige Zeile lesbar - termine.json bleibt unveraendert.");

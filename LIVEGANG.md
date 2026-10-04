@@ -14,6 +14,8 @@ Datenschutz Platzhalter enthalten, den provisorischen Link nicht öffentlich tei
 - [ ] Impressum-Adresse geklärt: keine Wohnadresse nötig, aber eine Adresse, an der Post sie
       sicher erreicht (kein Postfach), z. B. Studio in Pforzheim oder Geschäftsadresse mit Postweiterleitung
 - [ ] Sophie bestätigt: Fotos selbst gemacht, Kundinnen einverstanden
+- [ ] Keine Kundentermine an Sonntagen und Feiertagen (Feiertagsgesetz BW) – auch nicht in
+      Instagram-Stories anbieten. Der Kalender blendet solche Tage automatisch aus.
 - [ ] Impressum und Datenschutz juristisch geprüft
 
 ## Technik
