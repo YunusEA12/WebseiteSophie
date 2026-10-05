@@ -513,7 +513,7 @@
       var src = t.querySelector('img');
       var title = t.querySelector('.media-cap > span');
       var sub = t.querySelectorAll('.media-cap > span')[1];
-      img.src = src.getAttribute('src');
+      img.src = src.getAttribute('data-full') || src.getAttribute('src');
       img.alt = src.getAttribute('alt') || '';
       cap.textContent = '';
       var strong = document.createElement('b');

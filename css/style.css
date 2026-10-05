@@ -2733,6 +2733,7 @@ main > section:first-of-type.atmos::before {
 
 /* utilities the trimmed markup uses that the precompiled Tailwind file lacks */
 .w-20 { width: 5rem; }
+@media (min-width: 1024px) { .grid.lg\:grid-cols-5 { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
 .mb-8 { margin-bottom: 2rem; }
 .max-w-\[34rem\] { max-width: 34rem; }
 .max-w-\[38rem\] { max-width: 38rem; }

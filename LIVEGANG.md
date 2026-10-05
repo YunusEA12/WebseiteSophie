@@ -21,7 +21,9 @@ Datenschutz Platzhalter enthalten, den provisorischen Link nicht öffentlich tei
       unproblematisch, sicher ist sicher)
 - [ ] Keine Kundentermine an Sonntagen und Feiertagen (Feiertagsgesetz BW) – auch nicht in
       Instagram-Stories anbieten. Termine werden nur auf Anfrage per DM vereinbart.
-- [ ] Original-Fotos (8–12 Arbeiten, 1 Porträt) in voller Qualität
+- [x] Original-Fotos der Arbeiten (10 Stück, eingebaut)
+- [ ] Porträt von Sophie in voller Qualität (das jetzige ist sehr klein)
+- [ ] Länge und Level unter den Fotos von Sophie prüfen lassen (geschätzt)
 - [ ] Impressum und Datenschutz juristisch geprüft
 
 ## Technik

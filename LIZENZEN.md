@@ -46,6 +46,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 | Datei | Herkunft |
 | --- | --- |
-| `brand_assets/nail_post_*.jpg`, `sophie.jpg` | Fotos von Sophie Gerber (von ihr zu bestätigen) |
+| `brand_assets/sets/*.webp` | Originalfotos von Sophie Gerber, von ihr für die Website freigegeben |
+| `sophie.jpg` | Foto von Sophie Gerber (von ihr zu bestätigen) |
 | `brand_assets/leo_fur.jpg`, `hibiscus_*` | KI-generiert mit Google Gemini. Die Originale tragen einen C2PA-Nachweis „Created by Google Generative AI“ und ein SynthID-Wasserzeichen. |
 | `share.jpg`, `apple-touch-icon.png` | aus den obigen Bildern und eigenen Grafiken zusammengesetzt |
