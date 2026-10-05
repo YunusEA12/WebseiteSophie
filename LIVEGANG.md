@@ -7,12 +7,13 @@ Datenschutz Platzhalter enthalten, den provisorischen Link nicht öffentlich tei
 ## Inhalte (von Sophie)
 
 - [x] Name, Straße, Stadt (Stuttgart), keine Telefonnummer – eingetragen
-- [ ] Postleitzahl zur Adresse (Impressum und Datenschutz Abschnitt 1)
-- [ ] E-Mail-Adresse (Impressum und Datenschutz Abschnitt 1) – muss funktionieren; z. B.
-      `kontakt@gerberxnails.de`, sobald die Domain samt Postfach gekauft ist
-- [ ] USt-IdNr. oder W-IdNr. (beginnt mit „DE“, Schreiben vom Bundeszentralamt für Steuern) –
-      gibt es keine, den Abschnitt „Umsatzsteuer“ im Impressum löschen
-- [ ] Ausfallgebühr festlegen (30 % oder 50 %) und in AGB Punkt 3 eintragen
+- [x] Postleitzahl (70437) – eingetragen
+- [x] E-Mail-Adresse (gerberxnails@gmx.de) – eingetragen
+- [ ] W-IdNr. oder USt-IdNr. klären (Sophie wusste es nicht). Die W-IdNr. vergibt das
+      Bundeszentralamt für Steuern seit Ende 2024 nach und nach automatisch; sie steht im ELSTER-
+      Postfach oder in einem Brief und beginnt mit „DE“. Gibt es eine, im Impressum einen Abschnitt
+      „Umsatzsteuer“ mit der Nummer ergänzen. Die normale Steuernummer gehört nicht hinein.
+- [x] Ausfallgebühr: 30 % bei Absage unter 48 Std., 50 % ohne Absage – in AGB Punkt 3 und auf der Karte
 - [ ] Danach: Hinweiskästen in `impressum.html` und `datenschutz.html` löschen
 - [ ] `datenschutz.html`, Abschnitt 2: Hoster anpassen, falls die Seite nicht bei GitHub Pages bleibt
 - [x] Preise bestätigt (Spannen mit dem oberen Preis; Charms „ab +1 € pro Charm“)
@@ -22,8 +23,11 @@ Datenschutz Platzhalter enthalten, den provisorischen Link nicht öffentlich tei
 - [ ] Keine Kundentermine an Sonntagen und Feiertagen (Feiertagsgesetz BW) – auch nicht in
       Instagram-Stories anbieten. Termine werden nur auf Anfrage per DM vereinbart.
 - [x] Original-Fotos der Arbeiten (10 Stück, eingebaut)
-- [ ] Porträt von Sophie in voller Qualität (das jetzige ist sehr klein)
-- [ ] Länge und Level unter den Fotos von Sophie prüfen lassen (geschätzt)
+- [ ] Porträt von Sophie in voller Qualität (sie schickt eins)
+- [x] Länge und Level unter den Fotos – von Sophie korrigiert
+- [x] Gel-Auffüllen kostet wie Gel-X
+- [x] Instagram: Nachrichtenanfragen von allen erlaubt
+- [x] iPhone-Test: Instagram öffnet sich, Einfügen klappt
 - [ ] Impressum und Datenschutz juristisch geprüft
 
 ## Technik
