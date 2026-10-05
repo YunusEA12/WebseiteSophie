@@ -1072,7 +1072,8 @@
         if (pressed(b)) items.push({ kind: 'Zusatz', name: name(b), r: range(b.getAttribute('data-add')), open: false });
       });
       document.querySelectorAll('[data-extra]').forEach(function (b) {
-        if (pressed(b)) items.push({ kind: 'Extra', name: name(b), r: range(b.getAttribute('data-extra')), open: true });
+        if (pressed(b)) items.push({ kind: 'Extra', name: name(b), r: range(b.getAttribute('data-extra')), open: true,
+                                     unit: b.getAttribute('data-unit') || '' });
       });
 
       // A range in a price list ("35-40") counts with its upper price: one
@@ -1133,7 +1134,7 @@
     function setLines(s) {
       if (s.solo) return ['• Nur Soak Off, ohne neues Set (' + euro([s.min, s.max]) + ')'];
       var out = s.items.map(function (it) {
-        return '• ' + it.kind + ': ' + it.name + ' – ' + euro(it.r, it.open);
+        return '• ' + it.kind + ': ' + it.name + ' – ' + euro(it.r, it.open) + (it.unit ? ' ' + it.unit : '');
       });
       out.push('• Russische Maniküre: inklusive');
       out.push('• Preis laut Rechner: ' + euro([s.min, s.max], s.open));

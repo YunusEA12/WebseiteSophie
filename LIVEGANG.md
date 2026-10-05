@@ -4,18 +4,24 @@ Bis alles hier abgehakt ist, ist die Seite nur ein Entwurf. Solange Impressum un
 Datenschutz Platzhalter enthalten, den provisorischen Link nicht öffentlich teilen
 (z. B. nicht in die Instagram-Bio).
 
-## Inhalte (von Sophie, siehe Liste „Was ich für deine Website von dir brauche“)
+## Inhalte (von Sophie)
 
-- [ ] `impressum.html`: alle rosa Platzhalter (`class="fill"`) ersetzen, Hinweiskasten löschen
-- [ ] `datenschutz.html`: Verantwortliche, Aufsichtsbehörde eintragen, Hinweiskasten löschen
+- [x] Name, Straße, Stadt (Stuttgart), keine Telefonnummer – eingetragen
+- [ ] Postleitzahl zur Adresse (Impressum und Datenschutz Abschnitt 1)
+- [ ] E-Mail-Adresse (Impressum und Datenschutz Abschnitt 1) – muss funktionieren; z. B.
+      `kontakt@gerberxnails.de`, sobald die Domain samt Postfach gekauft ist
+- [ ] USt-IdNr. oder W-IdNr. (beginnt mit „DE“, Schreiben vom Bundeszentralamt für Steuern) –
+      gibt es keine, den Abschnitt „Umsatzsteuer“ im Impressum löschen
+- [ ] Ausfallgebühr festlegen (30 % oder 50 %) und in AGB Punkt 3 eintragen
+- [ ] Danach: Hinweiskästen in `impressum.html` und `datenschutz.html` löschen
 - [ ] `datenschutz.html`, Abschnitt 2: Hoster anpassen, falls die Seite nicht bei GitHub Pages bleibt
-- [ ] Sophie ist mit den Preisen einverstanden: Spannen aus ihrer Liste stehen mit dem oberen
-      Preis da (Kurz 40 €, Level 1 +10 €, Level 2 +20 €), nur Charms und 3D-Modellierung „ab“
-- [ ] Impressum-Adresse geklärt: keine Wohnadresse nötig, aber eine Adresse, an der Post sie
-      sicher erreicht (kein Postfach), z. B. Studio in Pforzheim oder Geschäftsadresse mit Postweiterleitung
-- [ ] Sophie bestätigt: Fotos selbst gemacht, Kundinnen einverstanden
+- [x] Preise bestätigt (Spannen mit dem oberen Preis; Charms „ab +1 € pro Charm“)
+- [x] Fotos alle selbst gemacht
+- [ ] Kundinnen der gezeigten Fotos kurz um Erlaubnis fragen (Hände ohne Gesicht sind meist
+      unproblematisch, sicher ist sicher)
 - [ ] Keine Kundentermine an Sonntagen und Feiertagen (Feiertagsgesetz BW) – auch nicht in
       Instagram-Stories anbieten. Termine werden nur auf Anfrage per DM vereinbart.
+- [ ] Original-Fotos (8–12 Arbeiten, 1 Porträt) in voller Qualität
 - [ ] Impressum und Datenschutz juristisch geprüft
 
 ## Technik
