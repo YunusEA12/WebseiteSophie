@@ -3030,10 +3030,10 @@ main > section:first-of-type.atmos::before {
 .details-grid .media-cap .t-display { font-size: .92rem; }
 
 /* Porträt in der Kontakt-Karte */
-.sophie-av { width: 4.25rem; height: 4.25rem; }
+.sophie-av { width: 4.75rem; height: 4.75rem; }
 
 @media (min-width: 640px) {
-  .sophie-av { width: 5rem; height: 5rem; }
+  .sophie-av { width: 5.5rem; height: 5.5rem; }
 }
 
 
