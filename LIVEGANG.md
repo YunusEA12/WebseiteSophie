@@ -7,7 +7,12 @@ Datenschutz Platzhalter enthalten, den provisorischen Link nicht öffentlich tei
 ## Inhalte (von Sophie)
 
 - [x] Name, Straße, Stadt (Stuttgart), keine Telefonnummer – eingetragen
-- [x] Postleitzahl (70437) – eingetragen
+- [ ] Wohnadresse im Impressum ersetzen (optional, empfohlen): Ein Impressum-Service oder eine
+      vertraute Person stellt eine Anschrift (c/o), unter der Post sicher bei Sophie ankommt. Dann
+      in `impressum.html` und `widerruf.html` die Adresse austauschen. Bis dahin stehen Impressum,
+      Datenschutz und Widerrufsbelehrung dauerhaft auf „noindex“, und die Startseite enthält die
+      Adresse nicht.
+- [x] Postleitzahl – eingetragen
 - [x] E-Mail-Adresse (gerberxnails@gmx.de) – eingetragen
 - [ ] W-IdNr. oder USt-IdNr. klären (Sophie wusste es nicht). Die W-IdNr. vergibt das
       Bundeszentralamt für Steuern seit Ende 2024 nach und nach automatisch; sie steht im ELSTER-
@@ -41,8 +46,9 @@ Datenschutz Platzhalter enthalten, den provisorischen Link nicht öffentlich tei
 
 ## Technik
 
-- [ ] In `index.html`, `impressum.html`, `datenschutz.html` die Zeile
-      `<meta name="robots" content="noindex, nofollow">` samt Kommentar entfernen
+- [ ] Nur in `index.html` die Zeile `<meta name="robots" content="noindex, nofollow">` samt
+      Kommentar entfernen. Impressum, Datenschutz und Widerruf bleiben auf „noindex“, damit die
+      Wohnadresse nicht über Suchmaschinen auffindbar ist.
 - [ ] Domain `gerberxnails.de` verbinden (siehe Abschnitt „Domain bei IONOS“ unten)
 - [ ] `node stamp.mjs` ausführen, dann committen und pushen
 
