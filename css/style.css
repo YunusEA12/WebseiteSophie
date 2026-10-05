@@ -3015,19 +3015,21 @@ main > section:first-of-type.atmos::before {
   .media-sq { border-radius: 30px; }
 }
 
-.details-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+/* drei Nahaufnahmen in einer Reihe, kleiner als die vier Level-Bilder */
+.details-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 
-@media (min-width: 640px) {
-  .details-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-}
-
-/* die Nahaufnahmen bleiben kleiner als die Level-Bilder */
 @media (min-width: 1024px) {
-  .details-grid { max-width: 72%; margin-inline: auto; }
+  .details-grid { max-width: 50%; margin-inline: auto; }
   .details-title { text-align: center; }
 }
 
 .details-grid .media-cap .t-display { font-size: .92rem; }
+
+@media (max-width: 639px) {
+  .details-grid .media-cap { padding: .55rem .6rem; }
+  .details-grid .media-cap .t-display { font-size: .78rem; line-height: 1.2; }
+  .details-grid .media-cap > span:last-child { display: none; }
+}
 
 /* Porträt in der Kontakt-Karte */
 .sophie-av { width: 4.75rem; height: 4.75rem; }
