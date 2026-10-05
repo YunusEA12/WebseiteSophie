@@ -24,6 +24,7 @@ Datenschutz Platzhalter enthalten, den provisorischen Link nicht öffentlich tei
       Instagram-Stories anbieten. Termine werden nur auf Anfrage per DM vereinbart.
 - [x] Original-Fotos der Arbeiten (10 Stück, eingebaut)
 - [ ] Porträt von Sophie in voller Qualität (sie schickt eins)
+- [ ] Foto für Level 1 (clean, einfarbig) – bis dahin zeigt das Portfolio dort eine Nude-Lackfarbe
 - [x] Länge und Level unter den Fotos – von Sophie korrigiert
 - [x] Gel-Auffüllen kostet wie Gel-X
 - [x] Instagram: Nachrichtenanfragen von allen erlaubt
