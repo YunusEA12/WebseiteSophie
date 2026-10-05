@@ -2628,12 +2628,14 @@ main > section:first-of-type.atmos::before {
   line-height: 1.5;
 }
 
-.msg-bubble.bump { animation: msgBump .5s var(--ease-spring); }
-
-@keyframes msgBump {
-  from { opacity: .6; transform: translate3d(0, 4px, 0) scale(.985); }
-  to   { opacity: 1;  transform: none; }
+/* the message is built line by line; a line that just changed lights up */
+.msg-bubble .ml {
+  display: block;
+  position: relative;
+  z-index: 0;
 }
+
+.msg-bubble .ml-gap { height: .75em; }
 
 /* after a tap: the copied text above the hint line */
 #msg-peek {
@@ -2720,7 +2722,6 @@ main > section:first-of-type.atmos::before {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .msg-bubble.bump { animation: none; }
   #msg-peek { transition: opacity .2s linear; }
 }
 
@@ -3144,4 +3145,83 @@ main > section:first-of-type.atmos::before {
   }
 
   #preise fieldset > div.grid .opt .t-display { font-size: .76rem; }
+}
+
+
+
+/* ==========================================================================
+   PREISRECHNER: SICHTBARE RUECKMELDUNG
+   Ein Tipp hinterlaesst eine Welle, das gewaehlte Feld springt kurz, die
+   geaenderte Zeile der Nachricht leuchtet auf und der Preis huepft.
+   Nur transform und opacity bewegen sich.
+   ========================================================================== */
+#preise .opt { overflow: hidden; }
+
+.opt-ripple {
+  position: absolute;
+  z-index: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .32);
+  pointer-events: none;
+  transform: scale(0);
+  opacity: .6;
+  animation: optRipple .65s cubic-bezier(.2, .7, .3, 1) forwards;
+}
+
+@keyframes optRipple {
+  to { transform: scale(1); opacity: 0; }
+}
+
+.opt.is-pop { animation: optPop .45s var(--ease-spring); }
+
+@keyframes optPop {
+  0%   { transform: scale(.93); }
+  55%  { transform: scale(1.045); }
+  100% { transform: scale(1); }
+}
+
+.msg-bubble .ml-new { animation: lineIn .55s var(--ease-spring) both; }
+
+.msg-bubble .ml-new::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: -.12rem -.45rem;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, .26);
+  opacity: 0;
+  animation: lineGlow 1.6s ease-out;
+  pointer-events: none;
+}
+
+@keyframes lineIn {
+  from { opacity: .25; transform: translate3d(-10px, 0, 0); }
+  to   { opacity: 1; transform: none; }
+}
+
+@keyframes lineGlow {
+  0%   { opacity: 0; }
+  15%  { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+#total { display: inline-block; transform-origin: left bottom; }
+#pb-total { display: inline-block; transform-origin: left bottom; }
+
+#total.is-pop,
+#pb-total.is-pop { animation: pricePop .5s var(--ease-spring); }
+
+@keyframes pricePop {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.12); }
+  100% { transform: scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .opt-ripple { display: none; }
+  .opt.is-pop,
+  .msg-bubble .ml-new,
+  .msg-bubble .ml-new::before,
+  #total.is-pop,
+  #pb-total.is-pop { animation: none; }
 }

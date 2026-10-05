@@ -39,6 +39,14 @@
 
   // Environment & Accessibility detection
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // restart a short CSS animation on an element
+  function pop(el) {
+    if (!el || reduce) return;
+    el.classList.remove('is-pop');
+    void el.offsetWidth;
+    el.classList.add('is-pop');
+  }
   var fine = window.matchMedia('(hover:hover) and (pointer:fine)').matches;
 
   /* The vine and the drifting petals live at z-index -1, and the body
@@ -1034,7 +1042,22 @@
       return { solo: false, items: items, min: min, max: max, open: open };
     }
 
-    var shown = null, rollId = null;
+    var shown = null, rollId = null, lastMsg = null;
+
+    // the message line by line, so the line that just changed can light up
+    function paintMessage(text, animate) {
+      var before = lastMsg === null ? [] : lastMsg.split('\n');
+      var frag = document.createDocumentFragment();
+      text.split('\n').forEach(function (line) {
+        var el = document.createElement('span');
+        el.className = line ? 'ml' : 'ml ml-gap';
+        if (animate && line && before.indexOf(line) === -1) el.className += ' ml-new';
+        el.textContent = line;
+        frag.appendChild(el);
+      });
+      bubbleEl.textContent = '';
+      bubbleEl.appendChild(frag);
+    }
 
     function paint(a, b, open) {
       a = Math.round(a); b = Math.round(b);
@@ -1047,13 +1070,9 @@
       // the live message: exactly the text a tap on the button copies
       if (bubbleEl) {
         var text = buildInquiryText(s);
-        if (bubbleEl.textContent !== text) {
-          bubbleEl.textContent = text;
-          if (!reduce && shown) {
-            bubbleEl.classList.remove('bump');
-            void bubbleEl.offsetWidth;
-            bubbleEl.classList.add('bump');
-          }
+        if (text !== lastMsg) {
+          paintMessage(text, !reduce && !!shown);
+          lastMsg = text;
         }
       }
 
@@ -1070,6 +1089,7 @@
         return;
       }
       var from = shown.slice();
+      if (from[0] !== target[0] || from[1] !== target[1]) pop(totalEl);
       var t0 = performance.now();
       (function roll(now) {
         var p = Math.min(1, ((now || performance.now()) - t0) / 200);
@@ -1149,6 +1169,29 @@
       g.addEventListener('click', syncTabStops);
     });
     syncTabStops();
+
+    var calcSec = document.getElementById('preise');
+    if (calcSec && !reduce) {
+      calcSec.addEventListener('pointerdown', function (e) {
+        var o = e.target.closest('.opt');
+        if (!o || o.disabled) return;
+        var r = o.getBoundingClientRect();
+        var size = Math.max(r.width, r.height) * 2.2;
+        var dot = document.createElement('span');
+        dot.className = 'opt-ripple';
+        dot.setAttribute('aria-hidden', 'true');
+        dot.style.width = dot.style.height = size + 'px';
+        dot.style.left = (e.clientX - r.left - size / 2) + 'px';
+        dot.style.top = (e.clientY - r.top - size / 2) + 'px';
+        o.appendChild(dot);
+        setTimeout(function () { if (dot.parentNode) dot.parentNode.removeChild(dot); }, 700);
+      });
+      // runs after the field's own handler, so the new state is already set
+      calcSec.addEventListener('click', function (e) {
+        var o = e.target.closest('.opt');
+        if (o && !o.disabled) pop(o);
+      });
+    }
 
     document.querySelectorAll('[data-add],[data-extra]').forEach(function (btn) {
       btn.addEventListener('click', function () {
@@ -1548,7 +1591,15 @@
 
     var pbTotal = bar.querySelector('#pb-total');
     var pre = document.getElementById('total-pre');
-    function sync() { pbTotal.textContent = (pre && !pre.hidden ? 'ab ' : '') + total.textContent.trim(); }
+    var popT = null, popped = null;
+    function sync() {
+      pbTotal.textContent = (pre && !pre.hidden ? 'ab ' : '') + total.textContent.trim();
+      clearTimeout(popT);
+      popT = setTimeout(function () {
+        if (popped !== null && popped !== pbTotal.textContent) pop(pbTotal);
+        popped = pbTotal.textContent;
+      }, 240);
+    }
     sync();
     new MutationObserver(sync).observe(total.parentNode, { childList: true, characterData: true, subtree: true, attributes: true });
 
