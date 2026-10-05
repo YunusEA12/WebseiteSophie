@@ -663,64 +663,6 @@ dialog.sheet[open] {
 }
 
 /* ==========================================================================
-   12. SERVICE LIST & HOVER PEEK PREVIEW
-   ========================================================================== */
-.srv {
-  position: relative;
-  display: block;
-  border-top: 1px solid rgba(239, 227, 210, .13);
-}
-
-.srv:last-child {
-  border-bottom: 1px solid rgba(239, 227, 210, .13);
-}
-
-.srv-in {
-  position: relative;
-  z-index: 2;
-  display: flex;
-  align-items: baseline;
-  gap: 1rem;
-  padding: clamp(1.4rem, 3.4vw, 2.6rem) 0;
-  transition: transform .6s var(--ease-spring), color .4s var(--ease-out);
-}
-
-.srv::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  background: linear-gradient(90deg, rgba(229, 20, 95, .13), rgba(229, 20, 95, 0) 70%);
-  transform: scaleX(0);
-  transform-origin: left;
-  opacity: 0;
-  transition: transform .6s var(--ease-out), opacity .4s var(--ease-out);
-}
-
-.srv:hover::after {
-  transform: scaleX(1);
-  opacity: 1;
-}
-
-.srv:hover .srv-in {
-  transform: translate3d(clamp(.6rem, 2vw, 1.6rem), 0, 0);
-}
-
-.srv:focus-visible {
-  outline: none;
-}
-
-.srv:focus-visible::after {
-  transform: scaleX(1);
-  opacity: 1;
-}
-
-.srv:active .srv-in {
-  transform: translate3d(clamp(.3rem, 1vw, .8rem), 0, 0);
-}
-
-
-/* ==========================================================================
    13. PRICE CONFIGURATOR
    ========================================================================== */
 .opt {
@@ -979,28 +921,6 @@ dialog.sheet[open] {
 
 
 /* ==========================================================================
-   SERVICE ROWS ON TOUCH
-   ========================================================================== */
-@media (hover: none), (pointer: coarse) {
-  .srv-in {
-    gap: .85rem;
-    align-items: center;
-    padding-top: .9rem;
-    padding-bottom: .9rem;
-  }
-
-  .srv-in > span:nth-of-type(2) {
-    font-size: 1.3rem;
-    line-height: 1.15;
-  }
-
-  .srv-in > span:last-of-type {
-    font-size: .95rem;
-  }
-}
-
-
-/* ==========================================================================
    WHERE THE LEOPARD TAKES OVER
    The print used to start on a hard line. A longer dissolve at the top lets
    the vine slip behind it instead of being cut.
@@ -1069,19 +989,8 @@ dialog.sheet[open] {
     transform: scale(.97);
   }
 
-  .tile:hover .media img,
-  .srv:hover .srv-in {
+  .tile:hover .media img {
     transform: none;
-  }
-
-  .srv:hover::after {
-    opacity: 0;
-    transform: scaleX(0);
-  }
-
-  .srv:active::after {
-    opacity: 1;
-    transform: scaleX(1);
   }
 
   .navlink:hover::after {
@@ -2822,66 +2731,6 @@ main > section:first-of-type.atmos::before {
 }
 
 
-/* ==========================================================================
-   WENIGER TEXT
-   Die Preiserklaerung klappt nur auf, wer sie lesen will.
-   ========================================================================== */
-.price-info {
-  border-radius: 18px;
-  border: 1px solid rgba(239, 227, 210, .12);
-  background: rgba(26, 21, 17, .6);
-}
-
-.price-info summary {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  padding: 1rem 1.25rem;
-  cursor: pointer;
-  list-style: none;
-  font-family: "Space Grotesk", sans-serif;
-  font-size: 1rem;
-  font-weight: 600;
-  color: #E0B36D;
-  border-radius: 18px;
-}
-
-.price-info summary::-webkit-details-marker { display: none; }
-
-/* a chevron that turns when open */
-.price-info summary::after {
-  content: "";
-  flex: 0 0 auto;
-  width: .55rem;
-  height: .55rem;
-  margin-right: .2rem;
-  border-right: 2px solid currentColor;
-  border-bottom: 2px solid currentColor;
-  transform: rotate(45deg) translate3d(-2px, -2px, 0);
-  transition: transform .35s var(--ease-spring);
-}
-
-.price-info[open] summary::after { transform: rotate(225deg) translate3d(-2px, -2px, 0); }
-.price-info summary:hover { color: #F0C983; }
-.price-info summary:focus-visible { outline: 2px solid #FF4D86; outline-offset: 3px; }
-.price-info summary:active { opacity: .8; }
-
-.price-info ul {
-  margin: 0;
-  padding: 0 1.25rem 1.15rem 2.35rem;
-  display: grid;
-  gap: .55rem;
-  font-size: 1rem;
-  line-height: 1.55;
-  color: #CDBFAE;
-  list-style: disc;
-}
-
-.price-info li::marker { color: #E0B36D; }
-.price-info strong { color: #F7F2EA; font-weight: 600; }
-
-
 /* utilities the trimmed markup uses that the precompiled Tailwind file lacks */
 .w-20 { width: 5rem; }
 .mb-8 { margin-bottom: 2rem; }
@@ -3006,4 +2855,64 @@ main > section:first-of-type.atmos::before {
     padding: 0;
     font-size: .95rem;
   }
+}
+
+
+/* ==========================================================================
+   LEISTUNGEN ALS STICHWORTE
+   Nur die Schlagworte - die Preise stehen im Rechner direkt darunter.
+   Gel-X ist ihr Hauptding und steht deshalb vorne und in Pink.
+   ========================================================================== */
+.srv-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .6rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.srv-tag {
+  display: inline-flex;
+  align-items: baseline;
+  gap: .45rem;
+  padding: .7rem 1.2rem;
+  border-radius: 999px;
+  border: 1px solid rgba(224, 179, 109, .28);
+  background: rgba(26, 21, 17, .78);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, .04) inset,
+    0 10px 24px -14px rgba(0, 0, 0, .65),
+    0 4px 10px -6px rgba(74, 45, 26, .35);
+  font-family: "Space Grotesk", sans-serif;
+  font-size: clamp(1.05rem, 3.6vw, 1.45rem);
+  font-weight: 600;
+  letter-spacing: -.02em;
+  line-height: 1.2;
+  color: #F7F2EA;
+}
+
+.srv-tag.is-main {
+  border-color: transparent;
+  background: linear-gradient(135deg, #E5145F, #FF4D86);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, .18) inset,
+    0 14px 30px -14px rgba(229, 20, 95, .7),
+    0 4px 10px -6px rgba(142, 10, 60, .5);
+  color: #fff;
+}
+
+.srv-incl {
+  font-size: .72em;
+  font-weight: 500;
+  letter-spacing: 0;
+  color: #E0B36D;
+}
+
+/* the calculator follows right away, so less air in between */
+#leistungen { padding-bottom: clamp(1rem, 3vw, 2.5rem); }
+
+@media (min-width: 1024px) {
+  .srv-tags { gap: .8rem; }
+  .srv-tag { padding: .85rem 1.5rem; }
 }

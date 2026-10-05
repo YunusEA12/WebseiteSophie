@@ -44,7 +44,7 @@
 <link rel="preload" href="fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="fonts/fonts.css?v=6096b837">
 <link rel="stylesheet" href="css/tailwind-base.css?v=af7c1978">
-<link rel="stylesheet" href="css/style.css?v=afbf6787">
+<link rel="stylesheet" href="css/style.css?v=9354f513">
 <link rel="stylesheet" href="css/tailwind-utils.css?v=0b47f978">
 </head>
 <body class="antialiased">
@@ -398,9 +398,8 @@
           No Gatekeeping. Nur perfekte Nägel &amp; pure Aesthetics.
         </h2>
         <p class="rv mt-7 max-w-[38rem] text-chalk-dim text-[1.12rem] sm:text-[1.2rem] leading-relaxed">
-          Qualität braucht Zeit &ndash; und die nehme ich mir für deine Nägel. Präzise russische Maniküre als
-          Basis, dazu handgemalte Custom Designs. Meinen Nagelkurs habe ich auf Bali gemacht, und aus einem
-          Hobby ist so viel mehr geworden.
+          Qualität braucht Zeit &ndash; und die nehme ich mir: präzise russische Maniküre, handgemalte Custom Designs.
+          Gelernt habe ich auf Bali &ndash; aus dem Hobby wurde so viel mehr.
         </p>
       </div>
     </div>
@@ -421,50 +420,15 @@
       </div>
     </div>
 
-    <div class="js-rv rv" id="srvlist">
-      <a href="#preise" class="srv">
-        <div class="srv-in">
-          <span class="t-display text-[.8rem] text-sand-bronze w-8 shrink-0">01</span>
-          <span class="t-display text-[clamp(1.4rem,4.4vw,3rem)] tracking-[-.035em] flex-1">Russische Maniküre</span>
-          <span class="t-display text-[.9rem] sm:text-[1.1rem] text-sand-gold shrink-0">inklusive</span>
-        </div>
-      </a>
-      <a href="#preise" class="srv">
-        <div class="srv-in">
-          <span class="t-display text-[.8rem] text-sand-bronze w-8 shrink-0">02</span>
-          <span class="t-display text-[clamp(1.4rem,4.4vw,3rem)] tracking-[-.035em] flex-1">Gel-X oder Gel-Auffüllen</span>
-          <span class="t-display text-[.9rem] sm:text-[1.1rem] text-chalk-dim shrink-0">ab 40&thinsp;&euro;</span>
-        </div>
-      </a>
-      <a href="#preise" class="srv">
-        <div class="srv-in">
-          <span class="t-display text-[.8rem] text-sand-bronze w-8 shrink-0">03</span>
-          <span class="t-display text-[clamp(1.4rem,4.4vw,3rem)] tracking-[-.035em] flex-1">Design Level 1&ndash;4</span>
-          <span class="t-display text-[.9rem] sm:text-[1.1rem] text-chalk-dim shrink-0">ab +10&thinsp;&euro;</span>
-        </div>
-      </a>
-      <a href="#preise" class="srv">
-        <div class="srv-in">
-          <span class="t-display text-[.8rem] text-sand-bronze w-8 shrink-0">04</span>
-          <span class="t-display text-[clamp(1.4rem,4.4vw,3rem)] tracking-[-.035em] flex-1">Charms &amp; 3D-Extras</span>
-          <span class="t-display text-[.9rem] sm:text-[1.1rem] text-chalk-dim shrink-0">ab +1&thinsp;&euro;</span>
-        </div>
-      </a>
-      <a href="#preise" class="srv">
-        <div class="srv-in">
-          <span class="t-display text-[.8rem] text-sand-bronze w-8 shrink-0">05</span>
-          <span class="t-display text-[clamp(1.4rem,4.4vw,3rem)] tracking-[-.035em] flex-1">Soak Off</span>
-          <span class="t-display text-[.9rem] sm:text-[1.1rem] text-chalk-dim shrink-0">20&thinsp;&euro;</span>
-        </div>
-      </a>
-      <a href="#preise" class="srv">
-        <div class="srv-in">
-          <span class="t-display text-[.8rem] text-sand-bronze w-8 shrink-0">06</span>
-          <span class="t-display text-[clamp(1.4rem,4.4vw,3rem)] tracking-[-.035em] flex-1">Fremde Arbeit entfernen</span>
-          <span class="t-display text-[.9rem] sm:text-[1.1rem] text-chalk-dim shrink-0">+10&thinsp;&euro;</span>
-        </div>
-      </a>
-    </div>
+    <!-- just the keywords; the prices live in the calculator right below -->
+    <ul class="js-rv rv srv-tags">
+      <li class="srv-tag is-main">Gel-X</li>
+      <li class="srv-tag">Gel-Auffüllen</li>
+      <li class="srv-tag">Russische Maniküre <span class="srv-incl">inklusive</span></li>
+      <li class="srv-tag">Handgemalte Designs</li>
+      <li class="srv-tag">Charms &amp; 3D</li>
+      <li class="srv-tag">Soak Off</li>
+    </ul>
   </div>
 </section>
 
@@ -519,20 +483,6 @@
               <span>Nur Soak Off<span class="block opt-sub">Ablösen ohne neues Set</span></span><span class="t-display">20&thinsp;&euro;</span></button>
           </div>
         </fieldset>
-        <!-- the details fold away: who wants them opens them -->
-        <details class="price-info sm:col-span-2">
-          <summary>So kommt dein Preis zustande</summary>
-          <ul>
-            <li><strong>Länge</strong> bestimmt den Grundpreis &ndash; russische Maniküre ist immer inklusive.</li>
-            <li><strong>Design-Level</strong> heißt: so viel Zeit steckt im Nagel. Level&nbsp;1 ist clean und einfarbig,
-                Level&nbsp;4 aufwendige Handmalerei, Chrome oder Katzenauge.</li>
-            <li><strong>Charms &amp; 3D</strong> kommen extra dazu, je nach Größe und Menge.</li>
-            <li><strong>Set von einem anderen Studio?</strong> Dann kommt das Entfernen dazu.</li>
-            <li><strong>Dauer:</strong> etwa 2 bis 4 Stunden. Bezahlt wird bar.</li>
-            <li>Alle Preise sind Endpreise. Gerechnet wird mit dem oberen Preis &ndash; teurer wird deine Auswahl
-                nicht. Wünsche, die darüber hinausgehen, bespreche ich vorher mit dir.</li>
-          </ul>
-        </details>
       </div>
 
       <!-- Summe -->
@@ -549,9 +499,7 @@
           <p class="msg-head"><span>Deine Nachricht an Sophie</span><span class="msg-auto">wird automatisch erstellt</span></p>
           <p id="msg-bubble" class="msg-bubble"></p>
         </div>
-        <p class="mt-4 text-[.85rem] text-chalk-mute leading-relaxed">
-          Endpreis, gerechnet mit dem oberen Preis. Bezahlt wird bar.
-        </p>
+        <p class="mt-4 text-[.85rem] text-chalk-mute leading-relaxed">Endpreis &middot; Barzahlung &middot; ca. 2&ndash;4&nbsp;Std.</p>
 
         <a href="https://ig.me/m/gerberxnails" target="_blank" rel="noopener noreferrer" data-send="set"
            id="btn-calc-cta" data-mag class="btn btn-solid w-full mt-6 px-6 py-3.5 text-[.95rem] flex-col !gap-0.5">
@@ -853,6 +801,6 @@
 </footer>
 
 
-<script src="js/main.js?v=cb868903" defer></script>
+<script src="js/main.js?v=87f9c71d" defer></script>
 </body>
 </html>

@@ -318,7 +318,7 @@
       document.body.classList.remove('cur-hide');
     });
 
-    document.querySelectorAll('a, button, .opt, .srv').forEach(function (el) {
+    document.querySelectorAll('a, button, .opt').forEach(function (el) {
       el.addEventListener('mouseenter', function () {
         document.body.classList.add(el.hasAttribute('data-view') ? 'cur-view' : 'cur-link');
       });
