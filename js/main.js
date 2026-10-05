@@ -351,67 +351,6 @@
   }
 
   /* ==========================================================================
-     6. SERVICE LIST HOVER IMAGE PREVIEW (PEEK)
-     ========================================================================== */
-  /* On a phone there is no hover, so the preview image never appears. Put a
-     thumbnail straight into each row instead: the work is visible at a glance
-     and nothing has to be tapped for it. */
-  function initServiceThumbs() {
-    if (fine) return;
-    document.querySelectorAll('.srv').forEach(function (row) {
-      var src = row.getAttribute('data-peek');
-      var slot = row.querySelector('.srv-in');
-      if (!src || !slot || slot.querySelector('.srv-thumb')) return;
-      var img = document.createElement('img');
-      img.className = 'srv-thumb';
-      img.src = src;
-      img.alt = '';
-      img.loading = 'lazy';
-      img.setAttribute('aria-hidden', 'true');
-      slot.appendChild(img);
-    });
-  }
-
-  function initServicePeek() {
-    if (!fine || reduce) return;
-
-    var peek = document.getElementById('peek');
-    if (!peek) return;
-    var pimg = peek.querySelector('img');
-    var px = 0, py = 0, tx = 0, ty = 0, peeking = false;
-
-    document.querySelectorAll('.srv').forEach(function (row) {
-      row.addEventListener('mouseenter', function () {
-        pimg.src = row.getAttribute('data-peek');
-        peek.classList.add('on');
-        peeking = true;
-      });
-      row.addEventListener('mouseleave', function () {
-        peek.classList.remove('on');
-        peeking = false;
-      });
-    });
-
-    addEventListener('mousemove', function (e) {
-      tx = e.clientX;
-      ty = e.clientY;
-    });
-
-    (function pframe() {
-      if (peeking) {
-        px = lerp(px, tx, 0.1);
-        py = lerp(py, ty, 0.1);
-        peek.style.transform = 'translate3d(' + px + 'px,' + py + 'px,0) translate(-50%,-50%) rotate(' +
-          ((tx - px) * 0.05).toFixed(2) + 'deg)';
-      } else {
-        px = tx;
-        py = ty;
-      }
-      requestAnimationFrame(pframe);
-    })();
-  }
-
-  /* ==========================================================================
      7. SCROLL-DRIVEN MARQUEE & TILE PARALLAX
      ========================================================================== */
   function initMarqueeAndParallax() {
@@ -1625,9 +1564,9 @@
       ['Header', initHeaderState],
       ['Dialoge', initDialogs], ['Menue', initMobileMenu],
       ['TextReveal', initTextReveal], ['Preloader', initPreloader],
-      ['Cursor', initCustomCursor], ['ServicePeek', initServicePeek],
+      ['Cursor', initCustomCursor],
       ['HeroShow', initHeroShow], ['ShowcaseOrt', initShowcasePlacement], ['Lightbox', initLightbox],
-      ['ServiceThumbs', initServiceThumbs], ['Marquee', initMarqueeAndParallax],
+      ['Marquee', initMarqueeAndParallax],
       ['Rechner', initPriceCalculator], ['Preisleiste', initPriceBar],
       ['Hinweis', initHint], ['Anfragen', initRequests]
     ].concat(SHOW_VINE_AND_PETALS ? [['Vine', initLivingVine], ['Petals', initFloatingPetals]] : [])
