@@ -3059,3 +3059,89 @@ main > section:first-of-type.atmos::before {
 .sheet .legal-text strong { color: #EFE3D2; }
 
 .sheet .legal-text ul { display: grid; gap: .3rem; margin: 0; }
+
+
+/* ==========================================================================
+   PREISRECHNER KOMPAKT AUF DEM HANDY
+   Laenge und Level sind je eine Reihe aus vier kleinen Feldern, die Extras
+   schmale Zeilen mit Preis rechts. Ohne Kaesten um die Gruppen passt die
+   ganze Auswahl auf einen Bildschirm.
+   ========================================================================== */
+@media (max-width: 640px) {
+  #preise fieldset {
+    border: 0 !important;
+    background: none !important;
+    padding: 0 !important;
+    border-radius: 0;
+    box-shadow: none !important;
+  }
+
+  #preise legend {
+    padding: 0 !important;
+    margin-bottom: .5rem;
+    font-size: .72rem !important;
+  }
+
+  #preise fieldset > div[role="radiogroup"] {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    gap: .4rem !important;
+    margin-top: 0 !important;
+  }
+
+  #preise [role="radiogroup"] .opt {
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: .1rem;
+    padding: .6rem .2rem;
+    min-height: 0;
+    border-radius: 12px;
+  }
+
+  #preise [role="radiogroup"] .opt > span:first-child {
+    font-size: .84rem;
+    line-height: 1.2;
+    white-space: nowrap;
+  }
+
+  #preise [role="radiogroup"] .opt .t-display { font-size: .8rem; }
+
+  /* Laenge: S, M, L, XL gross; das Wort bleibt fuer Screenreader erhalten */
+  #preise .opt-name {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  #preise .opt-dot { display: none; }
+
+  #preise .opt-size {
+    font-family: "Space Grotesk", sans-serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    letter-spacing: -.01em;
+  }
+
+  /* Extras: Name links, Preis rechts */
+  #preise fieldset > div.grid {
+    grid-template-columns: 1fr 1fr !important;
+    gap: .4rem !important;
+    margin-top: 0 !important;
+  }
+
+  #preise fieldset > div.grid .opt {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: .4rem;
+    padding: .55rem .65rem;
+    min-height: 0;
+    font-size: .8rem;
+    line-height: 1.25;
+  }
+
+  #preise fieldset > div.grid .opt .t-display { font-size: .76rem; }
+}
