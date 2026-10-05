@@ -3039,3 +3039,25 @@ main > section:first-of-type.atmos::before {
   .details-grid .media-cap .t-display { font-size: .78rem; line-height: 1.2; }
   .details-grid .media-cap > span:last-child { display: none; }
 }
+
+
+/* ==========================================================================
+   WIDERRUFSBELEHRUNG IN DEN AGB
+   Gesetzlicher Wortlaut, als eigener Kasten abgesetzt.
+   ========================================================================== */
+.sheet .legal-text {
+  margin-top: .8rem;
+  padding: 1rem 1.15rem;
+  border-radius: 14px;
+  border: 1px solid rgba(224, 179, 109, .22);
+  background: rgba(26, 21, 17, .55);
+  display: grid;
+  gap: .55rem;
+}
+
+.sheet .legal-text p,
+.sheet .legal-text li { font-size: .88rem; line-height: 1.65; }
+
+.sheet .legal-text strong { color: #EFE3D2; }
+
+.sheet .legal-text ul { display: grid; gap: .3rem; margin: 0; }

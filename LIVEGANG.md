@@ -29,7 +29,15 @@ Datenschutz Platzhalter enthalten, den provisorischen Link nicht öffentlich tei
 - [x] Gel-Auffüllen kostet wie Gel-X
 - [x] Instagram: Nachrichtenanfragen von allen erlaubt
 - [x] iPhone-Test: Instagram öffnet sich, Einfügen klappt
-- [ ] Impressum und Datenschutz juristisch geprüft
+- [ ] Impressum, Datenschutz und AGB von einer Anwältin oder einem Anwalt gegenprüfen lassen.
+      Selbst geprüft und angepasst (Oktober 2026). Offen für die Fachprüfung:
+      Widerrufsrecht bei Buchung per DM und wie es mit der Ausfallgebühr zusammenspielt; ob die
+      seit 19.06.2026 geltende Pflicht zur Widerrufsfunktion („Widerrufsbutton“) bei Buchungen
+      per Instagram-DM greift; ob für GitHub Pages ein Auftragsverarbeitungsvertrag nötig ist.
+- [ ] Bei jeder Terminbestätigung per DM den Link zu den AGB mitschicken, z. B.:
+      „Dein Termin am … um … ist bestätigt 💅 Es gelten meine Studio Policy und AGB mit
+      Widerrufsbelehrung: https://gerberxnails.de/#agb“
+      (Bis die Domain verbunden ist: https://yunusea12.github.io/WebseiteSophie/#agb)
 
 ## Technik
 

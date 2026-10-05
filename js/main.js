@@ -1,5 +1,5 @@
 /**
- * gerberxnails — Modern Editorial Nail Design Studio
+ * gerberxnails: Modern Editorial Nail Design Studio
  * Core JavaScript & Interactive Modules
  */
 
@@ -8,6 +8,7 @@
 
   /* Always start at the top on fresh load & reload. Prevent lingering hash from jumping to calculator */
   if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+  var startHash = window.location.hash;
   if (window.location.hash) {
     try {
       history.replaceState(null, document.title, window.location.pathname + window.location.search);
@@ -145,6 +146,16 @@
         if (e.target === d) d.close();
       });
     });
+
+    // a link to .../#agb opens the rules right away; Sophie sends it with every booking
+    if (startHash === '#agb' || startHash === '#widerruf') {
+      var rules = document.getElementById('dlg-policy');
+      if (rules && typeof rules.showModal === 'function') {
+        rules.showModal();
+        var part = startHash === '#widerruf' && document.getElementById('widerruf');
+        if (part) part.scrollIntoView();
+      }
+    }
   }
 
   /* ==========================================================================
@@ -981,7 +992,7 @@
 
     function euro(r, open) {
       if (open) return 'ab ' + r[0] + ' €';
-      return (r[0] === r[1] ? r[0] : r[0] + '–' + r[1]) + ' €';
+      return (r[0] === r[1] ? r[0] : r[0] + ' bis ' + r[1]) + ' €';
     }
 
     function pressed(el) { return !!el && el.getAttribute('aria-pressed') === 'true'; }
@@ -1027,7 +1038,7 @@
 
     function paint(a, b, open) {
       a = Math.round(a); b = Math.round(b);
-      totalEl.textContent = (open || a === b) ? String(a) : a + '–' + b;
+      totalEl.textContent = (open || a === b) ? String(a) : a + ' bis ' + b;
     }
 
     function render() {
@@ -1073,7 +1084,7 @@
     function setLines(s) {
       if (s.solo) return ['• Nur Soak Off, ohne neues Set (' + euro([s.min, s.max]) + ')'];
       var out = s.items.map(function (it) {
-        return '• ' + it.kind + ': ' + it.name + ' – ' + euro(it.r, it.open) + (it.unit ? ' ' + it.unit : '');
+        return '• ' + it.kind + ': ' + it.name + ' · ' + euro(it.r, it.open) + (it.unit ? ' ' + it.unit : '');
       });
       out.push('• Russische Maniküre: inklusive');
       out.push('• Preis laut Rechner: ' + euro([s.min, s.max], s.open));
@@ -1259,29 +1270,29 @@
     // [bold part, rest] - long for wider screens, short for phones
     var TEXTS = {
       start:   { href: '#preise',
-                 l: ['Stell dein Set zusammen', ' – deine Nachricht an Sophie wird automatisch erstellt'],
-                 s: ['Set erstellen', ' – Nachricht kommt automatisch'] },
+                 l: ['Stell dein Set zusammen', ': Deine Nachricht an Sophie wird automatisch erstellt'],
+                 s: ['Set erstellen', ': Nachricht kommt automatisch'] },
       preise:  { href: '#btn-calc-cta',
-                 l: ['Set zusammenstellen & anfragen', ' – deine Nachricht an Sophie wird automatisch erstellt'],
-                 s: ['Set wählen', ' – Nachricht kommt automatisch'] },
+                 l: ['Set zusammenstellen & anfragen', ': Deine Nachricht an Sophie wird automatisch erstellt'],
+                 s: ['Set wählen', ': Nachricht kommt automatisch'] },
       kontakt: { href: '#kontakt',
-                 l: ['Ein Tipp genügt', ' – Nachricht wird kopiert, Instagram öffnet sich'],
-                 s: ['Ein Tipp', ' – Nachricht kopiert, Instagram öffnet'] },
+                 l: ['Ein Tipp genügt', ': Nachricht wird kopiert, Instagram öffnet sich'],
+                 s: ['Ein Tipp', ': Nachricht kopiert, Instagram öffnet'] },
       wait:    { href: DM, out: true,
-                 l: ['Nachricht kopiert', ' – gleich öffnet sich Instagram, dort nur einfügen & senden'],
-                 s: ['Kopiert', ' – gleich öffnet sich Instagram'] },
+                 l: ['Nachricht kopiert', ': Gleich öffnet sich Instagram, dort nur einfügen & senden'],
+                 s: ['Kopiert', ': Gleich öffnet sich Instagram'] },
       waitNo:  { href: DM, out: true,
-                 l: ['Instagram öffnet sich gleich', ' – schreib Sophie dort einfach direkt'],
+                 l: ['Instagram öffnet sich gleich', ': Schreib Sophie dort einfach direkt'],
                  s: ['Instagram öffnet sich gleich', ''] },
       tap:     { href: DM, out: true,
-                 l: ['Kopiert', ' – jetzt hier tippen, dann öffnet sich Instagram'],
-                 s: ['Kopiert', ' – hier tippen für Instagram'] },
+                 l: ['Kopiert', ': Jetzt hier tippen, dann öffnet sich Instagram'],
+                 s: ['Kopiert', ': Hier tippen für Instagram'] },
       copied:  { href: DM, out: true,
-                 l: ['Nachricht kopiert', ' – in Instagram ins Textfeld tippen, einfügen & senden'],
-                 s: ['Kopiert', ' – in Instagram einfügen & senden'] },
+                 l: ['Nachricht kopiert', ': In Instagram ins Textfeld tippen, einfügen & senden'],
+                 s: ['Kopiert', ': In Instagram einfügen & senden'] },
       failed:  { href: DM, out: true,
-                 l: ['Instagram öffnet sich', ' – schreib Sophie dort einfach direkt'],
-                 s: ['Instagram öffnet sich', ' – schreib direkt'] }
+                 l: ['Instagram öffnet sich', ': Schreib Sophie dort einfach direkt'],
+                 s: ['Instagram öffnet sich', ': Schreib direkt'] }
     };
     var ZONES = ['preise', 'kontakt'];
     var foot = document.querySelector('footer');
@@ -1297,7 +1308,7 @@
     function showPeek() {
       if (!peek || !lastTxt) return;
       peekTitle.textContent = lastOk ? 'Deine Nachricht ist kopiert'
-                                     : 'Kopieren ging nicht – schreib Sophie zum Beispiel:';
+                                     : 'Kopieren ging nicht. Schreib Sophie zum Beispiel:';
       peekText.textContent = lastTxt;
       peek.classList.toggle('is-fail', !lastOk);
       peek.hidden = false;
