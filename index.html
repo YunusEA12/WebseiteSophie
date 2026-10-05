@@ -44,7 +44,7 @@
 <link rel="preload" href="fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="fonts/fonts.css?v=6096b837">
 <link rel="stylesheet" href="css/tailwind-base.css?v=af7c1978">
-<link rel="stylesheet" href="css/style.css?v=b3f4bc4c">
+<link rel="stylesheet" href="css/style.css?v=c26cb5ff">
 <link rel="stylesheet" href="css/tailwind-utils.css?v=0b47f978">
 </head>
 <body class="antialiased">
@@ -318,7 +318,8 @@
     <img src="brand_assets/sets/butterfly-sage-sm.webp" srcset="brand_assets/sets/butterfly-sage-sm.webp 640w, brand_assets/sets/butterfly-sage.webp 1200w" sizes="(min-width: 1024px) 26rem, 100vw" alt="Lange eckige Nägel in Salbeigrün mit handgemalten Schmetterlingsflügeln, 3D-Blüten und Silberdetails" class="hero-slide" loading="lazy" decoding="async" width="800" height="1000">
     <img src="brand_assets/sets/aqua-shells-sm.webp" srcset="brand_assets/sets/aqua-shells-sm.webp 640w, brand_assets/sets/aqua-shells.webp 1200w" sizes="(min-width: 1024px) 26rem, 100vw" alt="Mandelnägel in Aqua mit 3D-Muscheln, Blüten und Goldperlen" class="hero-slide" loading="lazy" decoding="async" width="800" height="1000">
     <img src="brand_assets/sets/beach-chrome-sm.webp" srcset="brand_assets/sets/beach-chrome-sm.webp 640w, brand_assets/sets/beach-chrome.webp 1200w" sizes="(min-width: 1024px) 26rem, 100vw" alt="Lange eckige Nägel im Strand-Look mit 3D-Kokosnüssen, Seestern und Silber-Chrome" class="hero-slide" loading="lazy" decoding="async" width="800" height="1000">
-    <img src="brand_assets/sets/pearl-french-sm.webp" srcset="brand_assets/sets/pearl-french-sm.webp 640w, brand_assets/sets/pearl-french.webp 1200w" sizes="(min-width: 1024px) 26rem, 100vw" alt="Klassische weiße French Nails mit Perlglanz in eckiger Form" class="hero-slide" loading="lazy" decoding="async" width="800" height="1000">
+    <img src="brand_assets/sets/clean-nude-sm.webp" srcset="brand_assets/sets/clean-nude-sm.webp 640w, brand_assets/sets/clean-nude.webp 1200w" sizes="(min-width: 1024px) 26rem, 100vw" alt="Lange Mandelnägel in zartem Nude-Rosa, einfarbig" class="hero-slide" loading="lazy" decoding="async" width="800" height="1000">
+    <img src="brand_assets/sets/leo-spots-sm.webp" srcset="brand_assets/sets/leo-spots-sm.webp 640w, brand_assets/sets/leo-spots.webp 1200w" sizes="(min-width: 1024px) 26rem, 100vw" alt="Kurze runde Nägel mit handgemaltem Leo-Print, Punkten und bordeauxroter French" class="hero-slide" loading="lazy" decoding="async" width="800" height="1000">
     <div class="absolute inset-0 pointer-events-none bg-gradient-to-t from-black/80 via-black/20 to-black/30"></div>
     <div class="absolute inset-x-0 top-0 h-16 pointer-events-none bg-gradient-to-b from-void to-transparent"></div>
     <div class="absolute inset-x-0 bottom-0 h-20 pointer-events-none bg-gradient-to-t from-void to-transparent"></div>
@@ -342,16 +343,21 @@
           <p class="t-display font-semibold text-sm">Lang &bull; Level 4</p>
         </div>
         <div class="hero-cap">
-          <p class="t-editorial text-[.68rem] uppercase tracking-[.22em] text-white/80">Pearl French</p>
-          <p class="t-display font-semibold text-sm">Medium &bull; Level 2</p>
+          <p class="t-editorial text-[.68rem] uppercase tracking-[.22em] text-white/80">Clean Girl</p>
+          <p class="t-display font-semibold text-sm">Level 1 &bull; einfarbig</p>
+        </div>
+        <div class="hero-cap">
+          <p class="t-editorial text-[.68rem] uppercase tracking-[.22em] text-white/80">Leo Spots</p>
+          <p class="t-display font-semibold text-sm">Kurz &bull; handgemalt</p>
         </div>
       </div>
       <div class="flex gap-1.5 shrink-0 pb-1">
-        <button type="button" class="hero-dot is-on" data-go="0" aria-label="Bild 1 von 5"></button>
-        <button type="button" class="hero-dot" data-go="1" aria-label="Bild 2 von 5"></button>
-        <button type="button" class="hero-dot" data-go="2" aria-label="Bild 3 von 5"></button>
-        <button type="button" class="hero-dot" data-go="3" aria-label="Bild 4 von 5"></button>
-        <button type="button" class="hero-dot" data-go="4" aria-label="Bild 5 von 5"></button>
+        <button type="button" class="hero-dot is-on" data-go="0" aria-label="Bild 1 von 6"></button>
+        <button type="button" class="hero-dot" data-go="1" aria-label="Bild 2 von 6"></button>
+        <button type="button" class="hero-dot" data-go="2" aria-label="Bild 3 von 6"></button>
+        <button type="button" class="hero-dot" data-go="3" aria-label="Bild 4 von 6"></button>
+        <button type="button" class="hero-dot" data-go="4" aria-label="Bild 5 von 6"></button>
+        <button type="button" class="hero-dot" data-go="5" aria-label="Bild 6 von 6"></button>
       </div>
     </div>
   </div>
@@ -526,11 +532,10 @@
     </div>
 
     <div class="js-rv rv grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5">
-      <!-- Level 1: noch kein Foto von Sophie, bis dahin eine Lackfarbe als Platzhalter -->
-      <div class="lvl-soon" data-par="-20">
-        <span class="media block aspect-[4/5] rounded-[34px] sm:rounded-[38px] overflow-hidden shadow-[0_12px_28px_rgba(70,45,20,0.1)] border border-sand-gold/25"><span class="lvl-swatch" aria-hidden="true"></span>
-          <span class="media-cap"><span class="block t-display text-[1rem]">Level 1 · +10 €</span><span class="block text-[.75rem] text-white/80">Clean &amp; einfarbig</span></span></span>
-      </div>
+      <button type="button" class="tile" data-view data-par="-20">
+        <span class="media block aspect-[4/5] rounded-[34px] sm:rounded-[38px] overflow-hidden shadow-[0_12px_28px_rgba(70,45,20,0.1)] border border-sand-gold/25"><img src="brand_assets/sets/classic-red-sm.webp" srcset="brand_assets/sets/classic-red-sm.webp 640w, brand_assets/sets/classic-red.webp 1200w" sizes="(min-width: 1024px) 22vw, 50vw" data-full="brand_assets/sets/classic-red.webp" alt="Mandelförmige Nägel in glänzendem Rot, einfarbig" loading="lazy" decoding="async" width="800" height="1000" class="w-full h-full object-cover">
+          <span class="media-cap"><span class="block t-display text-[1rem]">Level 1 · +10 €</span><span class="block text-[.75rem] text-white/80">Classic Red · einfarbig</span></span></span>
+      </button>
       <button type="button" class="tile" data-view data-par="14">
         <span class="media block aspect-[4/5] rounded-[34px] sm:rounded-[38px] overflow-hidden shadow-[0_12px_28px_rgba(70,45,20,0.1)] border border-sand-gold/25"><img src="brand_assets/sets/pearl-french-sm.webp" srcset="brand_assets/sets/pearl-french-sm.webp 640w, brand_assets/sets/pearl-french.webp 1200w" sizes="(min-width: 1024px) 22vw, 50vw" data-full="brand_assets/sets/pearl-french.webp" alt="Klassische weiße French Nails mit Perlglanz in eckiger Form" loading="lazy" decoding="async" width="800" height="1000" class="w-full h-full object-cover">
           <span class="media-cap"><span class="block t-display text-[1rem]">Level 2 · +20 €</span><span class="block text-[.75rem] text-white/80">Pearl French · Medium</span></span></span>
@@ -547,10 +552,14 @@
 
     <!-- Nahaufnahmen, wie Sophie sie mag -->
     <p class="js-rv t-script details-title text-sand-gold leading-none">Details</p>
-    <div class="js-rv rv grid grid-cols-3 gap-3 sm:gap-5 details-grid">
+    <div class="js-rv rv grid gap-3 sm:gap-5 details-grid">
       <button type="button" class="tile" data-view data-par="-10">
         <span class="media block aspect-square media-sq overflow-hidden shadow-[0_12px_28px_rgba(70,45,20,0.1)] border border-sand-gold/25"><img src="brand_assets/sets/tortoise-gold-close.webp" data-full="brand_assets/sets/tortoise-gold-close.webp" alt="Nahaufnahme: Mandelnägel mit goldenen Glitzer-Wellen, Schildpatt-Optik und Steinchen" loading="lazy" decoding="async" width="800" height="800" class="w-full h-full object-cover">
           <span class="media-cap"><span class="block t-display text-[1rem]">Gold &amp; Glitzer</span><span class="block text-[.75rem] text-white/80">Detail</span></span></span>
+      </button>
+      <button type="button" class="tile" data-view data-par="12">
+        <span class="media block aspect-square media-sq overflow-hidden shadow-[0_12px_28px_rgba(70,45,20,0.1)] border border-sand-gold/25"><img src="brand_assets/sets/micro-french-sm.webp" data-full="brand_assets/sets/micro-french.webp" alt="Nahaufnahme: kurze eckige Nägel in Nude mit feiner weißer Micro French" loading="lazy" decoding="async" width="800" height="800" class="w-full h-full object-cover">
+          <span class="media-cap"><span class="block t-display text-[1rem]">Micro French</span><span class="block text-[.75rem] text-white/80">Detail</span></span></span>
       </button>
       <button type="button" class="tile" data-view data-par="10">
         <span class="media block aspect-square media-sq overflow-hidden shadow-[0_12px_28px_rgba(70,45,20,0.1)] border border-sand-gold/25"><img src="brand_assets/sets/sage-detail-sm.webp" data-full="brand_assets/sets/sage-detail.webp" alt="Nahaufnahme: salbeigrüne Chrome-Nägel mit Silberranken und 3D-Blüte" loading="lazy" decoding="async" width="800" height="800" class="w-full h-full object-cover">
@@ -646,8 +655,8 @@
 
         <!-- who you are actually writing to -->
         <div class="rv mt-6 flex items-center gap-3.5">
-          <img src="brand_assets/sophie.jpg" alt="Sophie Gerber" width="150" height="150" loading="eager" decoding="async"
-               class="w-14 h-14 sm:w-16 sm:h-16 rounded-full object-cover shrink-0
+          <img src="brand_assets/sophie.webp" alt="Sophie Gerber" width="240" height="240" loading="lazy" decoding="async"
+               class="sophie-av rounded-full object-cover shrink-0
                       ring-2 ring-sand-gold/70 ring-offset-2 ring-offset-void
                       shadow-[0_8px_20px_-8px_rgba(74,45,26,.45)]">
           <div class="leading-tight">

@@ -3003,17 +3003,6 @@ main > section:first-of-type.atmos::before {
 /* ==========================================================================
    PORTFOLIO: EIN SET PRO LEVEL, DARUNTER NAHAUFNAHMEN
    ========================================================================== */
-/* Level 1 hat noch kein Foto: bis dahin eine glaenzende Nude-Lackfarbe */
-.lvl-swatch {
-  position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(115deg, rgba(255, 255, 255, 0) 30%, rgba(255, 255, 255, .38) 42%, rgba(255, 255, 255, 0) 54%),
-    radial-gradient(120% 90% at 30% 20%, #F3CFC6 0%, #E2AA9E 45%, #B97C70 100%);
-}
-
-.lvl-soon .media { cursor: default; }
-
 .details-title {
   font-size: clamp(2rem, 6vw, 2.6rem);
   margin-top: 3rem;
@@ -3026,18 +3015,25 @@ main > section:first-of-type.atmos::before {
   .media-sq { border-radius: 30px; }
 }
 
+.details-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+@media (min-width: 640px) {
+  .details-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+
 /* die Nahaufnahmen bleiben kleiner als die Level-Bilder */
 @media (min-width: 1024px) {
-  .details-grid { max-width: 50%; margin-inline: auto; }
+  .details-grid { max-width: 72%; margin-inline: auto; }
   .details-title { text-align: center; }
 }
 
-/* kleine Kacheln: die Beschriftung kompakter */
 .details-grid .media-cap .t-display { font-size: .92rem; }
-@media (max-width: 639px) {
-  .details-grid .media-cap { padding: .55rem .6rem; }
-  .details-grid .media-cap .t-display { font-size: .78rem; line-height: 1.2; }
-  .details-grid .media-cap > span:last-child { display: none; }
+
+/* Porträt in der Kontakt-Karte */
+.sophie-av { width: 4.25rem; height: 4.25rem; }
+
+@media (min-width: 640px) {
+  .sophie-av { width: 5rem; height: 5rem; }
 }
 
 
