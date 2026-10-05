@@ -2906,3 +2906,104 @@ main > section:first-of-type.atmos::before {
 /* the last tiny labels: group titles in the calculator, slideshow captions */
 #preise legend { font-size: .8rem !important; letter-spacing: .14em !important; }
 #showcase .t-editorial.uppercase { font-size: .74rem !important; }
+
+
+/* ==========================================================================
+   STUDIO-REGELN
+   Handy: eine kurze Zeile je Regel, antippen klappt den Satz auf.
+   Computer: vier offene Karten nebeneinander.
+   ========================================================================== */
+.pol-list {
+  display: grid;
+  gap: .6rem;
+}
+
+.pol {
+  border-radius: 18px;
+  border: 1px solid rgba(224, 179, 109, .25);
+  background: rgba(26, 21, 17, .75);
+  box-shadow: 0 10px 24px -14px rgba(0, 0, 0, .6);
+}
+
+.pol summary {
+  display: flex;
+  align-items: center;
+  gap: .9rem;
+  padding: .95rem 1.1rem;
+  list-style: none;
+  cursor: pointer;
+  border-radius: 18px;
+}
+
+.pol summary::-webkit-details-marker { display: none; }
+
+.pol-key {
+  flex: 0 0 4.2rem;
+  font-size: 1.3rem;
+  line-height: 1;
+}
+
+.pol-title {
+  flex: 1 1 auto;
+  font-size: 1.05rem;
+  line-height: 1.25;
+}
+
+/* chevron that turns when open */
+.pol summary::after {
+  content: "";
+  flex: 0 0 auto;
+  width: .5rem;
+  height: .5rem;
+  margin-right: .2rem;
+  border-right: 2px solid #E0B36D;
+  border-bottom: 2px solid #E0B36D;
+  transform: rotate(45deg) translate3d(-2px, -2px, 0);
+  transition: transform .35s var(--ease-spring);
+}
+
+.pol[open] summary::after { transform: rotate(225deg) translate3d(-2px, -2px, 0); }
+.pol summary:hover .pol-title { color: #fff; }
+.pol summary:focus-visible { outline: 2px solid #FF4D86; outline-offset: 3px; }
+.pol summary:active { opacity: .8; }
+
+.pol-body {
+  margin: -.2rem 0 0;
+  padding: 0 1.1rem 1rem calc(1.1rem + 4.2rem + .9rem);
+  font-size: 1rem;
+}
+
+@media (min-width: 1024px) {
+  .pol-list {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+  }
+
+  .pol { padding: 1.5rem; }
+
+  .pol summary {
+    display: block;
+    padding: 0;
+    cursor: default;
+  }
+
+  .pol summary::after { display: none; }
+  .pol summary:hover .pol-title { color: inherit; }
+  .pol summary:active { opacity: 1; }
+
+  .pol-key {
+    display: block;
+    font-size: 1.6rem;
+  }
+
+  .pol-title {
+    display: block;
+    margin-top: .6rem;
+  }
+
+  .pol-body {
+    margin-top: .5rem;
+    padding: 0;
+    font-size: .95rem;
+  }
+}

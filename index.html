@@ -44,7 +44,7 @@
 <link rel="preload" href="fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="fonts/fonts.css?v=6096b837">
 <link rel="stylesheet" href="css/tailwind-base.css?v=af7c1978">
-<link rel="stylesheet" href="css/style.css?v=2cd1162b">
+<link rel="stylesheet" href="css/style.css?v=afbf6787">
 <link rel="stylesheet" href="css/tailwind-utils.css?v=0b47f978">
 </head>
 <body class="antialiased">
@@ -630,43 +630,38 @@
       </button>
     </div>
 
-    <div class="js-rv rv grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-      <div class="rounded-2xl border border-sand-gold/25 bg-surf-1/75 backdrop-blur-md p-5 sm:p-6 flex flex-col justify-between shadow-[0_10px_24px_-6px_rgba(70,45,20,0.06)] hover:border-sand-gold/50 transition-colors">
-        <div>
-          <span class="t-display text-[1.6rem] text-sand-gold font-bold">48h</span>
-          <h3 class="t-display text-[1.05rem] mt-2 font-semibold text-chalk">Absagen &amp; Verschieben</h3>
-          <p class="text-[.95rem] text-chalk-dim mt-2 leading-relaxed">
-            Bitte mindestens 48&nbsp;Stunden vorher absagen &ndash; sonst kann eine Ausfallgebühr anfallen.
-          </p>
-        </div>
-      </div>
-      <div class="rounded-2xl border border-sand-gold/25 bg-surf-1/75 backdrop-blur-md p-5 sm:p-6 flex flex-col justify-between shadow-[0_10px_24px_-6px_rgba(70,45,20,0.06)] hover:border-sand-gold/50 transition-colors">
-        <div>
-          <span class="t-display text-[1.6rem] text-sand-gold font-bold">15 Min</span>
-          <h3 class="t-display text-[1.05rem] mt-2 font-semibold text-chalk">Pünktlichkeit</h3>
-          <p class="text-[.95rem] text-chalk-dim mt-2 leading-relaxed">
-            Ab 15 Minuten Verspätung wird die Behandlung kürzer, ab 30 Minuten fällt der Termin aus.
-          </p>
-        </div>
-      </div>
-      <div class="rounded-2xl border border-sand-gold/25 bg-surf-1/75 backdrop-blur-md p-5 sm:p-6 flex flex-col justify-between shadow-[0_10px_24px_-6px_rgba(70,45,20,0.06)] hover:border-sand-gold/50 transition-colors">
-        <div>
-          <span class="t-display text-[1.6rem] text-neon-pink font-bold">5 Tage</span>
-          <h3 class="t-display text-[1.05rem] mt-2 font-semibold text-chalk">Nachbesserung</h3>
-          <p class="text-[.95rem] text-chalk-dim mt-2 leading-relaxed">
-            Material- oder Verarbeitungsfehler bessere ich 5&nbsp;Tage lang kostenlos nach. Deine gesetzlichen Rechte bleiben.
-          </p>
-        </div>
-      </div>
-      <div class="rounded-2xl border border-sand-gold/25 bg-surf-1/75 backdrop-blur-md p-5 sm:p-6 flex flex-col justify-between shadow-[0_10px_24px_-6px_rgba(70,45,20,0.06)] hover:border-sand-gold/50 transition-colors">
-        <div>
-          <span class="t-display text-[1.6rem] text-sand-gold font-bold">Solo</span>
-          <h3 class="t-display text-[1.05rem] mt-2 font-semibold text-chalk">Homestudio</h3>
-          <p class="text-[.95rem] text-chalk-dim mt-2 leading-relaxed">
-            Homestudio in Stuttgart &ndash; bitte ohne Begleitung. Ab 16&nbsp;Jahren.
-          </p>
-        </div>
-      </div>
+    <!-- on a phone each rule is a short line that opens on tap; on a computer
+         the four sit open side by side. They start open so nothing hides
+         without the script; the script folds them on small screens -->
+    <div class="js-rv rv pol-list">
+      <details class="pol" open>
+        <summary>
+          <span class="pol-key t-display text-sand-gold font-bold">48h</span>
+          <h3 class="pol-title t-display font-semibold text-chalk">Absagen &amp; Verschieben</h3>
+        </summary>
+        <p class="pol-body text-chalk-dim leading-relaxed">Bitte mindestens 48&nbsp;Stunden vorher absagen &ndash; sonst kann eine Ausfallgebühr anfallen.</p>
+      </details>
+      <details class="pol" open>
+        <summary>
+          <span class="pol-key t-display text-sand-gold font-bold">15 Min</span>
+          <h3 class="pol-title t-display font-semibold text-chalk">Pünktlichkeit</h3>
+        </summary>
+        <p class="pol-body text-chalk-dim leading-relaxed">Ab 15 Minuten Verspätung wird die Behandlung kürzer, ab 30 Minuten fällt der Termin aus.</p>
+      </details>
+      <details class="pol" open>
+        <summary>
+          <span class="pol-key t-display text-neon-pink font-bold">5 Tage</span>
+          <h3 class="pol-title t-display font-semibold text-chalk">Nachbesserung</h3>
+        </summary>
+        <p class="pol-body text-chalk-dim leading-relaxed">Material- oder Verarbeitungsfehler bessere ich 5&nbsp;Tage lang kostenlos nach. Deine gesetzlichen Rechte bleiben.</p>
+      </details>
+      <details class="pol" open>
+        <summary>
+          <span class="pol-key t-display text-sand-gold font-bold">Solo</span>
+          <h3 class="pol-title t-display font-semibold text-chalk">Homestudio</h3>
+        </summary>
+        <p class="pol-body text-chalk-dim leading-relaxed">Homestudio in Stuttgart &ndash; bitte ohne Begleitung. Ab 16&nbsp;Jahren.</p>
+      </details>
     </div>
   </div>
 </section>
@@ -858,6 +853,6 @@
 </footer>
 
 
-<script src="js/main.js?v=c994600f" defer></script>
+<script src="js/main.js?v=cb868903" defer></script>
 </body>
 </html>

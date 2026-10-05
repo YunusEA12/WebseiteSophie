@@ -1473,6 +1473,31 @@
     setTimeout(function () { el.classList.add('on'); }, reduce ? 0 : 1400);
   }
 
+  /* Studio-Regeln: am Handy kurze Zeilen zum Aufklappen, am Computer stehen
+     alle vier offen nebeneinander und lassen sich nicht zuklappen. */
+  function initRules() {
+    var rules = [].slice.call(document.querySelectorAll('details.pol'));
+    if (!rules.length) return;
+    var desk = window.matchMedia('(min-width: 1024px)');
+
+    function sync() {
+      rules.forEach(function (d) {
+        d.open = desk.matches;
+        d.querySelector('summary').tabIndex = desk.matches ? -1 : 0;
+      });
+    }
+
+    rules.forEach(function (d) {
+      d.querySelector('summary').addEventListener('click', function (e) {
+        if (desk.matches) e.preventDefault();
+      });
+    });
+
+    sync();
+    if (desk.addEventListener) desk.addEventListener('change', sync);
+    else if (desk.addListener) desk.addListener(sync);
+  }
+
   /* ==========================================================================
      INITIALIZATION ON DOM CONTENT LOADED
      ========================================================================== */
@@ -1568,7 +1593,7 @@
       ['HeroShow', initHeroShow], ['ShowcaseOrt', initShowcasePlacement], ['Lightbox', initLightbox],
       ['Marquee', initMarqueeAndParallax],
       ['Rechner', initPriceCalculator], ['Preisleiste', initPriceBar],
-      ['Hinweis', initHint], ['Anfragen', initRequests]
+      ['Regeln', initRules], ['Hinweis', initHint], ['Anfragen', initRequests]
     ].concat(SHOW_VINE_AND_PETALS ? [['Vine', initLivingVine], ['Petals', initFloatingPetals]] : [])
      .forEach(function (pair) { start(pair[0], pair[1]); });
   }
