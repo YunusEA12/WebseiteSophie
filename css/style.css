@@ -3498,3 +3498,122 @@ main > section:first-of-type.atmos::before {
   .msg-ic.is-pop { animation: none; }
   #msg-peek.is-live { transform: none; }
 }
+
+
+/* ==========================================================================
+   CHARMS UND 3D: STUECKZAHL 1 BIS 10
+   Ausgewaehlt klappt unter dem Feld ein Zaehler auf und bildet mit ihm eine
+   Karte. Das Feld zeigt, was die Stuecke zusammen kosten.
+   ========================================================================== */
+.opt-qty {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.opt-qty.is-on > .opt,
+#preise .opt-qty.is-on > .opt {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.opt-qty.is-on > .opt:hover,
+.opt-qty.is-on > .opt:active { transform: none; }
+
+.qty {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .5rem;
+  padding: .3rem;
+  border: 1px solid #FF4D86;
+  border-top: 0;
+  border-radius: 0 0 14px 14px;
+  background: rgba(229, 20, 95, .12);
+  transform-origin: 50% 0;
+  animation: qtyIn .45s var(--ease-spring) both;
+}
+
+.qty[hidden] { display: none; }
+
+@keyframes qtyIn {
+  from { opacity: 0; transform: translate3d(0, -6px, 0) scaleY(.8); }
+  to   { opacity: 1; transform: none; }
+}
+
+.qty-btn {
+  position: relative;
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  width: 2.1rem;
+  height: 2.1rem;
+  border-radius: 50%;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 1.2rem;
+  font-weight: 600;
+  line-height: 1;
+  color: #fff;
+  background: linear-gradient(135deg, #EE2A6E 0%, #CF1059 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, .18),
+    0 4px 10px -5px rgba(229, 20, 95, .85);
+  transition: transform .3s var(--ease-spring), opacity .2s var(--ease-out);
+}
+
+/* a finger-sized hit area around the small circle */
+.qty-btn::after {
+  content: "";
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+}
+
+.qty-btn:hover { transform: scale(1.08); }
+.qty-btn:active { transform: scale(.88); }
+.qty-btn:focus-visible { outline: 2px solid #FF4D86; outline-offset: 2px; }
+
+.qty-btn[aria-disabled="true"],
+.qty-btn:disabled {
+  opacity: .3;
+  cursor: default;
+  transform: none;
+}
+
+.qty-val {
+  display: inline-block;
+  font-size: .8rem;
+  color: #F7F2EA;
+  white-space: nowrap;
+}
+
+.qty-n {
+  margin-right: .1rem;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.qty-val.is-pop,
+#preise .opt .t-display.is-pop { animation: pricePop .45s var(--ease-spring); }
+
+#preise .opt .t-display { display: inline-block; }
+
+@media (max-width: 640px) {
+  .qty {
+    padding: .25rem .3rem;
+    border-radius: 0 0 12px 12px;
+  }
+
+  .qty-btn {
+    width: 1.95rem;
+    height: 1.95rem;
+    font-size: 1.1rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .qty,
+  .qty-val.is-pop,
+  #preise .opt .t-display.is-pop { animation: none; }
+}

@@ -1005,6 +1005,25 @@
 
     function pressed(el) { return !!el && el.getAttribute('aria-pressed') === 'true'; }
 
+    // charms and 3D models come in pieces (1 to 10): picked, a stepper
+    // opens below the field, and the field shows what they add up to
+    function qtyOf(b) { return +b.getAttribute('data-qty') || 1; }
+
+    function setQty(b, n) {
+      var max = +b.getAttribute('data-max') || 1;
+      n = Math.max(1, Math.min(max, n));
+      b.setAttribute('data-qty', n);
+      var wrap = b.closest('.opt-qty');
+      if (!wrap) return;
+      var on = pressed(b);
+      wrap.classList.toggle('is-on', on);
+      wrap.querySelector('.qty').hidden = !on;
+      wrap.querySelector('.qty-n').textContent = n;
+      wrap.querySelector('[data-step="-1"]').setAttribute('aria-disabled', n <= 1 ? 'true' : 'false');
+      wrap.querySelector('[data-step="1"]').setAttribute('aria-disabled', n >= max ? 'true' : 'false');
+      b.querySelector('.t-display').textContent = 'ab +' + range(b.getAttribute('data-extra'))[1] * n + '\u2009€';
+    }
+
     function name(el) {
       return el ? el.querySelector('span').childNodes[0].textContent.trim() : '';
     }
@@ -1030,8 +1049,10 @@
         if (pressed(b)) items.push({ kind: 'Zusatz', name: name(b), r: range(b.getAttribute('data-add')), open: false });
       });
       document.querySelectorAll('[data-extra]').forEach(function (b) {
-        if (pressed(b)) items.push({ kind: 'Extra', name: name(b), r: range(b.getAttribute('data-extra')), open: true,
-                                     unit: b.getAttribute('data-unit') || '' });
+        if (!pressed(b)) return;
+        var n = qtyOf(b), r = range(b.getAttribute('data-extra'));
+        items.push({ kind: 'Extra', name: name(b) + (b.hasAttribute('data-max') ? ' (' + n + ' Stück)' : ''),
+                     r: [r[0] * n, r[1] * n], open: true });
       });
 
       // A range in a price list ("35-40") counts with its upper price: one
@@ -1106,7 +1127,7 @@
     function setLines(s) {
       if (s.solo) return ['• Nur Soak Off, ohne neues Set (' + euro([s.min, s.max]) + ')'];
       var out = s.items.map(function (it) {
-        return '• ' + it.kind + ': ' + it.name + ' · ' + euro(it.r, it.open) + (it.unit ? ' ' + it.unit : '');
+        return '• ' + it.kind + ': ' + it.name + ' · ' + euro(it.r, it.open);
       });
       out.push('• Russische Maniküre: inklusive');
       out.push('• Preis laut Rechner: ' + euro([s.min, s.max], s.open));
@@ -1128,7 +1149,7 @@
     Calc.chosenSet = function () { return touched ? setLines(state()) : null; };
 
     function setSoloVisual(on) {
-      document.querySelectorAll('[data-len],[data-lvl],[data-add],[data-extra]').forEach(function (b) {
+      document.querySelectorAll('[data-len],[data-lvl],[data-add],[data-extra],.qty-btn').forEach(function (b) {
         b.disabled = on;
         b.style.opacity = on ? '.35' : '';
         b.style.pointerEvents = on ? 'none' : '';
@@ -1198,8 +1219,45 @@
     document.querySelectorAll('[data-add],[data-extra]').forEach(function (btn) {
       btn.addEventListener('click', function () {
         btn.setAttribute('aria-pressed', pressed(btn) ? 'false' : 'true');
+        if (btn.hasAttribute('data-max')) {
+          setQty(btn, 1);
+          if (pressed(btn)) revealQty(btn.closest('.opt-qty'));
+        }
         touched = true;
         render();
+      });
+    });
+
+    // a stepper that opens under the floating line or the price bar
+    // scrolls up just far enough to be seen
+    function revealQty(wrap) {
+      var box = wrap && wrap.querySelector('.qty');
+      if (!box) return;
+      var limit = innerHeight;
+      ['pricebar', 'hint'].forEach(function (id) {
+        var o = document.getElementById(id);
+        if (o && o.classList.contains('on') && !o.classList.contains('away')) {
+          limit = Math.min(limit, o.getBoundingClientRect().top);
+        }
+      });
+      // the wrapper, not the box: the box is still mid-animation
+      var over = wrap.getBoundingClientRect().bottom - (limit - 10);
+      if (over > 0) window.scrollBy({ top: over, behavior: reduce ? 'auto' : 'smooth' });
+    }
+
+    document.querySelectorAll('.opt-qty').forEach(function (wrap) {
+      var b = wrap.querySelector('.opt');
+      wrap.querySelectorAll('.qty-btn').forEach(function (q) {
+        q.addEventListener('click', function () {
+          var n = qtyOf(b) + (+q.getAttribute('data-step'));
+          if (!pressed(b) || n < 1 || n > (+b.getAttribute('data-max') || 1)) return;
+          setQty(b, n);
+          touched = true;
+          render();
+          pop(wrap.querySelector('.qty-val'));
+          pop(b.querySelector('.t-display'));
+          if (Hint.fly) Hint.fly(q);
+        });
       });
     });
 

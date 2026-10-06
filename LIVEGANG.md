@@ -26,7 +26,7 @@ Datenschutz Platzhalter enthalten, den provisorischen Link nicht öffentlich tei
 - [x] Ausfallgebühr: 30 % bei Absage unter 48 Std., 50 % ohne Absage – in AGB Punkt 3 und auf der Karte
 - [ ] Danach: Hinweiskästen in `impressum.html` und `datenschutz.html` löschen
 - [ ] `datenschutz.html`, Abschnitt 2: Hoster anpassen, falls die Seite nicht bei GitHub Pages bleibt
-- [x] Preise bestätigt (Spannen mit dem oberen Preis; Charms „ab +1 € pro Charm“)
+- [x] Preise bestätigt (Spannen mit dem oberen Preis; Charms „ab +1 €“ und 3D „ab +5 €“ je Stück, im Rechner 1 bis 10 Stück wählbar)
 - [x] Fotos alle selbst gemacht
 - [ ] Kundinnen der gezeigten Fotos kurz um Erlaubnis fragen (Hände ohne Gesicht sind meist
       unproblematisch, sicher ist sicher)

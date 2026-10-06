@@ -44,7 +44,7 @@
 <link rel="preload" href="fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="fonts/fonts.css?v=6096b837">
 <link rel="stylesheet" href="css/tailwind-base.css?v=af7c1978">
-<link rel="stylesheet" href="css/style.css?v=f8d87a85">
+<link rel="stylesheet" href="css/style.css?v=3b945f7c">
 <link rel="stylesheet" href="css/tailwind-utils.css?v=0b47f978">
 </head>
 <body class="antialiased">
@@ -485,10 +485,25 @@
           <div class="mt-3 grid sm:grid-cols-2 gap-2">
             <button type="button" class="opt" aria-pressed="false" data-add="10">
               <span>Fremde Arbeit entfernen<span class="block opt-sub">Set von einem anderen Studio</span></span><span class="t-display">+10&thinsp;&euro;</span></button>
-            <button type="button" class="opt" aria-pressed="false" data-extra="1" data-unit="pro Charm">
-              <span>Große Charms<span class="block opt-sub">pro Charm, z.&nbsp;B. drehend oder sehr groß</span></span><span class="t-display">ab +1&thinsp;&euro;</span></button>
-            <button type="button" class="opt" aria-pressed="false" data-extra="5">
-              <span>3D-Modellierung<span class="block opt-sub">z.&nbsp;B. großes Tier, Mund oder Figuren</span></span><span class="t-display">ab +5&thinsp;&euro;</span></button>
+            <!-- picked: a stepper opens below, 1 to 10 pieces -->
+            <div class="opt-qty">
+              <button type="button" class="opt" aria-pressed="false" data-extra="1" data-max="10">
+                <span>Große Charms<span class="block opt-sub">pro Charm, z.&nbsp;B. drehend oder sehr groß</span></span><span class="t-display">ab +1&thinsp;&euro;</span></button>
+              <div class="qty" role="group" aria-label="Anzahl große Charms" hidden>
+                <button type="button" class="qty-btn" data-step="-1" aria-label="Ein Charm weniger">&minus;</button>
+                <span class="qty-val"><output class="qty-n" aria-live="polite">1</output> Stück</span>
+                <button type="button" class="qty-btn" data-step="1" aria-label="Ein Charm mehr">+</button>
+              </div>
+            </div>
+            <div class="opt-qty">
+              <button type="button" class="opt" aria-pressed="false" data-extra="5" data-max="10">
+                <span>3D-Modellierung<span class="block opt-sub">pro Modell, z.&nbsp;B. großes Tier, Mund oder Figuren</span></span><span class="t-display">ab +5&thinsp;&euro;</span></button>
+              <div class="qty" role="group" aria-label="Anzahl 3D-Modelle" hidden>
+                <button type="button" class="qty-btn" data-step="-1" aria-label="Ein Modell weniger">&minus;</button>
+                <span class="qty-val"><output class="qty-n" aria-live="polite">1</output> Stück</span>
+                <button type="button" class="qty-btn" data-step="1" aria-label="Ein Modell mehr">+</button>
+              </div>
+            </div>
             <button type="button" class="opt" aria-pressed="false" data-solo="20">
               <span>Nur Soak Off<span class="block opt-sub">Ablösen ohne neues Set</span></span><span class="t-display">20&thinsp;&euro;</span></button>
           </div>
@@ -823,6 +838,6 @@
 </footer>
 
 
-<script src="js/main.js?v=9a0cbe3f" defer></script>
+<script src="js/main.js?v=c28da2fc" defer></script>
 </body>
 </html>
