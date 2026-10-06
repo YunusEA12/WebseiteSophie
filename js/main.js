@@ -31,7 +31,7 @@
       return;
     }
     var target = document.querySelector(href);
-    if (target) {
+    if (target && !e.defaultPrevented) {
       e.preventDefault();
       target.scrollIntoView({ behavior: 'smooth' });
     }
@@ -967,7 +967,7 @@
   }
 
   var Send = { deliver: null };          // set by initRequests
-  var Hint = { countdown: null, needTap: null };   // set by initHint
+  var Hint = { countdown: null, needTap: null, msgChanged: null };   // set by initHint
 
   // Filled in by the calculator once it runs.
   var Calc = {
@@ -986,7 +986,6 @@
     var totalEl = document.getElementById('total');
     var preEl = document.getElementById('total-pre');
     var bubbleEl = document.getElementById('msg-bubble');
-    var foldEl = document.getElementById('msg-fold');
     var ctaEl = document.getElementById('cta-label');
     if (!totalEl || !ctaEl) return;
 
@@ -1073,8 +1072,7 @@
         var text = buildInquiryText(s);
         if (text !== lastMsg) {
           paintMessage(text, !reduce && !!shown);
-          // folded: the little bubble on the closed row winks instead
-          if (shown && foldEl && !foldEl.open) pop(foldEl.querySelector('.msg-ic'));
+          if (shown && Hint.msgChanged) Hint.msgChanged();
           lastMsg = text;
         }
       }
@@ -1305,7 +1303,8 @@
      automatisch geschrieben und kopiert wird. Der Text passt sich dem
      Abschnitt an. Nach einem Tipp bestaetigt sie das Kopieren und zaehlt
      kurz herunter, bevor Instagram aufgeht - so bleibt Zeit, es zu lesen.
-     Am Handy sitzt sie im Rechner ueber der Preisleiste; ueber einem
+     Im Rechner klappt sie die Nachricht auf, live mit jeder Auswahl.
+     Am Handy sitzt sie dort ueber der Preisleiste; ueber einem
      Anfrage-Knopf und am Seitenende (Links im Fuss) tritt sie zur Seite. */
   function initHint() {
     var el = document.getElementById('hint');
@@ -1319,8 +1318,11 @@
                  l: ['Stell dein Set zusammen', ': Deine Nachricht an Sophie wird automatisch erstellt'],
                  s: ['Set erstellen', ': Nachricht kommt automatisch'] },
       preise:  { href: '#btn-calc-cta',
-                 l: ['Set zusammenstellen & anfragen', ': Deine Nachricht an Sophie wird automatisch erstellt'],
-                 s: ['Set wählen', ': Nachricht kommt automatisch'] },
+                 l: ['Deine Nachricht an Sophie', ': entsteht automatisch, hier ansehen'],
+                 s: ['Deine Nachricht', ': tippen zum Ansehen'] },
+      preiseOpen: { href: '#btn-calc-cta',
+                 l: ['Deine Nachricht an Sophie', ': entsteht automatisch, hier zuklappen'],
+                 s: ['Deine Nachricht', ': tippen zum Zuklappen'] },
       kontakt: { href: '#kontakt',
                  l: ['Ein Tipp genügt', ': Nachricht wird kopiert, Instagram öffnet sich'],
                  s: ['Ein Tipp', ': Nachricht kopiert, Instagram öffnet'] },
@@ -1348,11 +1350,29 @@
     var peekText = peek && peek.querySelector('.peek-bubble');
     var peekTitle = peek && peek.querySelector('.peek-title');
     var cur = null, flashing = false, flashT = null, swapT = null, ticking = false;
-    var cdT = null, cdDone = null, lastTxt = '', lastOk = true;
+    var cdT = null, cdDone = null, lastTxt = '', lastOk = true, isLive = false;
+
+    // in the calculator the line opens the message itself, live: every
+    // choice shows up in it right away
+    function openLive() {
+      if (!peek) return;
+      isLive = true;
+      peek.classList.add('is-live');
+      peek.classList.remove('is-fail');
+      peek.setAttribute('aria-hidden', 'false');
+      peek.hidden = false;
+      void peek.offsetWidth;
+      peek.classList.add('show');
+      el.classList.add('is-open');
+      set('preiseOpen');
+    }
 
     // the copied text as a chat bubble above the line: this is your message
     function showPeek() {
       if (!peek || !lastTxt) return;
+      isLive = false;
+      el.classList.remove('is-open');
+      peek.classList.remove('is-live');
       peekTitle.textContent = lastOk ? 'Deine Nachricht ist kopiert'
                                      : 'Kopieren ging nicht. Schreib Sophie zum Beispiel:';
       peekText.textContent = lastTxt;
@@ -1364,7 +1384,14 @@
     }
 
     function hidePeek() {
-      if (peek) peek.classList.remove('show');
+      if (!peek) return;
+      peek.classList.remove('show');
+      peek.setAttribute('aria-hidden', 'true');
+      if (!isLive) return;
+      isLive = false;
+      el.classList.remove('is-open');
+      if (el.hasAttribute('aria-expanded')) el.setAttribute('aria-expanded', 'false');
+      if (cur === 'preiseOpen') set('preise');
     }
 
     function part(cls, t) {
@@ -1387,6 +1414,18 @@
       else { el.removeAttribute('target'); el.removeAttribute('rel'); }
       el.classList.toggle('is-done', key === 'copied' || key === 'wait' || key === 'tap');
       el.classList.toggle('is-tap', key === 'tap');
+      // in the calculator the line is a fold for the message above it
+      var fold = key === 'preise' || key === 'preiseOpen';
+      el.classList.toggle('is-fold', fold);
+      if (fold) {
+        el.setAttribute('role', 'button');
+        el.setAttribute('aria-controls', 'msg-peek');
+        el.setAttribute('aria-expanded', isLive ? 'true' : 'false');
+      } else {
+        el.removeAttribute('role');
+        el.removeAttribute('aria-controls');
+        el.removeAttribute('aria-expanded');
+      }
       // one soft light sweep across the new wording; the countdown bar restarts
       el.classList.remove('sweep', 'is-counting');
       void el.offsetWidth;
@@ -1430,18 +1469,14 @@
       return false;
     }
 
-    // on a phone the calculator speaks for itself: first the price bar,
-    // then the price card says the same - a third bar would cover the fields
-    function calcSaysIt(z) {
-      return z === 'preise' && innerWidth < 1024;
-    }
-
     function check() {
       ticking = false;
       var z = zone();
-      var aside = z === 'foot' || z === 'before' || overButton() || calcSaysIt(z);
+      var aside = z === 'foot' || z === 'before' || overButton();
       el.classList.toggle('away', aside && !flashing);
-      if (!flashing && !aside) set(z);
+      // the open message belongs to the calculator only
+      if (isLive && (aside || z !== 'preise')) hidePeek();
+      if (!flashing && !aside) set(z === 'preise' && isLive ? 'preiseOpen' : z);
     }
 
     function soon() {
@@ -1513,11 +1548,35 @@
       settle(20000);
     };
 
-    // while it counts (or waits for a tap), the line is the link to the chat
-    el.addEventListener('click', function () {
+    // while it counts (or waits for a tap), the line is the link to the chat;
+    // in the calculator it opens and folds the message
+    function toggleLive(e) {
+      e.preventDefault();
+      if (isLive) hidePeek(); else openLive();
+    }
+
+    el.addEventListener('click', function (e) {
       if (cdT) stopCount(false);
       else if (cur === 'tap') { hidePeek(); set('copied'); settle(9000); }
+      else if (cur === 'preise' || cur === 'preiseOpen') toggleLive(e);
     });
+
+    // a fold answers to the space bar like any button
+    el.addEventListener('keydown', function (e) {
+      if (e.key === ' ' && (cur === 'preise' || cur === 'preiseOpen')) toggleLive(e);
+    });
+
+    if (peek) peek.addEventListener('click', function () { if (isLive) hidePeek(); });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && isLive) hidePeek();
+    });
+
+    // folded: the spark winks when a choice changes the message
+    Hint.msgChanged = function () {
+      if (!isLive && cur === 'preise' && el.classList.contains('on') && !el.classList.contains('away')) {
+        pop(el.querySelector('.hint-ico'));
+      }
+    };
 
     // back from Instagram: no message card any more, only the small line
     // confirms it for a few seconds

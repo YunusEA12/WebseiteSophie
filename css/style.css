@@ -2581,44 +2581,6 @@ main > section:first-of-type.atmos::before {
    Hinweis-Zeile nach dem Tippen. So sieht man, dass ein fertiger Text
    entsteht - Instagram kann ihn nicht selbst einsetzen.
    ========================================================================== */
-/* folded by default: one calm row, a tap opens the bubble */
-.msg-fold {
-  border-radius: 16px;
-  border: 1px solid rgba(224, 179, 109, .22);
-  background: rgba(20, 16, 13, .5);
-  box-shadow: inset 0 1px 0 rgba(247, 242, 234, .04);
-}
-
-.msg-fold summary {
-  display: flex;
-  align-items: center;
-  gap: .8rem;
-  padding: .7rem 1rem .7rem .75rem;
-  list-style: none;
-  cursor: pointer;
-  border-radius: 16px;
-  -webkit-tap-highlight-color: transparent;
-}
-
-.msg-fold summary::-webkit-details-marker { display: none; }
-
-/* same chevron as the studio rules */
-.msg-fold summary::after {
-  content: "";
-  flex: 0 0 auto;
-  width: .45rem;
-  height: .45rem;
-  border-right: 2px solid #E0B36D;
-  border-bottom: 2px solid #E0B36D;
-  transform: rotate(45deg) translate3d(-2px, -2px, 0);
-  transition: transform .35s var(--ease-spring);
-}
-
-.msg-fold[open] summary::after { transform: rotate(225deg) translate3d(-2px, -2px, 0); }
-.msg-fold summary:hover .msg-sum { color: #fff; }
-.msg-fold summary:focus-visible { outline: 2px solid #FF4D86; outline-offset: 3px; }
-.msg-fold summary:active { opacity: .8; }
-
 /* a tiny outgoing bubble with "typing" dots */
 .msg-ic {
   flex: 0 0 auto;
@@ -2687,10 +2649,13 @@ main > section:first-of-type.atmos::before {
 }
 
 .msg-bubble {
-  margin: .1rem .75rem .8rem 2rem;
-  padding: .8rem .95rem;
-  font-size: .84rem;
-  line-height: 1.5;
+  margin: .55rem 0 0 1.5rem;
+  padding: .65rem .85rem;
+  font-size: .8rem;
+  line-height: 1.45;
+  max-height: calc(100svh - 21rem);
+  overflow-y: auto;
+  overscroll-behavior: contain;
 }
 
 /* the message is built line by line; a line that just changed lights up */
@@ -2722,6 +2687,25 @@ main > section:first-of-type.atmos::before {
   opacity: 1;
   transform: none;
 }
+
+/* two faces: live in the calculator, "kopiert" after a tap */
+.peek-live,
+#msg-peek .msg-bubble { display: none; }
+
+#msg-peek.is-live .peek-label,
+#msg-peek.is-live .peek-bubble,
+#msg-peek.is-live .peek-how { display: none; }
+
+#msg-peek.is-live .peek-live {
+  display: flex;
+  align-items: center;
+  gap: .7rem;
+}
+
+#msg-peek.is-live .msg-bubble { display: block; }
+
+/* open, a tap on the card folds it again */
+#msg-peek.is-live.show { pointer-events: auto; cursor: pointer; }
 
 @media (max-width: 1023px) {
   body:has(#pricebar.on) #msg-peek { bottom: calc(5.6rem + 2.9rem + env(safe-area-inset-bottom)); }
@@ -3260,32 +3244,21 @@ main > section:first-of-type.atmos::before {
   100% { transform: scale(1); }
 }
 
-/* the bubble unfolds from its row */
-.msg-fold[open] .msg-bubble {
-  transform-origin: 100% 0;
-  animation: foldIn .5s var(--ease-spring) both;
-}
+/* in the calculator the line is a fold: its arrow points up to the
+   message and turns down once it is open */
+#hint.is-fold .hint-go { transform: rotate(-90deg); }
+#hint.is-fold.is-open .hint-go { transform: rotate(90deg); }
+#hint.is-fold:hover .hint-go { transform: rotate(-90deg) translate3d(2px, 0, 0); }
+#hint.is-fold.is-open:hover .hint-go { transform: rotate(90deg) translate3d(2px, 0, 0); }
+#hint.is-open { border-color: rgba(238, 42, 110, .55); }
 
-@keyframes foldIn {
-  from { opacity: 0; transform: translate3d(0, -8px, 0) scale(.96); }
-  to   { opacity: 1; transform: none; }
-}
-
-/* folded: the little bubble winks and its dots "type" when the message changes */
-.msg-ic.is-pop { animation: icWink .5s var(--ease-spring); }
-.msg-ic.is-pop i { animation: dotHop .55s var(--ease-out) both; }
-.msg-ic.is-pop i:nth-child(2) { animation-delay: .08s; }
-.msg-ic.is-pop i:nth-child(3) { animation-delay: .16s; }
+/* folded: the spark winks when a choice changes the message */
+.hint-ico.is-pop { animation: icWink .5s var(--ease-spring); }
 
 @keyframes icWink {
   0%   { transform: scale(1); }
-  40%  { transform: scale(1.18) rotate(-4deg); }
+  40%  { transform: scale(1.22) rotate(-6deg); }
   100% { transform: scale(1); }
-}
-
-@keyframes dotHop {
-  0%, 100% { transform: none; }
-  40%      { transform: translate3d(0, -3px, 0); }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -3293,12 +3266,9 @@ main > section:first-of-type.atmos::before {
   .opt.is-pop,
   .msg-bubble .ml-new,
   .msg-bubble .ml-new::before,
-  .msg-fold[open] .msg-bubble,
-  .msg-ic.is-pop,
-  .msg-ic.is-pop i,
+  .hint-ico.is-pop,
   #total.is-pop,
   #pb-total.is-pop { animation: none; }
-  .msg-fold summary::after { transition: none; }
 }
 
 

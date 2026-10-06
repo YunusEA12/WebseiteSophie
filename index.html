@@ -44,7 +44,7 @@
 <link rel="preload" href="fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="fonts/fonts.css?v=6096b837">
 <link rel="stylesheet" href="css/tailwind-base.css?v=af7c1978">
-<link rel="stylesheet" href="css/style.css?v=a0761ec5">
+<link rel="stylesheet" href="css/style.css?v=15f249c8">
 <link rel="stylesheet" href="css/tailwind-utils.css?v=0b47f978">
 </head>
 <body class="antialiased">
@@ -503,17 +503,7 @@
           <span id="total" class="t-display text-[clamp(3.4rem,9vw,5.2rem)] leading-none text-chalk whitespace-nowrap">50</span>
           <span class="t-display text-[1.6rem] text-sand-bronze">&euro;</span>
         </div>
-        <!-- the message itself, live: every choice shows up in it right away,
-             and exactly this text is copied when the button is tapped.
-             Folded by default so the card stays calm - one tap opens it -->
-        <details id="msg-fold" class="msg-fold mt-5">
-          <summary>
-            <span class="msg-ic" aria-hidden="true"><i></i><i></i><i></i></span>
-            <span class="msg-sum">Deine Nachricht an Sophie<span class="msg-auto">wird automatisch erstellt</span></span>
-          </summary>
-          <p id="msg-bubble" class="msg-bubble"></p>
-        </details>
-        <p class="mt-4 text-[.85rem] text-chalk-mute leading-relaxed">Endpreis &middot; Barzahlung &middot; ca. 2 bis 4&nbsp;Std.</p>
+        <p class="mt-5 text-[.85rem] text-chalk-mute leading-relaxed">Endpreis &middot; Barzahlung &middot; ca. 2 bis 4&nbsp;Std.</p>
 
         <a href="https://ig.me/m/gerberxnails" target="_blank" rel="noopener noreferrer" data-send="set"
            id="btn-calc-cta" data-mag class="btn btn-solid w-full mt-6 px-6 py-3.5 text-[.95rem] flex-col !gap-0.5">
@@ -790,12 +780,15 @@
   <span class="hint-bar" aria-hidden="true"></span>
 </a>
 <p id="hint-live" class="sr-only" role="status" aria-live="polite"></p>
-<!-- after a tap: the copied message itself, as a chat bubble above the line -->
+<!-- above the line: in the calculator the live message (the line opens it),
+     after a tap the copied message itself, as a chat bubble -->
 <div id="msg-peek" aria-hidden="true" hidden>
   <div class="peek-card">
     <p class="peek-label"><span class="peek-check">&#10003;</span><span class="peek-title">Deine Nachricht ist kopiert</span></p>
     <p class="peek-bubble"></p>
     <p class="peek-how">In Instagram: ins Textfeld tippen &rarr; Einfügen &rarr; Senden</p>
+    <p class="peek-live"><span class="msg-ic" aria-hidden="true"><i></i><i></i><i></i></span><span class="msg-sum">Deine Nachricht an Sophie<span class="msg-auto">wird automatisch erstellt</span></span></p>
+    <p id="msg-bubble" class="msg-bubble"></p>
   </div>
 </div>
 </aside>
@@ -828,6 +821,6 @@
 </footer>
 
 
-<script src="js/main.js?v=579483f4" defer></script>
+<script src="js/main.js?v=c5e088fd" defer></script>
 </body>
 </html>
