@@ -986,6 +986,7 @@
     var totalEl = document.getElementById('total');
     var preEl = document.getElementById('total-pre');
     var bubbleEl = document.getElementById('msg-bubble');
+    var foldEl = document.getElementById('msg-fold');
     var ctaEl = document.getElementById('cta-label');
     if (!totalEl || !ctaEl) return;
 
@@ -1072,6 +1073,8 @@
         var text = buildInquiryText(s);
         if (text !== lastMsg) {
           paintMessage(text, !reduce && !!shown);
+          // folded: the little bubble on the closed row winks instead
+          if (shown && foldEl && !foldEl.open) pop(foldEl.querySelector('.msg-ic'));
           lastMsg = text;
         }
       }
@@ -1427,16 +1430,16 @@
       return false;
     }
 
-    // on a phone the price bar takes over in the calculator: it shows the
-    // price and the same "Nachricht wird kopiert" - two bars would cover the fields
-    function barTakesOver(z) {
-      return z === 'preise' && innerWidth < 1024 && !!document.querySelector('#pricebar.on');
+    // on a phone the calculator speaks for itself: first the price bar,
+    // then the price card says the same - a third bar would cover the fields
+    function calcSaysIt(z) {
+      return z === 'preise' && innerWidth < 1024;
     }
 
     function check() {
       ticking = false;
       var z = zone();
-      var aside = z === 'foot' || z === 'before' || overButton() || barTakesOver(z);
+      var aside = z === 'foot' || z === 'before' || overButton() || calcSaysIt(z);
       el.classList.toggle('away', aside && !flashing);
       if (!flashing && !aside) set(z);
     }
@@ -1609,12 +1612,21 @@
     sync();
     new MutationObserver(sync).observe(total.parentNode, { childList: true, characterData: true, subtree: true, attributes: true });
 
-    function show(on) { bar.classList.toggle('on', on); }
+    // once the price card itself is in view it says all of this -
+    // the bar steps aside instead of showing it twice
+    var card = document.getElementById('calc-sum');
+    var inSec = false, cardIn = false;
+    function show() { bar.classList.toggle('on', inSec && !cardIn); }
 
     if ('IntersectionObserver' in window) {
       new IntersectionObserver(function (es) {
-        es.forEach(function (e) { show(e.isIntersecting); });
+        es.forEach(function (e) { inSec = e.isIntersecting; });
+        show();
       }, { threshold: 0, rootMargin: '-15% 0px -15% 0px' }).observe(sec);
+      if (card) new IntersectionObserver(function (es) {
+        es.forEach(function (e) { cardIn = e.isIntersecting; });
+        show();
+      }, { threshold: 0, rootMargin: '0px 0px -96px 0px' }).observe(card);
     }
   }
 

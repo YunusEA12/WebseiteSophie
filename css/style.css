@@ -2581,16 +2581,81 @@ main > section:first-of-type.atmos::before {
    Hinweis-Zeile nach dem Tippen. So sieht man, dass ein fertiger Text
    entsteht - Instagram kann ihn nicht selbst einsetzen.
    ========================================================================== */
-.msg-head {
+/* folded by default: one calm row, a tap opens the bubble */
+.msg-fold {
+  border-radius: 16px;
+  border: 1px solid rgba(224, 179, 109, .22);
+  background: rgba(20, 16, 13, .5);
+  box-shadow: inset 0 1px 0 rgba(247, 242, 234, .04);
+}
+
+.msg-fold summary {
   display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: .25rem .75rem;
-  font-size: .72rem;
-  letter-spacing: .2em;
-  text-transform: uppercase;
-  color: #8E7F6C;
+  align-items: center;
+  gap: .8rem;
+  padding: .7rem 1rem .7rem .75rem;
+  list-style: none;
+  cursor: pointer;
+  border-radius: 16px;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.msg-fold summary::-webkit-details-marker { display: none; }
+
+/* same chevron as the studio rules */
+.msg-fold summary::after {
+  content: "";
+  flex: 0 0 auto;
+  width: .45rem;
+  height: .45rem;
+  border-right: 2px solid #E0B36D;
+  border-bottom: 2px solid #E0B36D;
+  transform: rotate(45deg) translate3d(-2px, -2px, 0);
+  transition: transform .35s var(--ease-spring);
+}
+
+.msg-fold[open] summary::after { transform: rotate(225deg) translate3d(-2px, -2px, 0); }
+.msg-fold summary:hover .msg-sum { color: #fff; }
+.msg-fold summary:focus-visible { outline: 2px solid #FF4D86; outline-offset: 3px; }
+.msg-fold summary:active { opacity: .8; }
+
+/* a tiny outgoing bubble with "typing" dots */
+.msg-ic {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  width: 2.1rem;
+  height: 1.55rem;
+  border-radius: 11px 11px 4px 11px;
+  background: linear-gradient(140deg, #E5145F 0%, #A3185C 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, .16),
+    0 6px 14px -8px rgba(229, 20, 95, .8);
+}
+
+.msg-ic i {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #fff;
+}
+
+.msg-sum {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-size: .92rem;
+  font-weight: 500;
+  line-height: 1.3;
+  color: #F7F2EA;
+}
+
+.msg-sum .msg-auto {
+  display: flex;
+  margin-top: .15rem;
+  font-size: .78rem;
+  font-weight: 400;
 }
 
 .msg-auto {
@@ -2622,7 +2687,7 @@ main > section:first-of-type.atmos::before {
 }
 
 .msg-bubble {
-  margin: .65rem 0 0 1.25rem;
+  margin: .1rem .75rem .8rem 2rem;
   padding: .8rem .95rem;
   font-size: .84rem;
   line-height: 1.5;
@@ -3195,13 +3260,45 @@ main > section:first-of-type.atmos::before {
   100% { transform: scale(1); }
 }
 
+/* the bubble unfolds from its row */
+.msg-fold[open] .msg-bubble {
+  transform-origin: 100% 0;
+  animation: foldIn .5s var(--ease-spring) both;
+}
+
+@keyframes foldIn {
+  from { opacity: 0; transform: translate3d(0, -8px, 0) scale(.96); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* folded: the little bubble winks and its dots "type" when the message changes */
+.msg-ic.is-pop { animation: icWink .5s var(--ease-spring); }
+.msg-ic.is-pop i { animation: dotHop .55s var(--ease-out) both; }
+.msg-ic.is-pop i:nth-child(2) { animation-delay: .08s; }
+.msg-ic.is-pop i:nth-child(3) { animation-delay: .16s; }
+
+@keyframes icWink {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.18) rotate(-4deg); }
+  100% { transform: scale(1); }
+}
+
+@keyframes dotHop {
+  0%, 100% { transform: none; }
+  40%      { transform: translate3d(0, -3px, 0); }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .opt-ripple { display: none; }
   .opt.is-pop,
   .msg-bubble .ml-new,
   .msg-bubble .ml-new::before,
+  .msg-fold[open] .msg-bubble,
+  .msg-ic.is-pop,
+  .msg-ic.is-pop i,
   #total.is-pop,
   #pb-total.is-pop { animation: none; }
+  .msg-fold summary::after { transition: none; }
 }
 
 

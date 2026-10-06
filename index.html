@@ -44,7 +44,7 @@
 <link rel="preload" href="fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="fonts/fonts.css?v=6096b837">
 <link rel="stylesheet" href="css/tailwind-base.css?v=af7c1978">
-<link rel="stylesheet" href="css/style.css?v=a12e306b">
+<link rel="stylesheet" href="css/style.css?v=a0761ec5">
 <link rel="stylesheet" href="css/tailwind-utils.css?v=0b47f978">
 </head>
 <body class="antialiased">
@@ -496,7 +496,7 @@
       </div>
 
       <!-- Summe -->
-      <div class="rounded-[18px] border border-neon-pink/30 bg-gradient-to-b from-neon-pink/12 to-transparent p-6 sm:p-7 lg:sticky lg:top-24">
+      <div id="calc-sum" class="rounded-[18px] border border-neon-pink/30 bg-gradient-to-b from-neon-pink/12 to-transparent p-6 sm:p-7 lg:sticky lg:top-24">
         <p class="text-[.72rem] uppercase tracking-[.2em] text-chalk-mute">Dein Preis</p>
         <div class="mt-2 flex items-baseline gap-1.5" aria-live="polite" aria-atomic="true">
           <span id="total-pre" class="t-display text-[1.6rem] text-sand-bronze" hidden>ab</span>
@@ -504,11 +504,15 @@
           <span class="t-display text-[1.6rem] text-sand-bronze">&euro;</span>
         </div>
         <!-- the message itself, live: every choice shows up in it right away,
-             and exactly this text is copied when the button is tapped -->
-        <div class="msg-preview mt-5">
-          <p class="msg-head"><span>Deine Nachricht an Sophie</span><span class="msg-auto">wird automatisch erstellt</span></p>
+             and exactly this text is copied when the button is tapped.
+             Folded by default so the card stays calm - one tap opens it -->
+        <details id="msg-fold" class="msg-fold mt-5">
+          <summary>
+            <span class="msg-ic" aria-hidden="true"><i></i><i></i><i></i></span>
+            <span class="msg-sum">Deine Nachricht an Sophie<span class="msg-auto">wird automatisch erstellt</span></span>
+          </summary>
           <p id="msg-bubble" class="msg-bubble"></p>
-        </div>
+        </details>
         <p class="mt-4 text-[.85rem] text-chalk-mute leading-relaxed">Endpreis &middot; Barzahlung &middot; ca. 2 bis 4&nbsp;Std.</p>
 
         <a href="https://ig.me/m/gerberxnails" target="_blank" rel="noopener noreferrer" data-send="set"
@@ -824,6 +828,6 @@
 </footer>
 
 
-<script src="js/main.js?v=cd02e88f" defer></script>
+<script src="js/main.js?v=579483f4" defer></script>
 </body>
 </html>
