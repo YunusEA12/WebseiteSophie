@@ -967,7 +967,7 @@
   }
 
   var Send = { deliver: null };          // set by initRequests
-  var Hint = { countdown: null, needTap: null, msgChanged: null };   // set by initHint
+  var Hint = { countdown: null, needTap: null, msgChanged: null, fly: null };   // set by initHint
 
   // Filled in by the calculator once it runs.
   var Calc = {
@@ -1048,9 +1048,10 @@
     function paintMessage(text, animate) {
       var before = lastMsg === null ? [] : lastMsg.split('\n');
       var frag = document.createDocumentFragment();
-      text.split('\n').forEach(function (line) {
+      text.split('\n').forEach(function (line, i) {
         var el = document.createElement('span');
         el.className = line ? 'ml' : 'ml ml-gap';
+        el.style.setProperty('--i', i);
         if (animate && line && before.indexOf(line) === -1) el.className += ' ml-new';
         el.textContent = line;
         frag.appendChild(el);
@@ -1190,7 +1191,7 @@
       // runs after the field's own handler, so the new state is already set
       calcSec.addEventListener('click', function (e) {
         var o = e.target.closest('.opt');
-        if (o && !o.disabled) pop(o);
+        if (o && !o.disabled) { pop(o); if (Hint.fly) Hint.fly(o); }
       });
     }
 
@@ -1303,7 +1304,8 @@
      automatisch geschrieben und kopiert wird. Der Text passt sich dem
      Abschnitt an. Nach einem Tipp bestaetigt sie das Kopieren und zaehlt
      kurz herunter, bevor Instagram aufgeht - so bleibt Zeit, es zu lesen.
-     Im Rechner klappt sie die Nachricht auf, live mit jeder Auswahl.
+     Im Rechner klappt sie die Nachricht auf, live mit jeder Auswahl; jede
+     Auswahl fliegt dort als kleiner Punkt in sie hinein.
      Am Handy sitzt sie dort ueber der Preisleiste; ueber einem
      Anfrage-Knopf und am Seitenende (Links im Fuss) tritt sie zur Seite. */
   function initHint() {
@@ -1350,7 +1352,7 @@
     var peekText = peek && peek.querySelector('.peek-bubble');
     var peekTitle = peek && peek.querySelector('.peek-title');
     var cur = null, flashing = false, flashT = null, swapT = null, ticking = false;
-    var cdT = null, cdDone = null, lastTxt = '', lastOk = true, isLive = false;
+    var cdT = null, cdDone = null, lastTxt = '', lastOk = true, isLive = false, typeT = null;
 
     // in the calculator the line opens the message itself, live: every
     // choice shows up in it right away
@@ -1361,7 +1363,15 @@
       peek.classList.remove('is-fail');
       peek.setAttribute('aria-hidden', 'false');
       peek.hidden = false;
+      // the lines write themselves in, one after the other
+      [].forEach.call(peek.querySelectorAll('.ml-new'), function (l) { l.classList.remove('ml-new'); });
+      peek.classList.remove('is-typing');
       void peek.offsetWidth;
+      if (!reduce) {
+        peek.classList.add('is-typing');
+        clearTimeout(typeT);
+        typeT = setTimeout(function () { peek.classList.remove('is-typing'); }, 1400);
+      }
       peek.classList.add('show');
       el.classList.add('is-open');
       set('preiseOpen');
@@ -1372,7 +1382,7 @@
       if (!peek || !lastTxt) return;
       isLive = false;
       el.classList.remove('is-open');
-      peek.classList.remove('is-live');
+      peek.classList.remove('is-live', 'is-typing');
       peekTitle.textContent = lastOk ? 'Deine Nachricht ist kopiert'
                                      : 'Kopieren ging nicht. Schreib Sophie zum Beispiel:';
       peekText.textContent = lastTxt;
@@ -1571,11 +1581,65 @@
       if (e.key === 'Escape' && isLive) hidePeek();
     });
 
-    // folded: the spark winks when a choice changes the message
+    // a new choice lands in the message: the line (or the open card) winks
+    var changedAt = 0, flying = 0, winkT = null;
+    function shown() {
+      return cur === 'preise' && el.classList.contains('on') && !el.classList.contains('away');
+    }
+
+    function wink() {
+      if (isLive) { pop(peek.querySelector('.msg-ic')); return; }
+      if (!shown()) return;
+      pop(el.querySelector('.hint-ico'));
+      if (reduce) return;
+      el.classList.remove('is-hit');
+      void el.offsetWidth;
+      el.classList.add('is-hit');
+    }
+
+    el.addEventListener('animationend', function (e) {
+      if (e.target === el) el.classList.remove('is-hit');
+    });
+
     Hint.msgChanged = function () {
-      if (!isLive && cur === 'preise' && el.classList.contains('on') && !el.classList.contains('away')) {
-        pop(el.querySelector('.hint-ico'));
+      changedAt = Date.now();
+      clearTimeout(winkT);
+      // a tapped field sends a dot - then the wink comes when it lands
+      winkT = setTimeout(function () { if (!flying) wink(); }, 0);
+    };
+
+    // from the tapped field a small glowing dot arcs into the message
+    Hint.fly = function (from) {
+      if (reduce || !from || !from.animate || Date.now() - changedAt > 80) return;
+      var to = isLive ? peek.querySelector('.msg-bubble') : shown() ? el.querySelector('.hint-ico') : null;
+      if (!to) return;
+      var a = from.getBoundingClientRect(), b = to.getBoundingClientRect();
+      var x0 = a.left + a.width / 2, y0 = a.top + a.height / 2;
+      var x2 = b.left + b.width / 2, y2 = b.top + b.height / 2;
+      var x1 = x0 + (x2 - x0) * 0.3, y1 = Math.min(y0, y2) - 70;
+      var frames = [];
+      for (var i = 0; i <= 12; i++) {
+        var t = i / 12, u = 1 - t;
+        var x = u * u * x0 + 2 * u * t * x1 + t * t * x2;
+        var y = u * u * y0 + 2 * u * t * y1 + t * t * y2;
+        var s = t < 0.15 ? 0.3 + t / 0.15 * 0.9 : 1.2 - (t - 0.15) / 0.85 * 0.65;
+        frames.push({
+          transform: 'translate3d(' + x.toFixed(1) + 'px,' + y.toFixed(1) + 'px,0) scale(' + s.toFixed(2) + ')',
+          opacity: t < 0.1 ? t * 10 : 1
+        });
       }
+      flying++;
+      [0, 1, 2].forEach(function (k) {
+        var d = document.createElement('span');
+        d.className = 'fly-dot' + (k ? ' is-trail' + k : '');
+        d.setAttribute('aria-hidden', 'true');
+        document.body.appendChild(d);
+        var anim = d.animate(frames, { duration: 680, delay: k * 45, easing: 'cubic-bezier(.5,0,.3,1)', fill: 'both' });
+        anim.onfinish = function () {
+          if (d.parentNode) d.parentNode.removeChild(d);
+          if (!k) { flying--; wink(); }
+        };
+      });
     };
 
     // back from Instagram: no message card any more, only the small line

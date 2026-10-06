@@ -3326,3 +3326,175 @@ main > section:first-of-type.atmos::before {
   #calc-sum > :not(.calc-note) { display: none; }
   #calc-sum .calc-note { margin-top: -.2rem; font-size: .8rem; }
 }
+
+
+/* ==========================================================================
+   SCHWEBENDE ZEILE IM RECHNER: HIER ENTSTEHT DEINE NACHRICHT
+   Ein Lichtschweif laeuft um die Zeile, drinnen tippen drei Punkte wie im
+   Chat, der Pfeil wippt nach oben. Jede Auswahl fliegt als leuchtender
+   Punkt hinein, die Zeile federt kurz. Aufgeklappt schreiben sich die
+   Zeilen der Nachricht nacheinander hinein.
+   ========================================================================== */
+
+/* the light runs along the edge: a turning comet, masked to a thin ring */
+.hint-ring {
+  position: absolute;
+  inset: 0;
+  padding: 2px;
+  border-radius: inherit;
+  overflow: hidden;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .45s var(--ease-out);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+}
+
+.hint-ring::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 115%;
+  aspect-ratio: 1;
+  background: conic-gradient(from 0deg,
+    transparent 0deg 200deg,
+    rgba(224, 179, 109, .35) 250deg,
+    #E0B36D 300deg,
+    #FF4D86 340deg,
+    #fff 356deg,
+    transparent 360deg);
+  transform: translate(-50%, -50%);
+}
+
+#hint.is-fold:not(.is-open) .hint-ring { opacity: 1; }
+#hint.is-fold:not(.is-open) .hint-ring::before { animation: ringSpin 3.4s linear infinite; }
+
+@keyframes ringSpin {
+  to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* the icon turns into a little chat bubble that is typing */
+.hint-ico .i-type {
+  grid-area: 1 / 1;
+  display: flex;
+  gap: 2.5px;
+  opacity: 0;
+  transform: scale(.4);
+  transition: opacity .2s var(--ease-out), transform .4s var(--ease-spring);
+}
+
+.hint-ico .i-type i {
+  width: 3.5px;
+  height: 3.5px;
+  border-radius: 50%;
+  background: #fff;
+}
+
+#hint.is-fold .hint-ico {
+  width: 1.9rem;
+  border-radius: 11px 11px 4px 11px;
+  color: #fff;
+  background: linear-gradient(140deg, #E5145F 0%, #A3185C 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, .16),
+    0 4px 12px -5px rgba(229, 20, 95, .85);
+}
+
+#hint.is-fold .i-spark { opacity: 0; transform: scale(.4); animation: none; }
+#hint.is-fold .i-type { opacity: 1; transform: none; }
+#hint.is-fold:not(.is-open) .i-type i { animation: typeDot 1.3s ease-in-out infinite; }
+#hint.is-fold .i-type i:nth-child(2) { animation-delay: .16s; }
+#hint.is-fold .i-type i:nth-child(3) { animation-delay: .32s; }
+
+@keyframes typeDot {
+  0%, 60%, 100% { transform: none; opacity: .5; }
+  30%           { transform: translate3d(0, -3px, 0); opacity: 1; }
+}
+
+/* the arrow nods upwards: there is something to open */
+#hint.is-fold:not(.is-open) .hint-go { animation: goNod 2.6s var(--ease-out) infinite; }
+
+@keyframes goNod {
+  0%, 50%, 100% { transform: rotate(-90deg); }
+  64%           { transform: rotate(-90deg) translate3d(3.5px, 0, 0); }
+  78%           { transform: rotate(-90deg) translate3d(-.5px, 0, 0); }
+}
+
+/* a choice lands: the line gives a small bounce */
+#hint.is-hit { animation: hintHit .55s var(--ease-spring); }
+
+@keyframes hintHit {
+  0%   { transform: none; }
+  35%  { transform: scale(1.06); }
+  100% { transform: none; }
+}
+
+/* the dot that flies from the tapped field into the message */
+.fly-dot {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 85;
+  width: 14px;
+  height: 14px;
+  margin: -7px 0 0 -7px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #fff 0 16%, #FF4D86 46%, #CF1059 100%);
+  box-shadow: 0 0 14px 3px rgba(255, 77, 134, .55);
+  pointer-events: none;
+  opacity: 0;
+}
+
+.fly-dot.is-trail1 {
+  width: 8px;
+  height: 8px;
+  margin: -4px 0 0 -4px;
+  background: rgba(255, 77, 134, .6);
+  box-shadow: 0 0 10px 2px rgba(255, 77, 134, .3);
+}
+
+.fly-dot.is-trail2 {
+  width: 5px;
+  height: 5px;
+  margin: -2.5px 0 0 -2.5px;
+  background: rgba(224, 179, 109, .55);
+  box-shadow: none;
+}
+
+/* the open card grows out of the line */
+#msg-peek.is-live {
+  transform: translate3d(0, 18px, 0) scale(.92);
+}
+
+#msg-peek.is-live.show { transform: none; }
+
+/* opened: the lines write themselves in, the bubble dots type meanwhile */
+#msg-peek.is-typing .msg-bubble .ml {
+  animation: lineType .45s var(--ease-spring) both;
+  animation-delay: calc(var(--i, 0) * 60ms + 140ms);
+}
+
+#msg-peek.is-typing .msg-ic i { animation: typeDot 1s ease-in-out infinite; }
+#msg-peek.is-typing .msg-ic i:nth-child(2) { animation-delay: .14s; }
+#msg-peek.is-typing .msg-ic i:nth-child(3) { animation-delay: .28s; }
+
+@keyframes lineType {
+  from { opacity: 0; transform: translate3d(0, 6px, 0); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* open card: a new choice makes the little bubble wink */
+.msg-ic.is-pop { animation: icWink .5s var(--ease-spring); }
+
+@media (prefers-reduced-motion: reduce) {
+  #hint.is-fold:not(.is-open) .hint-ring::before,
+  #hint.is-fold:not(.is-open) .i-type i,
+  #hint.is-fold:not(.is-open) .hint-go,
+  #hint.is-hit,
+  #msg-peek.is-typing .msg-bubble .ml,
+  #msg-peek.is-typing .msg-ic i,
+  .msg-ic.is-pop { animation: none; }
+  #msg-peek.is-live { transform: none; }
+}
