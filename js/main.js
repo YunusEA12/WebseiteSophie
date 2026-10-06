@@ -1638,7 +1638,8 @@
   }
 
   /* Traegt den Preis mit, solange der Rechner im Bild ist - sonst sieht man
-     beim Auswaehlen nie, was sich gerade aendert. */
+     beim Auswaehlen nie, was sich gerade aendert. Am Handy ersetzt sie die
+     Preiskarte ganz, damit Preis und Knopf nicht doppelt stehen. */
   function initPriceBar() {
     var sec = document.getElementById('preise');
     var total = document.getElementById('total');
@@ -1650,7 +1651,7 @@
     bar.setAttribute('aria-label', 'Dein Preis');
     bar.innerHTML =
       '<div class="inner">' +
-        '<div><div class="lbl">Dein Preis</div><div class="amount"><b id="pb-total"></b> <span>&euro;</span></div></div>' +
+        '<div><div class="lbl">Dein Preis</div><div class="amount" aria-live="polite" aria-atomic="true"><b id="pb-total"></b> <span>&euro;</span></div></div>' +
         '<a href="' + DM + '" target="_blank" rel="noopener noreferrer" data-send="set" ' +
         'class="btn btn-solid px-5 py-2.5 text-[.85rem] flex-col !gap-0.5"><span id="pb-cta">Set anfragen</span>' +
         '<span class="btn-sub">Nachricht wird kopiert</span></a>' +
@@ -1671,21 +1672,12 @@
     sync();
     new MutationObserver(sync).observe(total.parentNode, { childList: true, characterData: true, subtree: true, attributes: true });
 
-    // once the price card itself is in view it says all of this -
-    // the bar steps aside instead of showing it twice
-    var card = document.getElementById('calc-sum');
-    var inSec = false, cardIn = false;
-    function show() { bar.classList.toggle('on', inSec && !cardIn); }
+    function show(on) { bar.classList.toggle('on', on); }
 
     if ('IntersectionObserver' in window) {
       new IntersectionObserver(function (es) {
-        es.forEach(function (e) { inSec = e.isIntersecting; });
-        show();
+        es.forEach(function (e) { show(e.isIntersecting); });
       }, { threshold: 0, rootMargin: '-15% 0px -15% 0px' }).observe(sec);
-      if (card) new IntersectionObserver(function (es) {
-        es.forEach(function (e) { cardIn = e.isIntersecting; });
-        show();
-      }, { threshold: 0, rootMargin: '0px 0px -96px 0px' }).observe(card);
     }
   }
 

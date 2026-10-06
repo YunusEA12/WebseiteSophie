@@ -3308,3 +3308,21 @@ main > section:first-of-type.atmos::before {
 
   #preise fieldset > div.grid .opt { padding: .45rem .6rem; }
 }
+
+
+/* ==========================================================================
+   PREISRECHNER: AM HANDY TRAEGT DIE LEISTE UNTEN DEN PREIS
+   Preis und Anfrage-Knopf stehen dort schon - die Karte waere doppelt.
+   Von ihr bleibt nur die kleine Zeile mit Endpreis und Dauer.
+   ========================================================================== */
+@media (max-width: 1023px) {
+  #preise #calc-sum {
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: none;
+  }
+
+  #calc-sum > :not(.calc-note) { display: none; }
+  #calc-sum .calc-note { margin-top: -.2rem; font-size: .8rem; }
+}
