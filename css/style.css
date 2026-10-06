@@ -3212,3 +3212,32 @@ main > section:first-of-type.atmos::before {
   margin-right: .18em;
   opacity: .8;
 }
+
+
+/* ==========================================================================
+   PREISRECHNER AUF EINEN BLICK (HANDY)
+   Ueberschrift kompakter, Felder flacher: Laenge, Level und Extras passen
+   zusammen ueber die Preisleiste, auch im Safari mit seinen Leisten.
+   ========================================================================== */
+@media (max-width: 640px) {
+  #preise { padding-top: 2.75rem !important; }
+
+  #preise > div > .js-rv.mb-10 { margin-bottom: 1.1rem; }
+
+  #preise > div > .js-rv.mb-10 .t-script { font-size: 1.75rem !important; }
+
+  #preise > div > .js-rv.mb-10 h2 {
+    font-size: 1.5rem !important;
+    margin-top: .2rem;
+  }
+
+  #preise .grid.gap-5 { gap: .95rem !important; }
+
+  #preise legend { margin-bottom: .4rem; }
+
+  #preise [role="radiogroup"] .opt { padding: .45rem .2rem; }
+
+  #preise .opt-size { font-size: 1rem; }
+
+  #preise fieldset > div.grid .opt { padding: .45rem .6rem; }
+}

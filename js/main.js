@@ -1427,10 +1427,16 @@
       return false;
     }
 
+    // on a phone the price bar takes over in the calculator: it shows the
+    // price and the same "Nachricht wird kopiert" - two bars would cover the fields
+    function barTakesOver(z) {
+      return z === 'preise' && innerWidth < 1024 && !!document.querySelector('#pricebar.on');
+    }
+
     function check() {
       ticking = false;
       var z = zone();
-      var aside = z === 'foot' || z === 'before' || overButton();
+      var aside = z === 'foot' || z === 'before' || overButton() || barTakesOver(z);
       el.classList.toggle('away', aside && !flashing);
       if (!flashing && !aside) set(z);
     }
