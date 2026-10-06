@@ -34,15 +34,20 @@ Datenschutz Platzhalter enthalten, den provisorischen Link nicht öffentlich tei
 - [x] Gel-Auffüllen kostet wie Gel-X
 - [x] Instagram: Nachrichtenanfragen von allen erlaubt
 - [x] iPhone-Test: Instagram öffnet sich, Einfügen klappt
-- [ ] Impressum, Datenschutz und AGB von einer Anwältin oder einem Anwalt gegenprüfen lassen.
-      Selbst geprüft und angepasst (Oktober 2026). Offen für die Fachprüfung:
-      Widerrufsrecht bei Buchung per DM und wie es mit der Ausfallgebühr zusammenspielt; ob die
-      seit 19.06.2026 geltende Pflicht zur Widerrufsfunktion („Widerrufsbutton“) bei Buchungen
-      per Instagram-DM greift; ob für GitHub Pages ein Auftragsverarbeitungsvertrag nötig ist.
-- [ ] Bei jeder Terminbestätigung per DM den Link zu den AGB mitschicken, z. B.:
-      „Dein Termin am … um … ist bestätigt 💅 Es gelten meine Studio Policy und AGB mit
-      Widerrufsbelehrung: https://gerberxnails.de/#agb“
-      (Bis die Domain verbunden ist: https://yunusea12.github.io/WebseiteSophie/#agb)
+- [x] Rechtliche Gegenprüfung (Oktober 2026). Ergebnis:
+      Widerrufsrecht gilt bei Buchung per DM; die Ausfallgebühr greift nur, wenn die Kundin nicht
+      innerhalb von 14 Tagen nach der Buchung widerruft. Widerrufsbutton: gilt nur für Verträge,
+      die über die eigene Website oder App geschlossen werden, also nicht für Buchung per DM.
+      Auftragsverarbeitung: am saubersten mit einem deutschen Hoster (siehe „Hosting“ unten).
+- [ ] Jede Terminbestätigung per DM so schicken (die Kundin antwortet mit „Ja“), dazu das Bild
+      der Widerrufsbelehrung (widerruf-fuer-dm.jpg, von Claude erstellt; nach einer Adressänderung neu erstellen lassen) mitsenden:
+      „Dein Termin am … um … ist bestätigt 💅
+      Set: … · Preis: … € (bar)
+      Es gelten meine Studio Policy und AGB: https://gerberxnails.de/#agb
+      Die Widerrufsbelehrung schicke ich dir als Bild mit.
+      Bitte bestätige kurz mit Ja: Ich möchte, dass die Behandlung zum vereinbarten Termin
+      stattfindet, auch wenn die Widerrufsfrist dann noch läuft. Mir ist bekannt, dass mein
+      Widerrufsrecht erlischt, sobald die Behandlung vollständig erbracht ist.“
 
 ## Technik
 
