@@ -75,9 +75,6 @@ h1, h2, h3 {
   font-weight: 700;
 }
 
-.t-serif {
-  font-family: "Instrument Serif", Georgia, serif;
-}
 
 /* ==========================================================================
    3. ATMOSPHERE & FILM GRAIN
@@ -1953,8 +1950,11 @@ main {
 .hero-dot::after {
   content: "";
   position: absolute;
-  inset: -10px -4px;
+  inset: -10px -8.5px;
 }
+
+/* 24 px Tippflaeche je Punkt, ohne dass sie sich ueberschneiden */
+.hero-dots { gap: 17px !important; }
 
 .hero-dot:hover {
   background: rgba(255, 255, 255, .8);
@@ -3202,4 +3202,13 @@ main > section:first-of-type.atmos::before {
   .msg-bubble .ml-new::before,
   #total.is-pop,
   #pb-total.is-pop { animation: none; }
+}
+
+
+/* "ab" vor dem Startpreis kleiner als die Zahl */
+.stat-pre {
+  font-size: .55em;
+  font-weight: 600;
+  margin-right: .18em;
+  opacity: .8;
 }

@@ -5,15 +5,16 @@ liegen auf dem eigenen Server; beim Aufruf wird nichts von Dritten nachgeladen.
 
 ## Schriften – SIL Open Font License 1.1
 
-Kommerzielle Nutzung und Selbsthosting sind erlaubt. Die Lizenzangaben stehen
-zusätzlich in jeder Schriftdatei selbst (Namenstabelle, Einträge 0, 13, 14).
-Lizenztext: https://openfontlicense.org
+Kommerzielle Nutzung und Selbsthosting sind erlaubt; verkauft werden dürfen die
+Schriftdateien nur nicht für sich allein. Copyright-Hinweise und vollständiger
+Lizenztext liegen den Schriften als `fonts/OFL.txt` bei (Bedingung 2 der Lizenz).
+Die Schriften werden unverändert genutzt, die geschützten Namen also nicht berührt.
 
 | Schrift | Copyright | Dateien |
 | --- | --- | --- |
 | Inter | © 2016 The Inter Project Authors | `fonts/inter-*.woff2` |
 | Pinyon Script | © 2022 The PinyonScript Project Authors | `fonts/pinyon-script-*.woff2` |
-| Playfair Display | © 2017 The Playfair Display Project Authors | `fonts/playfair-*.woff2` |
+| Playfair Display | © 2017 The Playfair Display Project Authors (Reserved Font Name „Playfair Display“) | `fonts/playfair-*.woff2` |
 | Space Grotesk | © 2020 The Space Grotesk Project Authors | `fonts/space-grotesk-*.woff2` |
 
 Die Dateien sind die unveränderten Teilmengen (latin, latin-ext), wie Google Fonts

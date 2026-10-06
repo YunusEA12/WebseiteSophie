@@ -14,6 +14,11 @@ Datenschutz Platzhalter enthalten, den provisorischen Link nicht öffentlich tei
       Adresse nicht.
 - [x] Postleitzahl – eingetragen
 - [x] E-Mail-Adresse (gerberxnails@gmx.de) – eingetragen
+- [ ] „Gel-X“ ist eine eingetragene Marke (Aprés). Nutzt Sophie echte Aprés-Gel-X-Tips, darf
+      sie so heißen. Nutzt sie eine andere Marke, auf „Soft-Gel-Tips“ umbenennen lassen.
+- [ ] Startpreis: Die Seite sagt jetzt „ab 50 €“ (kürzeste Länge plus Level 1), weil der
+      Preisrechner immer ein Level verlangt. Gibt es ein Set ganz ohne Design für 40 €, im
+      Rechner eine Option „ohne Design“ ergänzen und den Startpreis zurücksetzen.
 - [ ] W-IdNr. oder USt-IdNr. klären (Sophie wusste es nicht). Die W-IdNr. vergibt das
       Bundeszentralamt für Steuern seit Ende 2024 nach und nach automatisch; sie steht im ELSTER-
       Postfach oder in einem Brief und beginnt mit „DE“. Gibt es eine, im Impressum einen Abschnitt
@@ -48,6 +53,9 @@ Datenschutz Platzhalter enthalten, den provisorischen Link nicht öffentlich tei
       Bitte bestätige kurz mit Ja: Ich möchte, dass die Behandlung zum vereinbarten Termin
       stattfindet, auch wenn die Widerrufsfrist dann noch läuft. Mir ist bekannt, dass mein
       Widerrufsrecht erlischt, sobald die Behandlung vollständig erbracht ist.“
+
+- [ ] GitHub-Projekt auf „privat“ stellen, sobald die Seite bei IONOS liegt (oder GitHub Pro
+      nutzen): Alte Versionen im Projekt enthalten noch den früheren Terminkalender.
 
 ## Technik
 
