@@ -3617,3 +3617,19 @@ main > section:first-of-type.atmos::before {
   .qty-val.is-pop,
   #preise .opt .t-display.is-pop { animation: none; }
 }
+
+/* on phones the explaining line is gone - a short one says it comes in pieces */
+.opt-pcs { display: none; }
+
+@media (max-width: 640px) {
+  #preise .opt-pcs {
+    display: block;
+    margin-top: .1rem;
+    font-family: Inter, sans-serif;
+    font-size: .66rem;
+    line-height: 1.3;
+    color: #A8977F;
+  }
+
+  #preise .opt-qty.is-on .opt-pcs { display: none; }
+}
