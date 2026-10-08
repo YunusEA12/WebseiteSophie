@@ -1,34 +1,60 @@
-import { chromium } from 'playwright';
-import fs from 'node:fs';
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { createRequire } from "module";
+const require = createRequire(import.meta.url);
+const puppeteer = require("C:/Users/yunus/AppData/Local/Temp/puppeteer-test/node_modules/puppeteer-core/lib/puppeteer/puppeteer-core.js");
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
 
-const root = path.dirname(fileURLToPath(import.meta.url));
-const url = process.argv[2] || 'http://localhost:3000';
-const label = (process.argv[3] || 'desktop').replace(/[^a-zA-Z0-9_-]/g, '-');
-const mobile = label.toLowerCase().includes('mobile');
-const dir = path.join(root, 'temporary screenshots');
-fs.mkdirSync(dir, { recursive: true });
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const dir = path.join(__dirname, "temporary screenshots");
+if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+
+const url = process.argv[2] || "http://localhost:3000";
+const label = process.argv[3] ? `-${process.argv[3]}` : "";
+
+// Auto-increment
 let n = 1;
-while (fs.existsSync(path.join(dir, `screenshot-${n}-${label}.png`))) n++;
-const browser = await chromium.launch({
+while (fs.existsSync(path.join(dir, `screenshot-${n}${label}.png`))) n++;
+const outPath = path.join(dir, `screenshot-${n}${label}.png`);
+
+const browser = await puppeteer.launch({
   headless: true,
-  ...(process.env.BROWSER_EXECUTABLE_PATH ? { executablePath: process.env.BROWSER_EXECUTABLE_PATH } : {})
+  executablePath: "C:/Users/yunus/.cache/puppeteer/chrome/win64-146.0.7680.76/chrome-win64/chrome.exe",
+  args: ["--no-sandbox", "--disable-setuid-sandbox"],
 });
-try {
-  const page = await browser.newPage({
-    viewport: { width: mobile ? 390 : 1440, height: mobile ? 844 : 900 },
-    isMobile: mobile, hasTouch: mobile, deviceScaleFactor: 1, reducedMotion: 'reduce'
+const page = await browser.newPage();
+const isMobile = process.argv[3]?.toLowerCase().includes("mobile") || process.argv[4] === "mobile";
+const width = isMobile ? 390 : 1440;
+const height = isMobile ? 844 : 900;
+await page.setViewport({ width, height, isMobile, hasTouch: isMobile, deviceScaleFactor: isMobile ? 2 : 1 });
+
+await page.goto(url, { waitUntil: "networkidle0", timeout: 60000 });
+
+// Reveal everything that normally animates in on scroll
+await page.evaluate(() => {
+  document.querySelectorAll('.fade-up').forEach(el => el.classList.add('visible'));
+  if (typeof window.__revealAll === 'function') window.__revealAll();
+});
+
+// Smooth scroll to trigger any lazy elements and settle animations
+await page.evaluate(async () => {
+  await new Promise((resolve) => {
+    let y = 0;
+    const step = 400;
+    const timer = setInterval(() => {
+      window.scrollBy(0, step);
+      y += step;
+      if (y >= document.body.scrollHeight) {
+        clearInterval(timer);
+        window.scrollTo(0, 0);
+        setTimeout(resolve, 300);
+      }
+    }, 60);
   });
-  await page.goto(url, { waitUntil: 'networkidle' });
-  await page.evaluate(async () => {
-    if (window.__revealAll) window.__revealAll();
-    document.querySelectorAll('img[loading="lazy"]').forEach(img => { img.loading = 'eager'; });
-    await document.fonts.ready;
-    await Promise.all([...document.images].map(img => img.decode().catch(() => {})));
-  });
-  const output = path.join(dir, `screenshot-${n}-${label}.png`);
-  await page.screenshot({ path: output, fullPage: true });
-  console.log(output);
-} finally { await browser.close(); }
+});
+
+await new Promise(r => setTimeout(r, 2000));
+await page.screenshot({ path: outPath, fullPage: true });
+await browser.close();
+console.log("Screenshot saved:", outPath);
 
