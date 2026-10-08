@@ -38,7 +38,9 @@ Datenschutz Platzhalter enthalten, den provisorischen Link nicht öffentlich tei
 - [x] Länge und Level unter den Fotos – von Sophie korrigiert
 - [x] Gel-Auffüllen kostet wie Gel-X
 - [x] Instagram: Nachrichtenanfragen von allen erlaubt
-- [x] iPhone-Test: Instagram öffnet sich, Einfügen klappt
+- [ ] Neuen Anfrageablauf auf iPhone und Android testen: Vorschau öffnen, Nachricht kopieren,
+      Instagram öffnen, Einfügen und alternativ E-Mail prüfen. Der frühere iPhone-Test bezog
+      sich auf den alten automatischen Wechsel.
 - [x] Rechtliche Gegenprüfung (Oktober 2026). Ergebnis:
       Widerrufsrecht gilt bei Buchung per DM; die Ausfallgebühr greift nur, wenn die Kundin nicht
       innerhalb von 14 Tagen nach der Buchung widerruft. Widerrufsbutton: gilt nur für Verträge,

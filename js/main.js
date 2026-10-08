@@ -6,36 +6,7 @@
 (function () {
   'use strict';
 
-  /* Always start at the top on fresh load & reload. Prevent lingering hash from jumping to calculator */
-  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
   var startHash = window.location.hash;
-  if (window.location.hash) {
-    try {
-      history.replaceState(null, document.title, window.location.pathname + window.location.search);
-    } catch (e) {}
-  }
-  window.scrollTo(0, 0);
-  window.addEventListener('load', function () {
-    setTimeout(function () { window.scrollTo(0, 0); }, 40);
-  });
-  addEventListener('beforeunload', function () { window.scrollTo(0, 0); });
-
-  // Intercept anchor clicks so hash doesn't get stuck in the address bar
-  document.addEventListener('click', function (e) {
-    var a = e.target.closest('a[href^="#"]');
-    if (!a) return;
-    var href = a.getAttribute('href');
-    if (!href || href === '#') {
-      e.preventDefault();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      return;
-    }
-    var target = document.querySelector(href);
-    if (target && !e.defaultPrevented) {
-      e.preventDefault();
-      target.scrollIntoView({ behavior: 'smooth' });
-    }
-  });
 
   // Environment & Accessibility detection
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -48,73 +19,6 @@
     el.classList.add('is-pop');
   }
   var fine = window.matchMedia('(hover:hover) and (pointer:fine)').matches;
-
-  /* The vine and the drifting petals live at z-index -1, and the body
-     background covers them completely: nobody has seen them in the current
-     design, yet both redrew every frame on every device. They stay off until
-     they get a place in the layout again. To bring them back, set this to
-     true and remove the "#vine, #petals { display: none }" rule in style.css
-     (and give them a stacking position above the body background). */
-  var SHOW_VINE_AND_PETALS = false;
-
-  /* ------------------------------------------------------------------
-     Shared input. On a desktop this follows the mouse. On a phone there is
-     no hover, so it follows the finger, and when nothing is being touched
-     it drifts with how fast the page is scrolling.
-
-     The gyroscope used to feed in here too. iPhones answered that with a
-     permission prompt for motion sensors, and Android read the sensor
-     without asking - neither is acceptable for a decorative effect, so the
-     page no longer touches device sensors at all.
-     ------------------------------------------------------------------ */
-  var Input = (function () {
-    var x = -9999, y = -9999;      // viewport coords, -9999 = no input
-    var active = false;
-    var scrollV = 0;               // smoothed scroll velocity in px/frame
-    var lastY = window.scrollY;
-    var idleT = 0;
-
-    function set(cx, cy) { x = cx; y = cy; active = true; }
-    function clear() { x = -9999; y = -9999; active = false; }
-
-    addEventListener('mousemove', function (e) { set(e.clientX, e.clientY); }, { passive: true });
-    addEventListener('mouseleave', clear, { passive: true });
-
-    // a finger counts as the pointer; passive so scrolling is never held up
-    function fromTouch(e) {
-      if (!e.touches || !e.touches.length) return;
-      set(e.touches[0].clientX, e.touches[0].clientY);
-      idleT = 0;
-    }
-    addEventListener('touchstart', fromTouch, { passive: true });
-    addEventListener('touchmove', fromTouch, { passive: true });
-    addEventListener('touchend', function () { idleT = 0; }, { passive: true });
-
-    addEventListener('scroll', function () {
-      var d = window.scrollY - lastY;
-      lastY = window.scrollY;
-      scrollV = scrollV * 0.8 + d * 0.2;
-      idleT = 0;
-    }, { passive: true });
-
-    return {
-      // where the interaction is, in viewport coords
-      get x() { return x; },
-      get y() { return y; },
-      get active() { return active; },
-      get scrollV() { return scrollV; },
-      // called once per frame by the animation loops
-      tick: function () {
-        scrollV *= 0.94;
-        if (active && !fine) {
-          // a finger lifts off without a mouseleave, so let it fade out
-          idleT += 1;
-          if (idleT > 90) clear();
-        }
-      }
-    };
-  })();
-  var lerp = function (a, b, n) { return a + (b - a) * n; };
 
   // Initialize dynamic copyright year
   var yearEl = document.getElementById('year');
@@ -234,6 +138,7 @@
      3. TYPOGRAPHY SPLIT & SCROLL REVEAL
      ========================================================================== */
   function initTextReveal() {
+    // Effects enhance visible content; a failed script must not hide the page.
     // 3.1 Split headlines into maskable words
     document.querySelectorAll('[data-split]').forEach(function (el) {
       var words = el.textContent.trim().split(/\s+/);
@@ -274,146 +179,6 @@
   }
 
   /* ==========================================================================
-     4. PRELOADER: PETALS OPEN SYNCHRONOUSLY WITH PROGRESS
-     ========================================================================== */
-  function initPreloader() {
-    var loader = document.getElementById('loader');
-    var flower = document.getElementById('loadflower');
-    var count = document.getElementById('count');
-    var ring = document.getElementById('ring');
-    if (!loader || !flower || !count || !ring) return;
-
-    var petals = [].slice.call(flower.querySelectorAll('.lp'));
-    var CIRC = 829.4;
-    var pct = 0;
-
-    var tick = setInterval(function () {
-      pct = Math.min(100, pct + Math.random() * 11 + 4);
-      count.textContent = String(Math.floor(pct)).padStart(3, '0');
-      ring.setAttribute('stroke-dashoffset', CIRC * (1 - pct / 100));
-
-      // One petal per 20% of the load
-      var due = Math.floor(pct / 20);
-      for (var i = 0; i < petals.length; i++) {
-        if (i < due) petals[i].classList.add('on');
-      }
-
-      if (pct >= 100) {
-        clearInterval(tick);
-        petals.forEach(function (p) { p.classList.add('on'); });
-        flower.classList.add('bloomed');
-        setTimeout(function () {
-          loader.classList.add('done');
-        }, reduce ? 60 : 480);
-      }
-    }, reduce ? 18 : 75);
-  }
-
-  /* ==========================================================================
-     5. CUSTOM CURSOR & MAGNETIC TARGETS
-     ========================================================================== */
-  function initCustomCursor() {
-    if (!fine || reduce) return;
-
-    var dot = document.querySelector('.cursor-dot');
-    var ring = document.querySelector('.cursor-ring');
-    if (!dot || !ring) return;
-    // the ring is only shown once something moves it; otherwise it sat as a
-    // quarter circle in the top left corner
-    document.documentElement.classList.add('has-cursor');
-
-    var mx = innerWidth / 2, my = innerHeight / 2, rx = mx, ry = my;
-
-    addEventListener('mousemove', function (e) {
-      mx = e.clientX;
-      my = e.clientY;
-    });
-
-    addEventListener('mouseleave', function () {
-      document.body.classList.add('cur-hide');
-    });
-
-    addEventListener('mouseenter', function () {
-      document.body.classList.remove('cur-hide');
-    });
-
-    document.querySelectorAll('a, button, .opt').forEach(function (el) {
-      el.addEventListener('mouseenter', function () {
-        document.body.classList.add(el.hasAttribute('data-view') ? 'cur-view' : 'cur-link');
-      });
-      el.addEventListener('mouseleave', function () {
-        document.body.classList.remove('cur-link', 'cur-view');
-      });
-    });
-
-    // Magnetic pull for interactive buttons
-    var mags = [].slice.call(document.querySelectorAll('[data-mag]'));
-    mags.forEach(function (el) {
-      el.addEventListener('mousemove', function (e) {
-        var r = el.getBoundingClientRect();
-        var dx = e.clientX - (r.left + r.width / 2);
-        var dy = e.clientY - (r.top + r.height / 2);
-        el.style.transform = 'translate3d(' + dx * 0.28 + 'px,' + dy * 0.4 + 'px,0)';
-      });
-      el.addEventListener('mouseleave', function () {
-        el.style.transform = '';
-      });
-    });
-
-    (function frame() {
-      rx = lerp(rx, mx, 0.16);
-      ry = lerp(ry, my, 0.16);
-      dot.style.transform = 'translate3d(' + mx + 'px,' + my + 'px,0)';
-      ring.style.transform = 'translate3d(' + rx + 'px,' + ry + 'px,0)';
-      requestAnimationFrame(frame);
-    })();
-  }
-
-  /* ==========================================================================
-     7. SCROLL-DRIVEN MARQUEE & TILE PARALLAX
-     ========================================================================== */
-  function initMarqueeAndParallax() {
-    if (reduce) return;
-
-    var marq = document.getElementById('marq');
-    var tiles = [].slice.call(document.querySelectorAll('[data-par]'));
-    var last = scrollY, offset = 0, vel = 0;
-
-    (function sframe() {
-      var y = scrollY;
-      vel = lerp(vel, y - last, 0.12);
-      last = y;
-
-      // Marquee drifts on its own and accelerates dynamically with scroll speed
-      if (marq) {
-        offset -= 0.55 + vel * 0.22;
-        var half = marq.scrollWidth / 2;
-        if (half > 0) {
-          if (offset <= -half) offset += half;
-          if (offset > 0) offset -= half;
-          marq.style.transform = 'translate3d(' + offset.toFixed(2) + 'px,0,0)';
-        }
-      }
-
-      // Portfolio tiles drift at their own pace inside the viewport
-      var vh = innerHeight;
-      // On a narrow screen the offset only makes the two columns look ragged,
-      // and it costs a transform per tile per frame.
-      if (document.documentElement.clientWidth < 760) {
-        tiles.forEach(function (t) { if (t.style.transform) t.style.transform = ''; });
-      } else
-      tiles.forEach(function (t) {
-        var r = t.getBoundingClientRect();
-        if (r.bottom < -200 || r.top > vh + 200) return;
-        var mid = (r.top + r.height / 2 - vh / 2) / vh;
-        t.style.transform = 'translate3d(0,' + (mid * parseFloat(t.getAttribute('data-par'))).toFixed(2) + 'px,0)';
-      });
-
-      requestAnimationFrame(sframe);
-    })();
-  }
-
-  /* ==========================================================================
      HERO SLIDESHOW
      ========================================================================== */
   function initHeroShow() {
@@ -446,7 +211,7 @@
     var caps = [].slice.call(box.querySelectorAll('.hero-cap'));
     var dots = [].slice.call(box.querySelectorAll('.hero-dot'));
     if (slides.length < 2) return;
-    var at = 0, timer, held = false;
+    var at = 0, timer, held = false, paused = reduce, visible = true;
 
     function go(n) {
       at = (n + slides.length) % slides.length;
@@ -457,10 +222,30 @@
     }
 
     function play() {
-      if (reduce || held) return;
+      if (paused || held || !visible || document.hidden) return;
       clearInterval(timer);
       timer = setInterval(function () { go(at + 1); }, 4200);
     }
+
+    var pause = document.createElement('button');
+    pause.type = 'button';
+    pause.className = 'slideshow-pause';
+    function labelPause() {
+      pause.textContent = paused ? 'Slideshow starten' : 'Slideshow pausieren';
+      pause.setAttribute('aria-label', pause.textContent);
+    }
+    labelPause();
+    box.appendChild(pause);
+    pause.addEventListener('click', function () {
+      paused = !paused;
+      labelPause();
+      clearInterval(timer);
+      play();
+    });
+    document.addEventListener('visibilitychange', function () {
+      clearInterval(timer);
+      play();
+    });
 
     // A mouse resting on the picture or keyboard focus on the dots keeps it
     // still. Only a real pointer and visible focus count: a tap fires the same
@@ -497,7 +282,7 @@
     // pause while the card is off screen
     if ('IntersectionObserver' in window) {
       new IntersectionObserver(function (es) {
-        es.forEach(function (e) { if (e.isIntersecting) play(); else clearInterval(timer); });
+        es.forEach(function (e) { visible = e.isIntersecting; clearInterval(timer); play(); });
       }, { threshold: .2 }).observe(box);
     }
     play();
@@ -588,366 +373,15 @@
   }
 
   /* ==========================================================================
-     8. THE LIVING VINE: ORGANIC SVG LAYER SPANNING FULL PAGE
-     ========================================================================== */
-  function initLivingVine() {
-    var svg = document.getElementById('vine');
-    if (!svg) return;
-
-    var NS = 'http://www.w3.org/2000/svg';
-    var NODES = 22;                                            // control points down the page
-    var BLOOM_AT = [1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21];    // nodes carrying a hibiscus
-    var W = 0, H = 0, VH = 0;
-    var pts = [], cur = [], blooms = [];
-    var path, glow;
-
-    /* The curve is still described in document coordinates, but the SVG itself only
-       covers the viewport. Every frame we emit just the part of it that is on screen,
-       shifted up by the scroll offset. The browser then repaints one screen instead
-       of the whole 7000px page, which is the difference between 33 and 55 fps on a
-       phone. */
-    function build() {
-      W = document.documentElement.clientWidth;
-      VH = window.innerHeight;
-
-      // The vine was switched off here while it still repainted the whole page
-      // every frame. It now draws only the slice on screen, so a phone can carry
-      // it again - and without it the mobile page felt static.
-      svg.style.display = '';
-
-      // measure the page with the vine hidden so it cannot inflate its own height
-      var prevDisplay = svg.style.display;
-      svg.style.display = 'none';
-      H = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
-      svg.style.display = prevDisplay;
-
-      svg.setAttribute('width', W);
-      svg.setAttribute('height', VH);
-      svg.setAttribute('viewBox', '0 0 ' + W + ' ' + VH);
-      svg.style.height = VH + 'px';
-      while (svg.firstChild) svg.removeChild(svg.firstChild);
-
-      pts = [];
-      for (var i = 0; i < NODES; i++) {
-        var t = i / (NODES - 1);
-        var amp = W * (W < 760 ? 0.30 : 0.26);
-        var x = W * 0.5 + Math.sin(t * Math.PI * 3.1) * amp + Math.sin(t * Math.PI * 7.3) * amp * 0.22;
-        pts.push({ bx: x, by: t * H });
-      }
-      cur = pts.map(function (q) { return { x: q.bx, y: q.by }; });
-
-      // the soft halo doubles the paint cost; a phone does without it
-      if (fine) {
-        glow = document.createElementNS(NS, 'path');
-        glow.setAttribute('fill', 'none');
-        glow.setAttribute('stroke', 'url(#gVine)');
-        glow.setAttribute('stroke-width', 16);
-        glow.setAttribute('stroke-linecap', 'round');
-        glow.setAttribute('opacity', '.28');
-        svg.appendChild(glow);
-      } else {
-        glow = null;
-      }
-
-      path = document.createElementNS(NS, 'path');
-      path.setAttribute('fill', 'none');
-      path.setAttribute('stroke', 'url(#gVine)');
-      path.setAttribute('stroke-width', W < 760 ? 3.4 : 3.2);
-      path.setAttribute('stroke-linecap', 'round');
-      path.setAttribute('opacity', '.85');
-      svg.appendChild(path);
-
-      blooms = BLOOM_AT.map(function (idx, k) {
-        var g = document.createElementNS(NS, 'g');
-        var use = document.createElementNS(NS, 'use');
-        use.setAttribute('href', '#bloom');
-        use.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', '#bloom');
-        g.appendChild(use);
-        g.style.setProperty('--pf', k % 2 ? 'url(#gAqua)' : 'url(#gPink)');
-        g.style.setProperty('--pc', k % 2 ? '#4A2E0F' : '#3A0A1E');
-        g.setAttribute('opacity', '0');
-        svg.appendChild(g);
-        return { idx: idx, el: g, seed: k * 1.7, scale: 0, spin: 0, shown: false };
-      });
-    }
-
-    // catmull-rom through the points, already converted to viewport space
-    function toPath(list, off) {
-      var out = 'M' + list[0].x.toFixed(1) + ',' + (list[0].y - off).toFixed(1);
-      for (var i = 0; i < list.length - 1; i++) {
-        var p0 = list[i > 0 ? i - 1 : 0], p1 = list[i], p2 = list[i + 1];
-        var p3 = list[i + 2 < list.length ? i + 2 : list.length - 1];
-        out += ' C' + (p1.x + (p2.x - p0.x) / 6).toFixed(1) + ',' + (p1.y + (p2.y - p0.y) / 6 - off).toFixed(1)
-             + ' ' + (p2.x - (p3.x - p1.x) / 6).toFixed(1) + ',' + (p2.y - (p3.y - p1.y) / 6 - off).toFixed(1)
-             + ' ' + p2.x.toFixed(1) + ',' + (p2.y - off).toFixed(1);
-      }
-      return out;
-    }
-
-    var mx = -9999, my = -9999;   // document coords the vine bends toward
-
-    /* Sections with a solid leopard background sit in front of the vine, so the
-       thread used to stop dead at their top edge. Remember where they are and
-       let the line fade out just before it reaches one, then return once it has
-       passed - the thread reads as slipping behind the print, not as cut off. */
-    var veils = [];
-    function measureVeils() {
-      veils = [];
-      document.querySelectorAll('.leo-tex').forEach(function (el) {
-        var r = el.getBoundingClientRect();
-        var h = r.height;
-        if (h < 40) return;                       // skip the thin transition strips
-        veils.push({ top: r.top + window.scrollY, bottom: r.bottom + window.scrollY });
-      });
-    }
-
-    function veilFade(docY) {
-      // 1 = fully drawn, 0 = dissolved into the print
-      var FADE = 220;
-      for (var v = 0; v < veils.length; v++) {
-        var s = veils[v];
-        if (docY >= s.top && docY <= s.bottom) return 0;
-        if (docY < s.top && docY > s.top - FADE) return (s.top - docY) / FADE;
-        if (docY > s.bottom && docY < s.bottom + FADE) return (docY - s.bottom) / FADE;
-      }
-      return 1;
-    }
-
-    build();
-    measureVeils();
-    var rt;
-    addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(function () { build(); measureVeils(); }, 180); });
-    addEventListener('load', function () { setTimeout(function () { build(); measureVeils(); }, 500); });
-
-    var lastD = '';
-
-    (function tick() {
-      // build() returns early below 768px, so there is no path to drive. Without
-      // this guard the loop threw on the first frame and the exception escaped
-      // initAll(), which silently killed everything registered after the vine -
-      // including the price calculator.
-      if (!path) return;
-
-      Input.tick();
-
-      if (Input.active) {
-        mx = Input.x;
-        my = Input.y + window.scrollY;
-      } else if (!fine) {
-        // Nobody is touching. A fixed target would make the vine settle and stop,
-        // so drive it with a slow clock: the bend keeps travelling on its own and
-        // the scroll speed rides on top of it.
-        var t = Date.now() / 1000;
-        var lean = Math.max(-1, Math.min(1, Input.scrollV / 22));
-        var driftX = Math.sin(t * 0.55) * 0.30 + Math.sin(t * 0.23) * 0.16;
-        var driftY = Math.cos(t * 0.41) * 0.18;
-        mx = W * (0.5 + driftX + lean * 0.22);
-        my = window.scrollY + innerHeight * (0.45 + driftY);
-      } else {
-        mx = -9999; my = -9999;
-      }
-
-      var reach = fine ? 340 : 420, pull = fine ? 0.55 : 0.4;
-      var top = window.scrollY, bottom = top + VH;
-      var pad = 260;
-
-      for (var i = 0; i < pts.length; i++) {
-        var q = pts[i], tx = q.bx, ty = q.by;
-
-        // points far off screen cannot be seen, so leave them at rest
-        if (q.by < top - 1400 || q.by > bottom + 1400) {
-          cur[i].x = q.bx; cur[i].y = q.by;
-          continue;
-        }
-
-        if (mx > -9000) {
-          var dx = mx - q.bx, dy = my - q.by;
-          var dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < reach) {
-            var f = 1 - dist / reach;
-            tx += dx * f * pull;
-            ty += dy * f * pull * 0.35;
-          }
-        }
-        cur[i].x = lerp(cur[i].x, tx, 0.09);
-        cur[i].y = lerp(cur[i].y, ty, 0.09);
-      }
-
-      // collect just the span that crosses the screen, plus one node either side
-      var from = 0, to = cur.length - 1;
-      for (var a = 0; a < cur.length; a++) { if (cur[a].y >= top - pad) { from = Math.max(0, a - 1); break; } }
-      for (var b = cur.length - 1; b >= 0; b--) { if (cur[b].y <= bottom + pad) { to = Math.min(cur.length - 1, b + 1); break; } }
-
-      if (to - from >= 1) {
-        var slice = cur.slice(from, to + 1);
-        var dd = toPath(slice, top);
-        if (dd !== lastD) {
-          path.setAttribute('d', dd);
-          if (glow) glow.setAttribute('d', dd);
-          lastD = dd;
-        }
-        // fade where the line runs into a leopard band
-        var fade = veilFade(top + VH * 0.5);
-        var eased = fade * fade * (3 - 2 * fade);
-        path.setAttribute('opacity', (0.85 * eased).toFixed(3));
-        path.style.display = eased < 0.02 ? 'none' : '';
-        if (glow) {
-          glow.setAttribute('opacity', (0.28 * eased).toFixed(3));
-          glow.style.display = eased < 0.02 ? 'none' : '';
-        }
-      } else {
-        path.style.display = 'none';
-        if (glow) glow.style.display = 'none';
-      }
-
-      for (var c = 0; c < blooms.length; c++) {
-        var bl = blooms[c], n = cur[bl.idx];
-        var vy = n.y - top;
-
-        // hide anything off screen: no transform, no paint
-        if (vy < -200 || vy > VH + 200) {
-          if (bl.shown) { bl.el.setAttribute('opacity', '0'); bl.shown = false; }
-          continue;
-        }
-        bl.shown = true;
-
-        var near = 0;
-        if (mx > -9000) {
-          var ex = mx - n.x, ey = my - n.y;
-          var el = Math.sqrt(ex * ex + ey * ey);
-          near = el < 320 ? 1 - el / 320 : 0;
-        }
-        var narrow = W < 760;
-        var restScale = narrow ? 0.17 : 0.28;
-        bl.scale = lerp(bl.scale, restScale + near * 0.3, 0.08);
-        bl.spin += 0.1 + near * 0.5;
-        var bf = veilFade(n.y);
-        bl.el.setAttribute('opacity', (((narrow ? 0.38 : 0.6) + near * 0.4) * bf * bf * (3 - 2 * bf)).toFixed(2));
-        bl.el.setAttribute('transform',
-          'translate(' + n.x.toFixed(1) + ',' + vy.toFixed(1) + ') rotate(' +
-          (bl.spin * 0.3 + bl.seed * 40).toFixed(1) + ') scale(' + bl.scale.toFixed(3) + ')');
-      }
-
-      requestAnimationFrame(tick);
-    })();
-  }
-
-  /* ==========================================================================
-     9. DRIFTING PETALS CANVAS (DODGES CURSOR)
-     ========================================================================== */
-  function initFloatingPetals() {
-    var cv = document.getElementById('petals');
-    if (!cv || reduce) return;
-    var ctx = cv.getContext('2d');
-    var dpr = Math.min(window.devicePixelRatio || 1, 2);
-    var w = 0, h = 0, ps = [];
-
-    function size() {
-      w = innerWidth;
-      h = innerHeight;
-      cv.width = Math.round(w * dpr);
-      cv.height = Math.round(h * dpr);
-      cv.style.width = w + 'px';
-      cv.style.height = h + 'px';
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    }
-
-    function seed() {
-      var n = w < 760 ? 12 : 26;
-      ps = [];
-      for (var i = 0; i < n; i++) {
-        ps.push({
-          x: Math.random() * w,
-          y: Math.random() * h,
-          vx: (Math.random() - 0.5) * 0.25,
-          vy: 0.18 + Math.random() * 0.4,
-          r: 5 + Math.random() * 11,
-          a: Math.random() * Math.PI * 2,
-          spin: (Math.random() - 0.5) * 0.02,
-          pink: Math.random() < 0.62,
-          o: 0.2 + Math.random() * 0.3
-        });
-      }
-    }
-
-    size();
-    seed();
-    var rt2;
-    addEventListener('resize', function () {
-      clearTimeout(rt2);
-      rt2 = setTimeout(function () { size(); seed(); }, 180);
-    });
-
-    var px = -9999, py = -9999;   // fed from the shared input each frame
-
-    (function draw() {
-      px = Input.active ? Input.x : -9999;
-      py = Input.active ? Input.y : -9999;
-
-      // scrolling blows the petals along, and a slow breeze keeps them moving
-      // when the phone is just lying there
-      var now = Date.now() / 1000;
-      var gust = Math.max(-3, Math.min(3, Input.scrollV * 0.06));
-      var breeze = fine ? 0 : (Math.sin(now * 0.4) * 0.5 + Math.sin(now * 0.17) * 0.3);
-      var sway = breeze;
-
-      ctx.clearRect(0, 0, w, h);
-      for (var i = 0; i < ps.length; i++) {
-        var p = ps[i];
-
-        if (px > -9000) {
-          var dx = p.x - px, dy = p.y - py;
-          var dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < 140 && dist > 0.1) {
-            var f = (1 - dist / 140) * 0.9;
-            p.vx += (dx / dist) * f;
-            p.vy += (dy / dist) * f;
-          }
-        }
-
-        p.vx = p.vx * 0.96 + (Math.random() - 0.5) * 0.02 + sway * 0.04;
-        p.vy = p.vy * 0.96 + 0.012;
-        if (p.vy < 0.12) p.vy = 0.12;
-        p.x += p.vx;
-        p.y += p.vy + gust;
-        p.a += p.spin + gust * 0.004;
-
-        if (p.y - p.r > h) {
-          p.y = -p.r;
-          p.x = Math.random() * w;
-          p.vx = 0;
-          p.vy = 0.2;
-        }
-        if (p.x < -60) p.x = w + 60;
-        if (p.x > w + 60) p.x = -60;
-
-        ctx.save();
-        ctx.translate(p.x, p.y);
-        ctx.rotate(p.a);
-        ctx.globalAlpha = p.o;
-        ctx.fillStyle = p.pink ? '#E8447F' : '#E8C89A';
-        ctx.beginPath();
-        ctx.moveTo(0, p.r);
-        ctx.bezierCurveTo(-p.r * 0.9, p.r * 0.25, -p.r * 0.62, -p.r * 0.85, 0, -p.r);
-        ctx.bezierCurveTo(p.r * 0.62, -p.r * 0.85, p.r * 0.9, p.r * 0.25, 0, p.r);
-        ctx.fill();
-        ctx.restore();
-      }
-      requestAnimationFrame(draw);
-    })();
-  }
-
-  /* ==========================================================================
-     SHARED: COPY A REQUEST AND SAY SO
-     Instagram has no way to pre-fill a message. Every request button copies a
-     ready text in the same tap and opens the chat; the hint line under the
-     header confirms the copy and is still there when someone comes back.
+     SHARED: COPY A REQUEST
+     The preview lets visitors copy explicitly and choose a contact channel.
      ========================================================================== */
   var DM = 'https://ig.me/m/gerberxnails';   // opens the chat, not just the profile
 
   // resolves true when the text is on the clipboard
   function copyText(txt) {
     function legacy() {
+      var focused = document.activeElement;
       var ta = document.createElement('textarea');
       ta.value = txt;
       ta.setAttribute('readonly', '');
@@ -958,6 +392,7 @@
       var ok = false;
       try { ok = document.execCommand('copy'); } catch (e) {}
       document.body.removeChild(ta);
+      if (focused && focused.isConnected) focused.focus({ preventScroll: true });
       return ok;
     }
     if (navigator.clipboard && window.isSecureContext) {
@@ -966,8 +401,6 @@
     return Promise.resolve(legacy());
   }
 
-  var Send = { deliver: null };          // set by initRequests
-  var Hint = { countdown: null, needTap: null, msgChanged: null, fly: null };   // set by initHint
 
   // Filled in by the calculator once it runs.
   var Calc = {
@@ -985,7 +418,6 @@
   function initPriceCalculator() {
     var totalEl = document.getElementById('total');
     var preEl = document.getElementById('total-pre');
-    var bubbleEl = document.getElementById('msg-bubble');
     var ctaEl = document.getElementById('cta-label');
     if (!totalEl || !ctaEl) return;
 
@@ -1063,23 +495,7 @@
       return { solo: false, items: items, min: min, max: max, open: open };
     }
 
-    var shown = null, rollId = null, lastMsg = null;
-
-    // the message line by line, so the line that just changed can light up
-    function paintMessage(text, animate) {
-      var before = lastMsg === null ? [] : lastMsg.split('\n');
-      var frag = document.createDocumentFragment();
-      text.split('\n').forEach(function (line, i) {
-        var el = document.createElement('span');
-        el.className = line ? 'ml' : 'ml ml-gap';
-        el.style.setProperty('--i', i);
-        if (animate && line && before.indexOf(line) === -1) el.className += ' ml-new';
-        el.textContent = line;
-        frag.appendChild(el);
-      });
-      bubbleEl.textContent = '';
-      bubbleEl.appendChild(frag);
-    }
+    var shown = null, rollId = null;
 
     function paint(a, b, open) {
       a = Math.round(a); b = Math.round(b);
@@ -1088,16 +504,6 @@
 
     function render() {
       var s = state();
-
-      // the live message: exactly the text a tap on the button copies
-      if (bubbleEl) {
-        var text = buildInquiryText(s);
-        if (text !== lastMsg) {
-          paintMessage(text, !reduce && !!shown);
-          if (shown && Hint.msgChanged) Hint.msgChanged();
-          lastMsg = text;
-        }
-      }
 
       if (preEl) preEl.hidden = !s.open;
       ctaEl.textContent = (s.solo ? 'Soak Off' : 'Set') + (s.open ? ' ' : ' für ') +
@@ -1209,10 +615,10 @@
         o.appendChild(dot);
         setTimeout(function () { if (dot.parentNode) dot.parentNode.removeChild(dot); }, 700);
       });
-      // runs after the field's own handler, so the new state is already set
+      // Run after the field has updated.
       calcSec.addEventListener('click', function (e) {
         var o = e.target.closest('.opt');
-        if (o && !o.disabled) { pop(o); if (Hint.fly) Hint.fly(o); }
+        if (o && !o.disabled) { pop(o);  }
       });
     }
 
@@ -1234,7 +640,7 @@
       var box = wrap && wrap.querySelector('.qty');
       if (!box) return;
       var limit = innerHeight;
-      ['pricebar', 'hint'].forEach(function (id) {
+      ['pricebar'].forEach(function (id) {
         var o = document.getElementById(id);
         if (o && o.classList.contains('on') && !o.classList.contains('away')) {
           limit = Math.min(limit, o.getBoundingClientRect().top);
@@ -1256,7 +662,7 @@
           render();
           pop(wrap.querySelector('.qty-val'));
           pop(b.querySelector('.t-display'));
-          if (Hint.fly) Hint.fly(q);
+
         });
       });
     });
@@ -1275,446 +681,17 @@
     render();
   }
 
-  /* ==========================================================================
-     REQUESTS: ONE TAP
-     Instagram cannot pre-fill a message. A request button therefore copies
-     the finished text in the tap; the hint line says "Kopiert" for two
-     seconds and then the chat with Sophie opens. The buttons say so
-     beforehand ("Nachricht wird kopiert · öffnet Instagram").
-
-     data-send="set"      the set from the calculator
-     data-send="general"  the set if one was put together, else a hello
-     ========================================================================== */
   function initRequests() {
-    function general() {
-      var set = Calc.chosenSet && Calc.chosenSet();
-      if (set && Calc.request) return Calc.request();
-      return 'Hi Sophie! 💅 Ich würde gerne einen Termin bei dir anfragen. Wann hättest du Zeit?';
-    }
-
-    var WAIT = 2.5;   // seconds to read the copied message before Instagram opens
-
-    // A new tab still counts as opened by the tap within a few seconds in
-    // most browsers. Where it is blocked (Safari): on a computer the chat
-    // opens right here; a phone only hands a link to the Instagram app when
-    // it is tapped, so the hint line asks for that one tap.
-    function openChat() {
-      var w = null;
-      try { w = window.open(DM, '_blank'); } catch (err) { w = null; }
-      if (w) { try { w.opener = null; } catch (err) { /* cross-origin */ } return; }
-      if (fine || !Hint.needTap) location.href = DM;
-      else Hint.needTap();
-    }
-
-    // copy inside the tap (browsers only allow it there), say so, then the chat
-    Send.deliver = function (el, txt, e) {
-      if (e) e.preventDefault();
-      var menu = document.getElementById('menu');
-      if (menu && menu.classList.contains('open')) {
-        var close = document.getElementById('menu-close-btn');
-        if (close) close.click();
+    if (!window.GerberRequests) return;
+    window.GerberRequests.init({
+      copy: copyText,
+      message: function (kind) {
+        if (Calc.request && (kind === 'set' || (Calc.chosenSet && Calc.chosenSet()))) {
+          return Calc.request();
+        }
+        return 'Hi Sophie! 💅 Ich würde gerne einen Termin bei dir anfragen. Wann hättest du Zeit?';
       }
-      copyText(txt).then(function (ok) {
-        if (Hint.countdown) Hint.countdown(ok, WAIT, openChat, txt);
-        else openChat();
-      });
-    };
-
-    document.addEventListener('click', function (e) {
-      var el = e.target.closest('[data-send]');
-      if (!el) return;
-      Send.deliver(el, el.getAttribute('data-send') === 'set' && Calc.request ? Calc.request() : general(), e);
     });
-
-    /* With a mouse: say what a click does before it happens. Phones get the
-       line on each button and the hint line instead. */
-    if (fine) {
-      var tip = document.createElement('div');
-      tip.id = 'send-tip';
-      tip.setAttribute('aria-hidden', 'true');
-      document.body.appendChild(tip);
-      var hideT;
-      var TARGETS = '[data-send]';
-      document.addEventListener('mouseover', function (e) {
-        var el = e.target.closest(TARGETS);
-        if (!el) return;
-        clearTimeout(hideT);
-        tip.textContent = el.getAttribute('data-tip') ||
-          '✨ Kopiert deine fertige Nachricht und öffnet Instagram';
-        var r = el.getBoundingClientRect();
-        tip.classList.add('on');
-        var w = tip.offsetWidth;
-        var x = Math.max(8, Math.min(innerWidth - w - 8, r.left + r.width / 2 - w / 2));
-        tip.style.left = x + 'px';
-        tip.style.top = (r.top > 60 ? r.top - tip.offsetHeight - 10 : r.bottom + 10) + 'px';
-      });
-      document.addEventListener('mouseout', function (e) {
-        var el = e.target.closest(TARGETS);
-        if (!el || el.contains(e.relatedTarget)) return;
-        hideT = setTimeout(function () { tip.classList.remove('on'); }, 60);
-      });
-      addEventListener('scroll', function () { tip.classList.remove('on'); }, { passive: true });
-    }
-  }
-
-  /* Kleine Zeile unten am Bildschirm: taucht auf, sobald der Preisrechner
-     erreicht ist, und sagt ab dort beim Scrollen, dass die Anfrage
-     automatisch geschrieben und kopiert wird. Der Text passt sich dem
-     Abschnitt an. Nach einem Tipp bestaetigt sie das Kopieren und zaehlt
-     kurz herunter, bevor Instagram aufgeht - so bleibt Zeit, es zu lesen.
-     Im Rechner klappt sie die Nachricht auf, live mit jeder Auswahl; jede
-     Auswahl fliegt dort als kleiner Punkt in sie hinein.
-     Am Handy sitzt sie dort ueber der Preisleiste; ueber einem
-     Anfrage-Knopf und am Seitenende (Links im Fuss) tritt sie zur Seite. */
-  function initHint() {
-    var el = document.getElementById('hint');
-    if (!el) return;
-    var textEl = el.querySelector('.hint-text');
-    var live = document.getElementById('hint-live');
-
-    // [bold part, rest] - long for wider screens, short for phones
-    var TEXTS = {
-      start:   { href: '#preise',
-                 l: ['Stell dein Set zusammen', ': Deine Nachricht an Sophie wird automatisch erstellt'],
-                 s: ['Set erstellen', ': Nachricht kommt automatisch'] },
-      preise:  { href: '#btn-calc-cta',
-                 l: ['Deine Nachricht an Sophie', ': entsteht automatisch, hier ansehen'],
-                 s: ['Deine Nachricht', ': tippen zum Ansehen'] },
-      preiseOpen: { href: '#btn-calc-cta',
-                 l: ['Deine Nachricht an Sophie', ': entsteht automatisch, hier zuklappen'],
-                 s: ['Deine Nachricht', ': tippen zum Zuklappen'] },
-      kontakt: { href: '#kontakt',
-                 l: ['Ein Tipp genügt', ': Nachricht wird kopiert, Instagram öffnet sich'],
-                 s: ['Ein Tipp', ': Nachricht kopiert, Instagram öffnet'] },
-      wait:    { href: DM, out: true,
-                 l: ['Nachricht kopiert', ': Gleich öffnet sich Instagram, dort nur einfügen & senden'],
-                 s: ['Kopiert', ': Gleich öffnet sich Instagram'] },
-      waitNo:  { href: DM, out: true,
-                 l: ['Instagram öffnet sich gleich', ': Schreib Sophie dort einfach direkt'],
-                 s: ['Instagram öffnet sich gleich', ''] },
-      tap:     { href: DM, out: true,
-                 l: ['Kopiert', ': Jetzt hier tippen, dann öffnet sich Instagram'],
-                 s: ['Kopiert', ': Hier tippen für Instagram'] },
-      copied:  { href: DM, out: true,
-                 l: ['Nachricht kopiert', ': In Instagram ins Textfeld tippen, einfügen & senden'],
-                 s: ['Kopiert', ': In Instagram einfügen & senden'] },
-      failed:  { href: DM, out: true,
-                 l: ['Instagram öffnet sich', ': Schreib Sophie dort einfach direkt'],
-                 s: ['Instagram öffnet sich', ': Schreib direkt'] }
-    };
-    var ZONES = ['preise', 'kontakt'];
-    var foot = document.querySelector('footer');
-    var calc = document.getElementById('preise');
-    var num = el.querySelector('.i-num');
-    var peek = document.getElementById('msg-peek');
-    var peekText = peek && peek.querySelector('.peek-bubble');
-    var peekTitle = peek && peek.querySelector('.peek-title');
-    var cur = null, flashing = false, flashT = null, swapT = null, ticking = false;
-    var cdT = null, cdDone = null, lastTxt = '', lastOk = true, isLive = false, typeT = null;
-
-    // in the calculator the line opens the message itself, live: every
-    // choice shows up in it right away
-    function openLive() {
-      if (!peek) return;
-      isLive = true;
-      peek.classList.add('is-live');
-      peek.classList.remove('is-fail');
-      peek.setAttribute('aria-hidden', 'false');
-      peek.hidden = false;
-      // the lines write themselves in, one after the other
-      [].forEach.call(peek.querySelectorAll('.ml-new'), function (l) { l.classList.remove('ml-new'); });
-      peek.classList.remove('is-typing');
-      void peek.offsetWidth;
-      if (!reduce) {
-        peek.classList.add('is-typing');
-        clearTimeout(typeT);
-        typeT = setTimeout(function () { peek.classList.remove('is-typing'); }, 1400);
-      }
-      peek.classList.add('show');
-      el.classList.add('is-open');
-      set('preiseOpen');
-    }
-
-    // the copied text as a chat bubble above the line: this is your message
-    function showPeek() {
-      if (!peek || !lastTxt) return;
-      isLive = false;
-      el.classList.remove('is-open');
-      peek.classList.remove('is-live', 'is-typing');
-      peekTitle.textContent = lastOk ? 'Deine Nachricht ist kopiert'
-                                     : 'Kopieren ging nicht. Schreib Sophie zum Beispiel:';
-      peekText.textContent = lastTxt;
-      peek.classList.toggle('is-fail', !lastOk);
-      peek.hidden = false;
-      peekText.classList.toggle('is-long', peekText.scrollHeight > peekText.clientHeight + 2);
-      void peek.offsetWidth;
-      peek.classList.add('show');
-    }
-
-    function hidePeek() {
-      if (!peek) return;
-      peek.classList.remove('show');
-      peek.setAttribute('aria-hidden', 'true');
-      if (!isLive) return;
-      isLive = false;
-      el.classList.remove('is-open');
-      if (el.hasAttribute('aria-expanded')) el.setAttribute('aria-expanded', 'false');
-      if (cur === 'preiseOpen') set('preise');
-    }
-
-    function part(cls, t) {
-      var span = document.createElement('span');
-      span.className = cls;
-      var b = document.createElement('b');
-      b.textContent = t[0];
-      span.appendChild(b);
-      span.appendChild(document.createTextNode(t[1]));
-      return span;
-    }
-
-    function render(key) {
-      var t = TEXTS[key];
-      textEl.textContent = '';
-      textEl.appendChild(part('l', t.l));
-      textEl.appendChild(part('s', t.s));
-      el.setAttribute('href', t.href);
-      if (t.out) { el.setAttribute('target', '_blank'); el.setAttribute('rel', 'noopener noreferrer'); }
-      else { el.removeAttribute('target'); el.removeAttribute('rel'); }
-      el.classList.toggle('is-done', key === 'copied' || key === 'wait' || key === 'tap');
-      el.classList.toggle('is-tap', key === 'tap');
-      // in the calculator the line is a fold for the message above it
-      var fold = key === 'preise' || key === 'preiseOpen';
-      el.classList.toggle('is-fold', fold);
-      if (fold) {
-        el.setAttribute('role', 'button');
-        el.setAttribute('aria-controls', 'msg-peek');
-        el.setAttribute('aria-expanded', isLive ? 'true' : 'false');
-      } else {
-        el.removeAttribute('role');
-        el.removeAttribute('aria-controls');
-        el.removeAttribute('aria-expanded');
-      }
-      // one soft light sweep across the new wording; the countdown bar restarts
-      el.classList.remove('sweep', 'is-counting');
-      void el.offsetWidth;
-      el.classList.add('sweep');
-      if (key === 'wait' || key === 'waitNo') el.classList.add('is-counting');
-    }
-
-    function set(key) {
-      if (key === cur) return;
-      var firstTime = cur === null;
-      cur = key;
-      clearTimeout(swapT);
-      if (firstTime || reduce) { render(key); return; }
-      el.classList.add('swap');
-      swapT = setTimeout(function () { render(key); el.classList.remove('swap'); }, 170);
-    }
-
-    function zone() {
-      if (foot && foot.getBoundingClientRect().top < innerHeight - 10) return 'foot';
-      var y = innerHeight * 0.45;
-      // nothing to say before the price calculator
-      if (calc && calc.getBoundingClientRect().top > y) return 'before';
-      for (var i = 0; i < ZONES.length; i++) {
-        var sec = document.getElementById(ZONES[i]);
-        if (!sec) continue;
-        var r = sec.getBoundingClientRect();
-        if (r.top <= y && r.bottom > y) return ZONES[i];
-      }
-      return 'start';
-    }
-
-    // a request button right under the line says it itself - step aside
-    // rather than cover it
-    var buttons = [].slice.call(document.querySelectorAll('main [data-send]'));
-    function overButton() {
-      var r = el.getBoundingClientRect();
-      for (var i = 0; i < buttons.length; i++) {
-        var q = buttons[i].getBoundingClientRect();
-        if (q.bottom > r.top - 8 && q.top < r.bottom + 8 && q.right > r.left && q.left < r.right) return true;
-      }
-      return false;
-    }
-
-    function check() {
-      ticking = false;
-      var z = zone();
-      var aside = z === 'foot' || z === 'before' || overButton();
-      el.classList.toggle('away', aside && !flashing);
-      // the open message belongs to the calculator only
-      if (isLive && (aside || z !== 'preise')) hidePeek();
-      if (!flashing && !aside) set(z === 'preise' && isLive ? 'preiseOpen' : z);
-    }
-
-    function soon() {
-      if (!ticking) { ticking = true; requestAnimationFrame(check); }
-    }
-
-    function settle(ms) {
-      clearTimeout(flashT);
-      flashT = setTimeout(function () {
-        if (cdT) return;
-        flashing = false;
-        hidePeek();
-        check();
-      }, ms);
-    }
-
-    function stopCount(open) {
-      clearInterval(cdT);
-      cdT = null;
-      var done = cdDone;
-      cdDone = null;
-      el.classList.remove('is-counting');
-      hidePeek();
-      set(cur === 'waitNo' ? 'failed' : 'copied');
-      settle(9000);
-      if (open && done) done();
-    }
-
-    // "copied" with the message above, 2-1 in the circle and a running bar,
-    // then the chat opens and the message card is gone
-    Hint.countdown = function (ok, secs, done, txt) {
-      lastTxt = txt || '';
-      lastOk = ok;
-      clearInterval(cdT);
-      clearTimeout(flashT);
-      clearTimeout(swapT);
-      flashing = true;
-      cdDone = done;
-      var left = Math.max(1, Math.floor(secs));   // 2 -> 1, spread over the wait
-      var step = secs * 1000 / left;
-      if (num) num.textContent = left;
-      el.style.setProperty('--wait', secs + 's');
-      el.classList.remove('away', 'swap');
-      cur = ok ? 'wait' : 'waitNo';
-      render(cur);
-      showPeek();
-      if (live) {
-        live.textContent = (ok ? 'Nachricht kopiert. ' : '') + 'Instagram öffnet sich gleich.';
-      }
-      cdT = setInterval(function () {
-        left -= 1;
-        if (left > 0) { if (num) num.textContent = left; }
-        else stopCount(true);
-      }, step);
-    };
-
-    // the browser would not open the chat by itself: one tap on the line
-    Hint.needTap = function () {
-      clearTimeout(swapT);
-      clearTimeout(flashT);
-      flashing = true;
-      el.classList.remove('away', 'swap');
-      cur = 'tap';
-      render('tap');
-      showPeek();
-      // the card may cover the page briefly - the small line keeps asking
-      setTimeout(function () { if (cur === 'tap') hidePeek(); }, 3500);
-      if (live) live.textContent = 'Tippe auf den Hinweis unten, um Instagram zu öffnen.';
-      settle(20000);
-    };
-
-    // while it counts (or waits for a tap), the line is the link to the chat;
-    // in the calculator it opens and folds the message
-    function toggleLive(e) {
-      e.preventDefault();
-      if (isLive) hidePeek(); else openLive();
-    }
-
-    el.addEventListener('click', function (e) {
-      if (cdT) stopCount(false);
-      else if (cur === 'tap') { hidePeek(); set('copied'); settle(9000); }
-      else if (cur === 'preise' || cur === 'preiseOpen') toggleLive(e);
-    });
-
-    // a fold answers to the space bar like any button
-    el.addEventListener('keydown', function (e) {
-      if (e.key === ' ' && (cur === 'preise' || cur === 'preiseOpen')) toggleLive(e);
-    });
-
-    if (peek) peek.addEventListener('click', function () { if (isLive) hidePeek(); });
-    document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape' && isLive) hidePeek();
-    });
-
-    // a new choice lands in the message: the line (or the open card) winks
-    var changedAt = 0, flying = 0, winkT = null;
-    function shown() {
-      return cur === 'preise' && el.classList.contains('on') && !el.classList.contains('away');
-    }
-
-    function wink() {
-      if (isLive) { pop(peek.querySelector('.msg-ic')); return; }
-      if (!shown()) return;
-      pop(el.querySelector('.hint-ico'));
-      if (reduce) return;
-      el.classList.remove('is-hit');
-      void el.offsetWidth;
-      el.classList.add('is-hit');
-    }
-
-    el.addEventListener('animationend', function (e) {
-      if (e.target === el) el.classList.remove('is-hit');
-    });
-
-    Hint.msgChanged = function () {
-      changedAt = Date.now();
-      clearTimeout(winkT);
-      // a tapped field sends a dot - then the wink comes when it lands
-      winkT = setTimeout(function () { if (!flying) wink(); }, 0);
-    };
-
-    // from the tapped field a small glowing dot arcs into the message
-    Hint.fly = function (from) {
-      if (reduce || !from || !from.animate || Date.now() - changedAt > 80) return;
-      var to = isLive ? peek.querySelector('.msg-bubble') : shown() ? el.querySelector('.hint-ico') : null;
-      if (!to) return;
-      var a = from.getBoundingClientRect(), b = to.getBoundingClientRect();
-      var x0 = a.left + a.width / 2, y0 = a.top + a.height / 2;
-      var x2 = b.left + b.width / 2, y2 = b.top + b.height / 2;
-      var x1 = x0 + (x2 - x0) * 0.3, y1 = Math.min(y0, y2) - 70;
-      var frames = [];
-      for (var i = 0; i <= 12; i++) {
-        var t = i / 12, u = 1 - t;
-        var x = u * u * x0 + 2 * u * t * x1 + t * t * x2;
-        var y = u * u * y0 + 2 * u * t * y1 + t * t * y2;
-        var s = t < 0.15 ? 0.3 + t / 0.15 * 0.9 : 1.2 - (t - 0.15) / 0.85 * 0.65;
-        frames.push({
-          transform: 'translate3d(' + x.toFixed(1) + 'px,' + y.toFixed(1) + 'px,0) scale(' + s.toFixed(2) + ')',
-          opacity: t < 0.1 ? t * 10 : 1
-        });
-      }
-      flying++;
-      [0, 1, 2].forEach(function (k) {
-        var d = document.createElement('span');
-        d.className = 'fly-dot' + (k ? ' is-trail' + k : '');
-        d.setAttribute('aria-hidden', 'true');
-        document.body.appendChild(d);
-        var anim = d.animate(frames, { duration: 680, delay: k * 45, easing: 'cubic-bezier(.5,0,.3,1)', fill: 'both' });
-        anim.onfinish = function () {
-          if (d.parentNode) d.parentNode.removeChild(d);
-          if (!k) { flying--; wink(); }
-        };
-      });
-    };
-
-    // back from Instagram: no message card any more, only the small line
-    // confirms it for a few seconds
-    document.addEventListener('visibilitychange', function () {
-      if (document.hidden || cdT) return;
-      hidePeek();
-      if (flashing) settle(7000);
-    });
-
-    addEventListener('scroll', soon, { passive: true });
-    addEventListener('resize', soon);
-
-    el.hidden = false;
-    check();
-    // after the loading flower has gone
-    setTimeout(function () { el.classList.add('on'); }, reduce ? 0 : 1400);
   }
 
   /* Studio-Regeln: am Handy kurze Zeilen zum Aufklappen, am Computer stehen
@@ -1776,7 +753,7 @@
         '<div><div class="lbl">Dein Preis</div><div class="amount" aria-live="polite" aria-atomic="true"><b id="pb-total"></b> <span>&euro;</span></div></div>' +
         '<a href="' + DM + '" target="_blank" rel="noopener noreferrer" data-send="set" ' +
         'class="btn btn-solid px-5 py-2.5 text-[.85rem] flex-col !gap-0.5"><span id="pb-cta">Set anfragen</span>' +
-        '<span class="btn-sub">Nachricht wird kopiert</span></a>' +
+        '<span class="btn-sub">Nachricht ansehen</span></a>' +
       '</div>';
     document.body.appendChild(bar);
 
@@ -1785,6 +762,8 @@
     var popT = null, popped = null;
     function sync() {
       pbTotal.textContent = (pre && !pre.hidden ? 'ab ' : '') + total.textContent.trim();
+      var solo = document.querySelector('[data-solo][aria-pressed="true"]');
+      bar.querySelector('#pb-cta').textContent = solo ? 'Soak Off anfragen' : 'Set anfragen';
       clearTimeout(popT);
       popT = setTimeout(function () {
         if (popped !== null && popped !== pbTotal.textContent) pop(pbTotal);
@@ -1794,7 +773,12 @@
     sync();
     new MutationObserver(sync).observe(total.parentNode, { childList: true, characterData: true, subtree: true, attributes: true });
 
-    function show(on) { bar.classList.toggle('on', on); }
+    function show(on) {
+      bar.classList.toggle('on', on);
+      bar.inert = !on;
+      bar.setAttribute('aria-hidden', String(!on));
+    }
+    show(false);
 
     if ('IntersectionObserver' in window) {
       new IntersectionObserver(function (es) {
@@ -1841,13 +825,11 @@
     [
       ['Header', initHeaderState],
       ['Dialoge', initDialogs], ['Menue', initMobileMenu],
-      ['TextReveal', initTextReveal], ['Preloader', initPreloader],
-      ['Cursor', initCustomCursor],
+      ['TextReveal', initTextReveal],
       ['HeroShow', initHeroShow], ['ShowcaseOrt', initShowcasePlacement], ['Lightbox', initLightbox],
-      ['Marquee', initMarqueeAndParallax],
       ['Rechner', initPriceCalculator], ['Preisleiste', initPriceBar],
-      ['Regeln', initRules], ['Hinweis', initHint], ['Anfragen', initRequests]
-    ].concat(SHOW_VINE_AND_PETALS ? [['Vine', initLivingVine], ['Petals', initFloatingPetals]] : [])
+      ['Regeln', initRules], ['Anfragen', initRequests]
+    ]
      .forEach(function (pair) { start(pair[0], pair[1]); });
   }
 

@@ -3,9 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!-- Security: the browser may only run code and load files from this site.
-     Inline scripts are allowed by their exact hash only. -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'none'; object-src 'none'; frame-src 'none'; form-action 'none'; upgrade-insecure-requests; script-src 'self' 'sha256-/x7W7R75k8Roq0WaVRQX9blP4OufE5xbAdzklGxsgpw='; base-uri 'self'">
+<!-- Security: scripts and assets come from this site; no inline scripts. -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'none'; object-src 'none'; frame-src 'none'; form-action 'none'; upgrade-insecure-requests; script-src 'self'; base-uri 'self'">
 <title>gerberxnails | Nageldesign in Stuttgart, Sophie Gerber</title>
 <meta name="description" content="Nageldesign von Sophie Gerber im Homestudio in Stuttgart. Russische Maniküre bei jeder Behandlung inklusive. Termine per Instagram-DM.">
 <meta name="theme-color" content="#14100D">
@@ -34,20 +33,19 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2317130F'/%3E%3Ccircle cx='16' cy='16' r='7' fill='%23FF3D82'/%3E%3C/svg%3E">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 
-<!-- Hidden-until-revealed states only apply once script is running, so the
-     page stays readable if main.js is blocked or fails. -->
-<script>document.documentElement.classList.add('js');</script>
-
+<!-- Content remains visible even if JavaScript is unavailable. -->
 <!-- the faces the first screen needs, fetched in parallel with the CSS -->
 <link rel="preload" href="fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/pinyon-script-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="fonts/fonts.css?v=6096b837">
 <link rel="stylesheet" href="css/tailwind-base.css?v=af7c1978">
-<link rel="stylesheet" href="css/style.css?v=921f3d17">
+<link rel="stylesheet" href="css/style.css?v=7c96ea6b">
 <link rel="stylesheet" href="css/tailwind-utils.css?v=0b47f978">
+<link rel="stylesheet" href="css/requests.css?v=1ab9e7fe">
 </head>
 <body class="antialiased">
+<a class="skip-link" href="#top">Zum Inhalt springen</a>
 
 <div class="grain" aria-hidden="true"></div>
 
@@ -116,48 +114,6 @@
   </defs>
 </svg>
 
-<!-- the vine runs the full height of the document -->
-<svg id="vine" aria-hidden="true" preserveAspectRatio="none"></svg>
-<canvas id="petals" aria-hidden="true"></canvas>
-
-<!-- ============ PRELOADER ============ -->
-<div id="loader" aria-hidden="true">
-  <div class="leo-tex absolute inset-0 opacity-[.13]" aria-hidden="true"></div>
-  <div id="loadwrap">
-    <svg id="loadflower" viewBox="-150 -150 300 300" aria-hidden="true">
-      <circle cx="0" cy="0" r="132" fill="none" stroke="rgba(31,20,24,.1)" stroke-width="2"/>
-      <circle id="ring" cx="0" cy="0" r="132" fill="none" stroke="url(#gVine)" stroke-width="3"
-              stroke-linecap="round" transform="rotate(-90)" style="stroke-width:5"
-              stroke-dasharray="829.4" stroke-dashoffset="829.4"/>
-      <g transform="rotate(0)"><path class="lp" d="M0,4 C-34,-24 -54,-66 -42,-100 C-35,-120 -12,-126 0,-113 C12,-126 35,-120 42,-100 C54,-66 34,-24 0,4 Z" fill="url(#gPink)"/></g>
-      <g transform="rotate(72)"><path class="lp" d="M0,4 C-34,-24 -54,-66 -42,-100 C-35,-120 -12,-126 0,-113 C12,-126 35,-120 42,-100 C54,-66 34,-24 0,4 Z" fill="url(#gPink)"/></g>
-      <g transform="rotate(144)"><path class="lp" d="M0,4 C-34,-24 -54,-66 -42,-100 C-35,-120 -12,-126 0,-113 C12,-126 35,-120 42,-100 C54,-66 34,-24 0,4 Z" fill="url(#gPink)"/></g>
-      <g transform="rotate(216)"><path class="lp" d="M0,4 C-34,-24 -54,-66 -42,-100 C-35,-120 -12,-126 0,-113 C12,-126 35,-120 42,-100 C54,-66 34,-24 0,4 Z" fill="url(#gPink)"/></g>
-      <g transform="rotate(288)"><path class="lp" d="M0,4 C-34,-24 -54,-66 -42,-100 C-35,-120 -12,-126 0,-113 C12,-126 35,-120 42,-100 C54,-66 34,-24 0,4 Z" fill="url(#gPink)"/></g>
-      <g class="core">
-        <circle cx="0" cy="0" r="17" fill="#8E0A3C"/>
-        <g transform="rotate(38)">
-          <path d="M0,0 L0,-96" stroke="#8E0A3C" stroke-width="5" stroke-linecap="round"/>
-          <g fill="#F6C86B">
-            <circle cx="0" cy="-98" r="6"/><circle cx="-13" cy="-88" r="5"/><circle cx="13" cy="-88" r="5"/>
-            <circle cx="-7" cy="-76" r="4"/><circle cx="8" cy="-74" r="4"/>
-          </g>
-        </g>
-      </g>
-    </svg>
-    <div id="loadmeta">
-      <div id="loadname">gerberxnails</div>
-      <div id="count">000</div>
-    </div>
-  </div>
-</div>
-
-<!-- ============ CURSOR ============ -->
-<div class="cursor-dot"  aria-hidden="true"></div>
-<div class="cursor-ring" aria-hidden="true"><span>Ansehen</span></div>
-
-<!-- hover preview for the service list -->
-
 <!-- ============ NAV ============ -->
 <header class="fixed top-0 inset-x-0 z-[80] px-3 sm:px-6 pt-2.5 sm:pt-3 pointer-events-none">
   <div class="header-pill pointer-events-auto mx-auto max-w-[80rem] w-[calc(100%-0.5rem)] px-3.5 sm:px-6 py-1.5 sm:py-2 flex items-center justify-between gap-2.5 sm:gap-4">
@@ -219,7 +175,7 @@
       <a href="https://ig.me/m/gerberxnails" target="_blank" rel="noopener noreferrer" data-send="general"
          class="btn btn-solid w-full text-center !py-2.5 !text-[.82rem] flex-col !gap-0.5 shadow-[0_6px_20px_rgba(229,20,95,0.3)]">
         <span>Termin anfragen</span>
-        <span class="btn-sub">Nachricht wird kopiert &middot; öffnet Instagram</span>
+        <span class="btn-sub">Nachricht ansehen &amp; Kontakt wählen</span>
       </a>
         <a href="https://www.instagram.com/gerberxnails/" target="_blank" rel="noopener noreferrer"
            class="t-editorial uppercase text-[.78rem] tracking-[.18em] text-sand-gold hover:text-neon-pink transition-colors mt-1.5">@gerberxnails &nearr;&#xFE0E;</a>
@@ -227,7 +183,7 @@
   </div>
 </div>
 
-<main id="top">
+<main id="top" tabindex="-1">
 
 <!-- ============ HERO ============ -->
 <section class="atmos relative min-h-[100svh] flex flex-col justify-between overflow-hidden px-5 sm:px-8 pb-10 pt-24 sm:pt-32">
@@ -523,7 +479,7 @@
         <a href="https://ig.me/m/gerberxnails" target="_blank" rel="noopener noreferrer" data-send="set"
            id="btn-calc-cta" data-mag class="btn btn-solid w-full mt-6 px-6 py-3.5 text-[.95rem] flex-col !gap-0.5">
           <span id="cta-label">Set für 50 € anfragen</span>
-          <span class="btn-sub">Nachricht wird kopiert &middot; öffnet Instagram</span>
+          <span class="btn-sub">Nachricht ansehen &amp; Kontakt wählen</span>
         </a>
       </div>
     </div>
@@ -655,7 +611,7 @@
           LET'S DO YOUR NAILS
         </h2>
         <p class="rv mt-5 max-w-[34rem] text-[1.12rem] text-chalk-dim leading-relaxed">
-          Die Nachricht ist vorbereitet. Schreib nur noch, welche Tage dir passen.
+          Dein Wunsch-Set wird zur fertigen Anfrage. Wähle Instagram oder E-Mail und schreib dazu, welche Tage dir passen.
         </p>
 
         <!-- who you are actually writing to -->
@@ -673,9 +629,10 @@
         <div class="rv mt-8 max-w-[26rem]">
           <a href="https://ig.me/m/gerberxnails" target="_blank" rel="noopener noreferrer" data-send="general"
              id="btn-contact-insta" data-mag class="btn btn-solid w-full px-6 py-5 text-[.95rem] !rounded-[18px] flex-col !gap-1 shadow-lg shadow-neon-pink/20">
-            <span class="t-display text-[1.15rem]">Instagram-DM</span>
-            <span class="btn-sub">Nachricht wird kopiert &middot; öffnet Instagram &nearr;&#xFE0E;</span>
+            <span class="t-display text-[1.15rem]">Termin anfragen</span>
+            <span class="btn-sub">Nachricht ansehen &amp; Kontakt wählen</span>
           </a>
+          <a class="contact-email" href="mailto:gerberxnails@gmx.de">Lieber direkt per E-Mail? gerberxnails@gmx.de</a>
         </div>
 
       </div>
@@ -778,38 +735,6 @@
   </div>
 </dialog>
 
-<!-- ============ HINWEIS ============ -->
-<!-- Small line floating at the bottom from the first second on: says that
-     the request message is written and copied automatically. The text
-     follows the section in view; after a tap it confirms the copy and counts
-     down before Instagram opens. -->
-<aside aria-label="Hinweis zur Anfrage">
-<a id="hint" href="#preise" hidden>
-  <span class="hint-ring" aria-hidden="true"></span>
-  <span class="hint-ico" aria-hidden="true">
-    <svg class="i-spark" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.5l1.9 5.6 5.6 1.9-5.6 1.9L12 17.5l-1.9-5.6L4.5 10l5.6-1.9L12 2.5zM19 15l.9 2.1 2.1.9-2.1.9L19 21l-.9-2.1-2.1-.9 2.1-.9L19 15z"/></svg>
-    <svg class="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>
-    <span class="i-num">2</span>
-    <span class="i-type"><i></i><i></i><i></i></span>
-  </span>
-  <span class="hint-text"><span class="l"><b>Stell dein Set zusammen</b>: Deine Nachricht an Sophie wird automatisch erstellt</span><span class="s"><b>Set erstellen</b>: Nachricht kommt automatisch</span></span>
-  <svg class="hint-go" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
-  <span class="hint-bar" aria-hidden="true"></span>
-</a>
-<p id="hint-live" class="sr-only" role="status" aria-live="polite"></p>
-<!-- above the line: in the calculator the live message (the line opens it),
-     after a tap the copied message itself, as a chat bubble -->
-<div id="msg-peek" aria-hidden="true" hidden>
-  <div class="peek-card">
-    <p class="peek-label"><span class="peek-check">&#10003;</span><span class="peek-title">Deine Nachricht ist kopiert</span></p>
-    <p class="peek-bubble"></p>
-    <p class="peek-how">In Instagram: ins Textfeld tippen &rarr; Einfügen &rarr; Senden</p>
-    <p class="peek-live"><span class="msg-ic" aria-hidden="true"><i></i><i></i><i></i></span><span class="msg-sum">Deine Nachricht an Sophie<span class="msg-auto">wird automatisch erstellt</span></span></p>
-    <p id="msg-bubble" class="msg-bubble"></p>
-  </div>
-</div>
-</aside>
-
 <!-- ============ FOOTER ============ -->
 <div class="leo-tex foot-fade" aria-hidden="true"></div>
 <footer class="px-5 sm:px-8 pt-8 pb-10">
@@ -838,6 +763,7 @@
 </footer>
 
 
-<script src="js/main.js?v=c28da2fc" defer></script>
+<script src="js/requests.js?v=9ff4db66" defer></script>
+<script src="js/main.js?v=be1a027c" defer></script>
 </body>
 </html>

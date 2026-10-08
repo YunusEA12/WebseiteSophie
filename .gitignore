@@ -1,6 +1,7 @@
 # Arbeitsdateien, gehören nicht auf die Website
 temporary screenshots/
 node_modules/
+test-results/
 _*.html
 _*.txt
 scripts/
