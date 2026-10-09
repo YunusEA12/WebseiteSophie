@@ -48,6 +48,7 @@ Datenschutz Platzhalter enthalten, den provisorischen Link nicht öffentlich tei
       der Widerrufsbelehrung (widerruf-fuer-dm.jpg, von Claude erstellt; nach einer Adressänderung neu erstellen lassen) mitsenden:
       „Dein Termin am … um … ist bestätigt 💅
       Set: … · Preis: … € (bar)
+      Adresse: …
       Es gelten meine Studio Policy und AGB: https://gerberxnails.de/#agb
       Die Widerrufsbelehrung schicke ich dir als Bild mit.
       Bitte bestätige kurz mit Ja: Ich möchte, dass die Behandlung zum vereinbarten Termin
