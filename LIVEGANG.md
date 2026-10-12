@@ -126,3 +126,19 @@ keine Formulare). Angreifbar sind die Konten, über die sie läuft:
       Ein geschäftliches Profil braucht Impressum und Datenschutzerklärung in höchstens zwei
       Klicks; Abschnitt 7 der Datenschutzerklärung deckt das Instagram-Profil ab.
 - [ ] Vorschau testen: Link per Chat an sich selbst schicken und das Vorschaubild prüfen
+- [ ] Google Search Console (kostenlos, ohne Tracking auf der Seite): Domain per TXT-Eintrag bei
+      IONOS bestätigen, `https://gerberxnails.de/sitemap.xml` einreichen. Zeigt, ob Google die
+      Seite gefunden hat, mit welchen Suchbegriffen sie erscheint und ob es Fehler gibt.
+- [ ] Nach 1 bis 2 Wochen: bei Google „gerberxnails“ suchen und PageSpeed Insights mit der
+      echten Domain laufen lassen
+- [ ] Echte Geräte: iPhone Safari, Instagram-interner Browser (Link aus einer DM), wenn möglich
+      ein Android-Handy
+
+## Pflege (laufend)
+
+- [ ] Neue Sets alle paar Monate als Fotos tauschen (Claude macht daraus die kleinen Web-Versionen)
+- [ ] Preise sofort anpassen, wenn sie sich ändern (Preisrechner, Startseite, Nachrichtentexte)
+- [ ] Urlaub oder Pausen kurz auf der Seite und in der Instagram-Story nennen
+- [ ] Vor Weihnachten und Muttertag die Gutscheine in Stories zeigen
+- [ ] Einmal im Jahr die Rechtstexte prüfen lassen und den „Stand“ in der Datenschutzerklärung anpassen
+- [ ] Nach den ersten 4 Wochen: Welche Fragen kommen in den DMs immer wieder? Die Antwort gehört auf die Seite.
