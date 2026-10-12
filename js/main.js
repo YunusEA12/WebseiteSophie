@@ -966,28 +966,48 @@
   var DM = 'https://ig.me/m/gerberxnails';   // opens the chat, not just the profile
 
   // resolves true when the text is on the clipboard
+  // the old way, but synchronous: done before the tap is over
+  function legacyCopy(txt) {
+    var ta = document.createElement('textarea');
+    ta.value = txt;
+    ta.setAttribute('readonly', '');      // no keyboard popping up on a phone
+    ta.style.position = 'fixed';
+    ta.style.top = '0';
+    ta.style.fontSize = '16px';           // and no zoom on iOS
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    try { ta.setSelectionRange(0, txt.length); } catch (e) {}   // iOS selects only this way
+    var ok = false;
+    try { ok = document.execCommand('copy'); } catch (e) {}
+    document.body.removeChild(ta);
+    return ok;
+  }
+
   function copyText(txt) {
-    function legacy() {
-      var ta = document.createElement('textarea');
-      ta.value = txt;
-      ta.setAttribute('readonly', '');
-      ta.style.position = 'fixed';
-      ta.style.opacity = '0';
-      document.body.appendChild(ta);
-      ta.select();
-      var ok = false;
-      try { ok = document.execCommand('copy'); } catch (e) {}
-      document.body.removeChild(ta);
-      return ok;
-    }
     if (navigator.clipboard && window.isSecureContext) {
-      return navigator.clipboard.writeText(txt).then(function () { return true; }, legacy);
+      return navigator.clipboard.writeText(txt).then(function () { return true; },
+                                                     function () { return legacyCopy(txt); });
     }
-    return Promise.resolve(legacy());
+    return Promise.resolve(legacyCopy(txt));
+  }
+
+  // When a link leaves the page in the same tap, nothing may wait: copy at
+  // once, and let the modern API write the same text as a second try.
+  // done(ok) reports what actually reached the clipboard.
+  function copyNow(txt, done) {
+    var ok = legacyCopy(txt);
+    if (navigator.clipboard && window.isSecureContext) {
+      try {
+        navigator.clipboard.writeText(txt).then(function () { done(true); }, function () { done(ok); });
+        return;
+      } catch (e) {}
+    }
+    done(ok);
   }
 
   var Send = { deliver: null };          // set by initRequests
-  var Hint = { countdown: null, needTap: null, msgChanged: null, fly: null };   // set by initHint
+  var Hint = { countdown: null, needTap: null, sent: null, msgChanged: null, fly: null };   // set by initHint
 
   // Filled in by the calculator once it runs.
   var Gift = { text: null };            // set by initGift
@@ -1328,14 +1348,31 @@
       else Hint.needTap();
     }
 
+    // Phones and tablets: the Instagram app opens only when a link is
+    // followed by the tap itself. A jump made later by script (after a
+    // countdown) is treated like a typed address and lands in Safari.
+    var ua = navigator.userAgent;
+    var direct = !fine || /iPhone|iPad|iPod|Android/i.test(ua) ||
+                 (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+
+    // a plain link in the same tab is what iOS hands to the app
+    if (direct) {
+      [].forEach.call(document.querySelectorAll('a[data-send]'), function (a) { a.removeAttribute('target'); });
+    }
+
     // copy inside the tap (browsers only allow it there), say so, then the chat
     Send.deliver = function (el, txt, e) {
-      if (e) e.preventDefault();
       var menu = document.getElementById('menu');
       if (menu && menu.classList.contains('open')) {
         var close = document.getElementById('menu-close-btn');
         if (close) close.click();
       }
+      if (direct && el.tagName === 'A') {
+        el.removeAttribute('target');
+        copyNow(txt, function (ok) { if (Hint.sent) Hint.sent(ok, txt); });
+        return;                       // no preventDefault: the link opens Instagram
+      }
+      if (e) e.preventDefault();
       copyText(txt).then(function (ok) {
         if (Hint.countdown) Hint.countdown(ok, WAIT, openChat, txt);
         else openChat();
@@ -1623,6 +1660,24 @@
         if (left > 0) { if (num) num.textContent = left; }
         else stopCount(true);
       }, step);
+    };
+
+    // phone: the tap already went to Instagram - back here, the line says
+    // the message is waiting on the clipboard
+    Hint.sent = function (ok, txt) {
+      lastTxt = txt || '';
+      lastOk = ok;
+      clearInterval(cdT);
+      cdT = null;
+      clearTimeout(flashT);
+      clearTimeout(swapT);
+      hidePeek();
+      flashing = true;
+      el.classList.remove('away', 'swap', 'is-counting');
+      cur = ok ? 'copied' : 'failed';
+      render(cur);
+      if (live) live.textContent = (ok ? 'Nachricht kopiert. ' : '') + 'Instagram öffnet sich.';
+      settle(12000);
     };
 
     // the browser would not open the chat by itself: one tap on the line
