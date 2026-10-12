@@ -27,6 +27,11 @@ Datenschutz Platzhalter enthalten, den provisorischen Link nicht öffentlich tei
       Postfach oder in einem Brief und beginnt mit „DE“. Gibt es eine, im Impressum einen Abschnitt
       „Umsatzsteuer“ mit der Nummer ergänzen. Die normale Steuernummer gehört nicht hinein.
 - [x] Ausfallgebühr: 30 % bei Absage unter 48 Std., 50 % ohne Absage – in AGB Punkt 3 und auf der Karte
+- [ ] Gutscheine (Abschnitt auf der Seite, Bilder für 50/75/100 € und Wunschbetrag von Claude
+      erstellt): Sophie bestätigt, dass sie Gutscheine verkauft, und wie bezahlt wird (bar oder
+      Überweisung). Gültig bis 31.12. des dritten Jahres nach dem Kauf eintragen (gesetzliche
+      Frist, nicht kürzer). Wird der Gutschein per DM verkauft, auch das Widerrufs-Bild mitschicken.
+      Sagt Sophie nein: Abschnitt `#gutschein` und die beiden Menüpunkte „Gutschein“ entfernen.
 - [ ] Danach: Hinweiskästen in `impressum.html` und `datenschutz.html` löschen
 - [ ] `datenschutz.html`, Abschnitt 2: Hoster anpassen, falls die Seite nicht bei GitHub Pages bleibt
 - [x] Preise bestätigt (Spannen mit dem oberen Preis; Charms „ab +1 €“ und 3D „ab +5 €“ je Stück, im Rechner 1 bis 10 Stück wählbar)

@@ -67,7 +67,7 @@
 <link rel="preload" href="fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="fonts/fonts.css?v=6096b837">
 <link rel="stylesheet" href="css/tailwind-base.css?v=af7c1978">
-<link rel="stylesheet" href="css/style.css?v=7a704064">
+<link rel="stylesheet" href="css/style.css?v=a46b0aa5">
 <link rel="stylesheet" href="css/tailwind-utils.css?v=0b47f978">
 </head>
 <body class="antialiased">
@@ -194,6 +194,7 @@
       <a href="#preise"     class="navlink text-[.84rem] hover:text-white transition-colors">Preisrechner</a>
       <a href="#arbeiten"   class="navlink text-[.84rem] hover:text-white transition-colors">Arbeiten</a>
       <a href="#policy"     class="navlink text-[.84rem] hover:text-white transition-colors">Studio Policy</a>
+      <a href="#gutschein"  class="navlink text-[.84rem] hover:text-white transition-colors">Gutschein</a>
       <a href="#kontakt"    class="navlink text-[.84rem] hover:text-white transition-colors">Kontakt</a>
     </nav>
 
@@ -233,6 +234,7 @@
       <a href="#preise"     class="menu-link t-display text-[1.12rem] tracking-[-.01em] text-[#F7F2EA] hover:text-neon-pink transition-colors py-1.5 w-full">Preisrechner</a>
       <a href="#arbeiten"   class="menu-link t-display text-[1.12rem] tracking-[-.01em] text-[#F7F2EA] hover:text-neon-pink transition-colors py-1.5 w-full">Arbeiten</a>
       <a href="#policy"     class="menu-link t-display text-[1.12rem] tracking-[-.01em] text-[#F7F2EA] hover:text-neon-pink transition-colors py-1.5 w-full">Studio Policy</a>
+      <a href="#gutschein"  class="menu-link t-display text-[1.12rem] tracking-[-.01em] text-[#F7F2EA] hover:text-neon-pink transition-colors py-1.5 w-full">Gutschein</a>
       <a href="#kontakt"    class="menu-link t-display text-[1.12rem] tracking-[-.01em] text-[#F7F2EA] hover:text-neon-pink transition-colors py-1.5 w-full">Kontakt</a>
     </nav>
 
@@ -658,6 +660,34 @@
   </div>
 </section>
 
+<!-- ============ GUTSCHEIN ============ -->
+<section id="gutschein" class="relative px-5 sm:px-8 pb-[clamp(4rem,9vw,7rem)] scroll-mt-20">
+  <div class="mx-auto max-w-[88rem]">
+    <div class="js-rv rv gift">
+      <figure class="gift-pic">
+        <img id="gift-img" src="brand_assets/gutschein-50.webp" alt="Gutschein von gerberxnails über 50 Euro" width="800" height="567" loading="lazy" decoding="async">
+      </figure>
+      <div class="gift-body">
+        <p class="t-script text-[clamp(2.2rem,6vw,3.6rem)] text-sand-bronze leading-none">Verschenke schöne Nägel</p>
+        <h2 class="t-display mt-2 text-[clamp(1.8rem,4.5vw,3rem)] tracking-[-.035em]">Gutschein</h2>
+        <!-- pick an amount; the request text follows it -->
+        <div class="gift-opts" role="radiogroup" aria-label="Betrag">
+          <button type="button" class="gift-opt" role="radio" aria-checked="true" data-gift="50">50&thinsp;&euro;</button>
+          <button type="button" class="gift-opt" role="radio" aria-checked="false" data-gift="75">75&thinsp;&euro;</button>
+          <button type="button" class="gift-opt" role="radio" aria-checked="false" data-gift="100">100&thinsp;&euro;</button>
+          <button type="button" class="gift-opt" role="radio" aria-checked="false" data-gift="frei">Wunsch</button>
+        </div>
+        <a href="https://ig.me/m/gerberxnails" target="_blank" rel="noopener noreferrer" data-send="gift"
+           data-mag class="btn btn-solid w-full mt-6 px-6 py-3.5 text-[.95rem] flex-col !gap-0.5">
+          <span id="gift-label">Gutschein über 50 € anfragen</span>
+          <span class="btn-sub">Nachricht wird kopiert &middot; öffnet Instagram</span>
+        </a>
+        <p class="gift-note">Du bekommst ihn als Bild zum Verschenken. Mindestens 3&nbsp;Jahre gültig.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ============ KONTAKT ============ -->
 <section id="kontakt" class="relative px-5 sm:px-8 py-[clamp(5rem,14vw,11rem)] scroll-mt-20 overflow-hidden" style="background: url('brand_assets/leo_fur.webp') center/cover;">
   <!-- Soft Warm Silk Ivory Overlay for maximum readability with bright plush fur atmosphere -->
@@ -862,6 +892,6 @@
 </footer>
 
 
-<script src="js/main.js?v=f39744ae" defer></script>
+<script src="js/main.js?v=20a27fb6" defer></script>
 </body>
 </html>

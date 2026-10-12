@@ -3633,3 +3633,104 @@ main > section:first-of-type.atmos::before {
 
   #preise .opt-qty.is-on .opt-pcs { display: none; }
 }
+
+
+/* ==========================================================================
+   GUTSCHEIN
+   Links der Gutschein, wie ihn die Beschenkte bekommt, rechts Betrag und
+   Anfrage. Am Handy untereinander.
+   ========================================================================== */
+.gift {
+  display: grid;
+  gap: 1.75rem;
+  align-items: center;
+  padding: clamp(1.25rem, 3vw, 2.25rem);
+  border-radius: 24px;
+  border: 1px solid rgba(238, 42, 110, .3);
+  background: linear-gradient(160deg, rgba(229, 20, 95, .1) 0%, rgba(26, 21, 17, .6) 60%);
+  box-shadow:
+    0 24px 50px -28px rgba(0, 0, 0, .8),
+    0 10px 30px -20px rgba(229, 20, 95, .35);
+}
+
+@media (min-width: 900px) {
+  .gift {
+    grid-template-columns: 1.1fr 1fr;
+    gap: 3rem;
+  }
+}
+
+.gift-pic {
+  margin: 0;
+  transform: rotate(-2.5deg) scale(.96);
+}
+
+.gift-pic img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 14px;
+  box-shadow:
+    0 18px 40px -18px rgba(0, 0, 0, .85),
+    0 0 0 1px rgba(224, 179, 109, .25);
+}
+
+.gift-opts {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: .5rem;
+  margin-top: 1.25rem;
+}
+
+.gift-opt {
+  padding: .7rem .4rem;
+  border-radius: 14px;
+  border: 1px solid rgba(216, 168, 96, .25);
+  background: rgba(26, 21, 17, .8);
+  color: #F7F2EA;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: .95rem;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: transform .3s var(--ease-spring);
+}
+
+.gift-opt:hover { transform: translate3d(0, -2px, 0); border-color: rgba(229, 20, 95, .5); }
+.gift-opt:active { transform: scale(.95); }
+.gift-opt:focus-visible { outline: 2px solid #FF4D86; outline-offset: 2px; }
+
+.gift-opt[aria-checked="true"] {
+  border-color: #FF4D86;
+  color: #fff;
+  background: linear-gradient(135deg, #EE2A6E 0%, #CF1059 100%);
+}
+
+.gift-opt.is-pop { animation: optPop .45s var(--ease-spring); }
+
+/* a new amount: the card gives a small turn */
+.gift-pic.is-pop { animation: giftTurn .55s var(--ease-spring); }
+
+@keyframes giftTurn {
+  0%   { transform: rotate(-2.5deg) scale(.96); }
+  40%  { transform: rotate(-.5deg) scale(1); }
+  100% { transform: rotate(-2.5deg) scale(.96); }
+}
+
+.gift-note {
+  margin-top: .9rem;
+  font-size: .85rem;
+  line-height: 1.6;
+  color: #918073;
+}
+
+@media (hover: none), (pointer: coarse) {
+  .gift-opt:not([aria-checked="true"]):hover {
+    transform: none;
+    border-color: rgba(216, 168, 96, .25);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gift-opt.is-pop,
+  .gift-pic.is-pop { animation: none; }
+}

@@ -990,6 +990,8 @@
   var Hint = { countdown: null, needTap: null, msgChanged: null, fly: null };   // set by initHint
 
   // Filled in by the calculator once it runs.
+  var Gift = { text: null };            // set by initGift
+
   var Calc = {
     request: null,   // () -> the full request text for the chosen set
     chosenSet: null  // () -> lines describing the set, or null if untouched
@@ -1343,7 +1345,9 @@
     document.addEventListener('click', function (e) {
       var el = e.target.closest('[data-send]');
       if (!el) return;
-      Send.deliver(el, el.getAttribute('data-send') === 'set' && Calc.request ? Calc.request() : general(), e);
+      var kind = el.getAttribute('data-send');
+      Send.deliver(el, kind === 'set' && Calc.request ? Calc.request()
+                     : kind === 'gift' && Gift.text ? Gift.text() : general(), e);
     });
 
     /* With a mouse: say what a click does before it happens. Phones get the
@@ -1737,6 +1741,43 @@
     setTimeout(function () { el.classList.add('on'); }, reduce ? 0 : 1400);
   }
 
+  /* Gutschein: ein Betrag zum Antippen, die Nachricht nennt ihn gleich mit. */
+  function initGift() {
+    var opts = [].slice.call(document.querySelectorAll('[data-gift]'));
+    var label = document.getElementById('gift-label');
+    var img = document.getElementById('gift-img');
+    if (!opts.length) return;
+
+    function value() {
+      var o = document.querySelector('[data-gift][aria-checked="true"]');
+      return o ? o.getAttribute('data-gift') : 'frei';
+    }
+
+    opts.forEach(function (o) {
+      o.addEventListener('click', function () {
+        opts.forEach(function (x) { x.setAttribute('aria-checked', x === o ? 'true' : 'false'); });
+        var v = value();
+        if (label) label.textContent = v === 'frei' ? 'Gutschein mit Wunschbetrag anfragen'
+                                                    : 'Gutschein über ' + v + ' € anfragen';
+        // the card shows the amount that was picked
+        if (img) {
+          img.src = 'brand_assets/gutschein-' + v + '.webp';
+          img.alt = v === 'frei' ? 'Gutschein von gerberxnails mit Wunschbetrag'
+                                 : 'Gutschein von gerberxnails über ' + v + ' Euro';
+          pop(img.parentNode);
+        }
+        pop(o);
+      });
+    });
+
+    Gift.text = function () {
+      var v = value();
+      return 'Hi Sophie! 🎁 Ich möchte gerne einen Gutschein ' +
+             (v === 'frei' ? 'verschenken. Mein Wunschbetrag: … €.' : 'über ' + v + ' € verschenken.') +
+             ' Wie kann ich ihn bezahlen?';
+    };
+  }
+
   /* Studio-Regeln: am Handy kurze Zeilen zum Aufklappen, am Computer stehen
      alle vier offen nebeneinander und lassen sich nicht zuklappen. */
   function initRules() {
@@ -1865,7 +1906,7 @@
       ['Cursor', initCustomCursor],
       ['HeroShow', initHeroShow], ['ShowcaseOrt', initShowcasePlacement], ['Lightbox', initLightbox],
       ['Marquee', initMarqueeAndParallax],
-      ['Rechner', initPriceCalculator], ['Preisleiste', initPriceBar],
+      ['Rechner', initPriceCalculator], ['Preisleiste', initPriceBar], ['Gutschein', initGift],
       ['Regeln', initRules], ['Hinweis', initHint], ['Anfragen', initRequests]
     ].concat(SHOW_VINE_AND_PETALS ? [['Vine', initLivingVine], ['Petals', initFloatingPetals]] : [])
      .forEach(function (pair) { start(pair[0], pair[1]); });
