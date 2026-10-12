@@ -49,5 +49,5 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 | --- | --- |
 | `brand_assets/sets/*.webp` | Originalfotos von Sophie Gerber, von ihr für die Website freigegeben |
 | `sophie.webp` | Porträt von Sophie Gerber, von ihr für die Website freigegeben |
-| `brand_assets/leo_fur.jpg`, `hibiscus_*` | KI-generiert mit Google Gemini. Die Originale tragen einen C2PA-Nachweis „Created by Google Generative AI“ und ein SynthID-Wasserzeichen. |
+| `brand_assets/leo_fur.jpg` (Original; auf der Seite als verkleinerte `leo_fur.webp`), `hibiscus_*` | KI-generiert mit Google Gemini. Die Originale tragen einen C2PA-Nachweis „Created by Google Generative AI“ und ein SynthID-Wasserzeichen. |
 | `share.jpg`, `apple-touch-icon.png` | aus den obigen Bildern und eigenen Grafiken zusammengesetzt |

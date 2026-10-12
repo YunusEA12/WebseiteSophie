@@ -809,7 +809,7 @@ dialog.sheet[open] {
    15.5 REAL LEO FUR & HIBISCUS BOTANICAL ASSETS
    ========================================================================== */
 .leo-fur-banner {
-  background: url('../brand_assets/leo_fur.jpg') center/cover no-repeat;
+  background: url('../brand_assets/leo_fur.webp') center/cover no-repeat;
 }
 
 .leo-fur-soft::before {
@@ -818,7 +818,7 @@ dialog.sheet[open] {
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  background: url('../brand_assets/leo_fur.jpg') center/cover no-repeat;
+  background: url('../brand_assets/leo_fur.webp') center/cover no-repeat;
   opacity: .18;
   mix-blend-mode: overlay;
 }
@@ -1272,13 +1272,13 @@ header {
 #band {
   background: linear-gradient(90deg, #14100D 0%, rgba(20, 16, 13, 0.4) 15%, rgba(20, 16, 13, 0.4) 85%, #14100D 100%),
               linear-gradient(180deg, rgba(20, 16, 13, 0.8) 0%, rgba(20, 16, 13, 0.3) 50%, rgba(20, 16, 13, 0.8) 100%),
-              url('../brand_assets/leo_fur.jpg') center/cover !important;
+              url('../brand_assets/leo_fur.webp') center/cover !important;
   color: #F7F2EA !important;
 }
 
 #kontakt {
   background: linear-gradient(180deg, #14100D 0%, rgba(20, 16, 13, 0.75) 20%, rgba(20, 16, 13, 0.9) 80%, #14100D 100%),
-              url('../brand_assets/leo_fur.jpg') center/cover !important;
+              url('../brand_assets/leo_fur.webp') center/cover !important;
 }
 
 .leo-soft::before {
@@ -2321,7 +2321,7 @@ main > section:first-of-type.atmos::before {
 /* contact: the fur starts later and softer, so the section above flows in */
 #kontakt {
   background: linear-gradient(180deg, #14100D 0%, rgba(20, 16, 13, .96) 10%, rgba(20, 16, 13, .8) 28%, rgba(20, 16, 13, .9) 82%, #14100D 100%),
-              url('../brand_assets/leo_fur.jpg') center/cover !important;
+              url('../brand_assets/leo_fur.webp') center/cover !important;
 }
 
 

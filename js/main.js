@@ -433,7 +433,7 @@
       backdrop.setAttribute('aria-hidden', 'true');
       slides.forEach(function (im, i) {
         var c = document.createElement('img');
-        c.src = im.getAttribute('src');
+        c.src = im.getAttribute('data-src') || im.getAttribute('src');
         c.alt = '';
         c.loading = 'lazy';
         c.decoding = 'async';
@@ -448,8 +448,24 @@
     if (slides.length < 2) return;
     var at = 0, timer, held = false;
 
+    /* Only the first picture comes with the page. Each further one is
+       fetched while the one before it is showing - on a phone the browser
+       would otherwise load all six in full size at once. */
+    function load(i) {
+      var im = slides[(i + slides.length) % slides.length];
+      if (!im || !im.hasAttribute('data-src')) return;
+      if (im.hasAttribute('data-srcset')) {
+        im.srcset = im.getAttribute('data-srcset');
+        im.removeAttribute('data-srcset');
+      }
+      im.src = im.getAttribute('data-src');
+      im.removeAttribute('data-src');
+    }
+
     function go(n) {
       at = (n + slides.length) % slides.length;
+      load(at);
+      load(at + 1);
       slides.forEach(function (el, i) { el.classList.toggle('is-on', i === at); });
       caps.forEach(function (el, i) { el.classList.toggle('is-on', i === at); });
       dots.forEach(function (el, i) { el.classList.toggle('is-on', i === at); });
@@ -493,6 +509,10 @@
       if (Math.abs(dx) > 40) { go(at + (dx < 0 ? 1 : -1)); play(); }
       sx = null;
     }, { passive: true });
+
+    // the second picture as soon as the page itself is ready
+    if (document.readyState === 'complete') load(1);
+    else addEventListener('load', function () { load(1); });
 
     // pause while the card is off screen
     if ('IntersectionObserver' in window) {
