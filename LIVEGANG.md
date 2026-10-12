@@ -7,11 +7,14 @@ Datenschutz Platzhalter enthalten, den provisorischen Link nicht öffentlich tei
 ## Inhalte (von Sophie)
 
 - [x] Name, Straße, Stadt (Stuttgart), keine Telefonnummer – eingetragen
-- [ ] Wohnadresse im Impressum ersetzen (optional, empfohlen): Ein Impressum-Service oder eine
-      vertraute Person stellt eine Anschrift (c/o), unter der Post sicher bei Sophie ankommt. Dann
-      in `impressum.html` und `widerruf.html` die Adresse austauschen. Bis dahin stehen Impressum,
-      Datenschutz und Widerrufsbelehrung dauerhaft auf „noindex“, und die Startseite enthält die
-      Adresse nicht.
+- [ ] Wohnadresse im Impressum ersetzen (optional): Die Anschrift muss „ladungsfähig“ sein, also
+      eine Adresse, unter der Sophie Post und Gerichtsschreiben tatsächlich erreichen.
+      Am sichersten: c/o bei einer vertrauten Person, die Post für sie annimmt (schriftliche
+      Empfangsvollmacht). Impressum-Services und virtuelle Büros sind umstritten: eRecht24 hält
+      sie für nicht ladungsfähig (OLG München, 29 U 8/17), Anbieter berufen sich auf eine
+      Empfangsvollmacht. Restrisiko: Abmahnung. Postfach geht nie. Dann in `impressum.html` und
+      `widerruf.html` die Adresse austauschen. Bis dahin stehen Impressum, Datenschutz und
+      Widerrufsbelehrung dauerhaft auf „noindex“, und die Startseite enthält die Adresse nicht.
 - [x] Postleitzahl – eingetragen
 - [x] E-Mail-Adresse (gerberxnails@gmx.de) – eingetragen
 - [ ] „Gel-X“ ist eine eingetragene Marke (Aprés). Nutzt Sophie echte Aprés-Gel-X-Tips, darf
@@ -113,6 +116,8 @@ keine Formulare). Angreifbar sind die Konten, über die sie läuft:
 
 ## Nach dem Start
 
-- [ ] Instagram-Bio: Link auf `https://gerberxnails.de/` und zusätzlich auf
-      `https://gerberxnails.de/impressum.html` (Impressumspflicht)
+- [ ] Instagram-Bio (bis zu 5 Links möglich): `https://gerberxnails.de/`,
+      `https://gerberxnails.de/impressum.html` und `https://gerberxnails.de/datenschutz.html`.
+      Ein geschäftliches Profil braucht Impressum und Datenschutzerklärung in höchstens zwei
+      Klicks; Abschnitt 7 der Datenschutzerklärung deckt das Instagram-Profil ab.
 - [ ] Vorschau testen: Link per Chat an sich selbst schicken und das Vorschaubild prüfen
