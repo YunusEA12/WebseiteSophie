@@ -1,0 +1,32 @@
+VORLAGE: TERMINBESTÄTIGUNG PER INSTAGRAM-DM
+============================================
+
+Bei jeder Buchung so schicken und das Bild "widerruf-fuer-dm.jpg" (liegt in
+diesem Ordner) gleich mitsenden. Die Kundin antwortet mit "Ja".
+Die Punkte (…) ausfüllen.
+
+-------------------------------------------------------------------------
+
+Dein Termin am … um … ist bestätigt 💅
+Set: … · Preis: … € (bar)
+Adresse: …
+
+Es gelten meine Studio Policy und AGB: https://gerberxnails.de/#agb
+Die Widerrufsbelehrung schicke ich dir als Bild mit.
+
+Bitte bestätige kurz mit Ja: Ich möchte, dass die Behandlung zum vereinbarten
+Termin stattfindet, auch wenn die Widerrufsfrist dann noch läuft. Mir ist
+bekannt, dass mein Widerrufsrecht erlischt, sobald die Behandlung vollständig
+erbracht ist.
+
+-------------------------------------------------------------------------
+
+Warum? Wer per DM bucht, darf 14 Tage lang ohne Grund widerrufen. Das Bild ist
+die vorgeschriebene Widerrufsbelehrung, das "Ja" die ausdrückliche Zustimmung,
+dass der Termin schon in diesen 14 Tagen stattfinden darf. Fehlt beides, kann
+eine Kundin unter Umständen noch bis zu einem Jahr später widerrufen und muss
+für eine schon gemachte Behandlung nichts zahlen. Die Ausfallgebühr aus den AGB
+(30 % / 50 %) gilt nur, wenn nicht innerhalb der 14 Tage widerrufen wurde.
+
+Ändert sich Sophies Adresse, müssen Website und Bild angepasst werden
+(Claude kann das Bild neu erstellen).
