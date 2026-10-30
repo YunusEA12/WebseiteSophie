@@ -1,0 +1,23 @@
+# GitHub Pages: nur die Website wird veröffentlicht, nicht die Arbeitsdateien.
+#
+# Bis Oktober 2026 lag hier eine leere ".nojekyll"; dann lieferte GitHub jede
+# Datei des Projekts aus, auch Notizen wie LIVEGANG.md unter
+# https://<domain>/LIVEGANG.md. Jetzt baut GitHub die Seite mit Jekyll, und
+# Jekyll lässt alles weg, was hier steht. Die HTML-, CSS- und JS-Dateien
+# haben keinen "Front Matter"-Kopf und werden deshalb unverändert kopiert.
+#
+# Neue Arbeitsdateien (Notizen, Skripte) hier eintragen oder als .md / .mjs
+# anlegen - beides ist bereits ausgeschlossen.
+
+exclude:
+  - "*.md"
+  - "*.mjs"
+  - fuer-sophie
+  - brand_assets/hibiscus_pink.jpg
+  - brand_assets/hibiscus_teal.jpg
+  - brand_assets/leo_fur.jpg
+  - package.json
+  - package-lock.json
+  - node_modules
+  - scripts
+  - temporary screenshots
