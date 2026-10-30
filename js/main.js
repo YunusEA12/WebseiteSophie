@@ -39,6 +39,9 @@
 
   // Environment & Accessibility detection
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // set by the inline script in <head>: the visitor came from another page of
+  // the site and has seen the loading flower already
+  var fromSite = document.documentElement.classList.contains('from-site');
 
   // restart a short CSS animation on an element
   function pop(el) {
@@ -282,6 +285,7 @@
     var count = document.getElementById('count');
     var ring = document.getElementById('ring');
     if (!loader || !flower || !count || !ring) return;
+    if (fromSite) { loader.classList.add('done'); return; }
 
     var petals = [].slice.call(flower.querySelectorAll('.lp'));
     var CIRC = 829.4;
@@ -318,13 +322,22 @@
     var dot = document.querySelector('.cursor-dot');
     var ring = document.querySelector('.cursor-ring');
     if (!dot || !ring) return;
-    // the ring is only shown once something moves it; otherwise it sat as a
-    // quarter circle in the top left corner
-    document.documentElement.classList.add('has-cursor');
 
-    var mx = innerWidth / 2, my = innerHeight / 2, rx = mx, ry = my;
+    // the ring appears with the first movement, right where the mouse is;
+    // shown any earlier it sat in the middle of the headline (and before
+    // that as a quarter circle in the top left corner)
+    var mx = innerWidth / 2, my = innerHeight / 2, rx = mx, ry = my, seen = false;
 
     addEventListener('mousemove', function (e) {
+      if (!seen) {
+        // the browser may report a move at the very corner before the mouse
+        // has done anything (after loading or scrolling) - wait for a real one
+        if (!e.clientX && !e.clientY) return;
+        seen = true;
+        rx = e.clientX;
+        ry = e.clientY;
+        document.documentElement.classList.add('has-cursor');
+      }
       mx = e.clientX;
       my = e.clientY;
     });
@@ -1447,6 +1460,10 @@
       kontakt: { href: '#kontakt',
                  l: ['Ein Tipp genügt', ': Nachricht wird kopiert, Instagram öffnet sich'],
                  s: ['Ein Tipp', ': Nachricht kopiert, Instagram öffnet'] },
+      // the gift request works the same way; "Set erstellen" was off-topic here
+      gutschein: { href: '#gutschein',
+                 l: ['Ein Tipp genügt', ': Nachricht wird kopiert, Instagram öffnet sich'],
+                 s: ['Ein Tipp', ': Nachricht kopiert, Instagram öffnet'] },
       wait:    { href: DM, out: true,
                  l: ['Nachricht kopiert', ': Gleich öffnet sich Instagram, dort nur einfügen & senden'],
                  s: ['Kopiert', ': Gleich öffnet sich Instagram'] },
@@ -1463,7 +1480,7 @@
                  l: ['Instagram öffnet sich', ': Schreib Sophie dort einfach direkt'],
                  s: ['Instagram öffnet sich', ': Schreib direkt'] }
     };
-    var ZONES = ['preise', 'kontakt'];
+    var ZONES = ['preise', 'gutschein', 'kontakt'];
     var foot = document.querySelector('footer');
     var calc = document.getElementById('preise');
     var num = el.querySelector('.i-num');
@@ -1793,7 +1810,7 @@
     el.hidden = false;
     check();
     // after the loading flower has gone
-    setTimeout(function () { el.classList.add('on'); }, reduce ? 0 : 1400);
+    setTimeout(function () { el.classList.add('on'); }, reduce || fromSite ? 0 : 1400);
   }
 
   /* Gutschein: ein Betrag zum Antippen, die Nachricht nennt ihn gleich mit. */

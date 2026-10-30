@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- die Hibiskusbluete aus dem Logo, wie apple-touch-icon.png -->
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FF8FB8"/>
+      <stop offset=".52" stop-color="#E5145F"/>
+      <stop offset="1" stop-color="#8E0A3C"/>
+    </linearGradient>
+    <path id="p" d="M0,4 C-34,-24 -54,-66 -42,-100 C-35,-120 -12,-126 0,-113 C12,-126 35,-120 42,-100 C54,-66 34,-24 0,4 Z" fill="url(#g)"/>
+  </defs>
+  <rect width="64" height="64" rx="14" fill="#17130F"/>
+  <g transform="translate(32 33.5) scale(.205)">
+    <use href="#p"/>
+    <use href="#p" transform="rotate(72)"/>
+    <use href="#p" transform="rotate(144)"/>
+    <use href="#p" transform="rotate(216)"/>
+    <use href="#p" transform="rotate(288)"/>
+    <circle r="19" fill="#4A0D26"/>
+    <g transform="rotate(38)">
+      <path d="M0,0 L0,-92" stroke="#4A0D26" stroke-width="9" stroke-linecap="round"/>
+      <g fill="#F6C86B">
+        <circle cx="0" cy="-98" r="10"/><circle cx="-15" cy="-86" r="8"/><circle cx="15" cy="-86" r="8"/>
+      </g>
+    </g>
+  </g>
+</svg>

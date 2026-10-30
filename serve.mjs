@@ -22,6 +22,7 @@ const MIME = {
   ".woff": "font/woff",
   ".txt": "text/plain",
   ".xml": "application/xml",
+  ".webmanifest": "application/manifest+json",
 };
 
 http.createServer((req, res) => {
