@@ -3,6 +3,9 @@
 **Kurz:** Die Website ist fertig. Für den Start fehlen nur noch die Domain und ein
 paar Antworten von Sophie.
 
+Zum Abhaken und Weiterschicken gibt es die Liste auch als Seite, aufgeteilt nach Sophie
+und Yunus, mit fertiger Nachricht an Sophie: <https://claude.ai/artifact/HqA1p8sabKQmjtEPrwskis>
+
 | | |
 | --- | --- |
 | Kosten | nur die Domain, **ca. 5 € pro Jahr**. Hosting (GitHub Pages) und HTTPS sind kostenlos. |
@@ -31,8 +34,10 @@ gesperrt („noindex“), also noch nicht öffentlich teilen.
       Sagt Sophie nein: Abschnitt `#gutschein` und die Menüpunkte „Gutschein“ entfernen lassen.
 - [ ] **Startpreis:** Die Seite sagt „ab 50 €“ (kürzeste Länge plus Level 1). Gibt es ein Set
       ganz ohne Design für 40 €, im Rechner eine Option „ohne Design“ ergänzen lassen.
-- [ ] **Fotos:** Die Kundinnen auf den gezeigten Fotos kurz um Erlaubnis fragen (Hände ohne
-      Gesicht sind meist unproblematisch, sicher ist sicher).
+- [ ] **Fotos:** Die Kundinnen auf den gezeigten Fotos kurz um Erlaubnis fragen, auch für die
+      sechs unter „Mehr Sets“ (Hände ohne Gesicht sind meist unproblematisch, sicher ist sicher).
+- [ ] **Häufige Fragen** auf der Seite lesen: Stimmt alles? Vor allem, dass Inspo-Bilder per DM
+      willkommen sind und es sonntags und an Feiertagen keine Termine gibt.
 - [ ] **Adresse im Impressum** (optional ersetzen): Die Anschrift muss „ladungsfähig“ sein, also
       eine Adresse, unter der Sophie Post und Gerichtsschreiben tatsächlich erreichen. Am
       sichersten: c/o bei einer vertrauten Person, die Post annimmt (schriftliche
@@ -147,8 +152,8 @@ Formulare). Angreifbar sind die Konten, über die sie läuft:
 - [ ] Urlaub oder Pausen kurz auf der Seite und in der Instagram-Story nennen.
 - [ ] Vor Weihnachten und Muttertag die Gutscheine in Stories zeigen.
 - [ ] Einmal im Jahr die Rechtstexte prüfen und den „Stand“ in der Datenschutzerklärung anpassen.
-- [ ] Nach den ersten 4 Wochen: Welche Fragen kommen in den DMs immer wieder? Die Antwort gehört
-      auf die Seite.
+- [ ] Nach den ersten 4 Wochen: Welche Fragen kommen in den DMs immer wieder? Die Antwort kommt
+      in „Häufige Fragen“ (`index.html`, Abschnitt `#faq`), kurz und nur mit Angaben, die stimmen.
 
 ## Optional
 
