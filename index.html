@@ -76,10 +76,11 @@
 <link rel="preload" href="fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="fonts/fonts.css?v=6096b837">
 <link rel="stylesheet" href="css/tailwind-base.css?v=07d44d62">
-<link rel="stylesheet" href="css/style.css?v=36bfe651">
+<link rel="stylesheet" href="css/style.css?v=991df60d">
 <link rel="stylesheet" href="css/tailwind-utils.css?v=735c9c50">
 </head>
 <body class="antialiased">
+<a href="#top" class="skip-link">Zum Inhalt springen</a>
 
 <div class="grain" aria-hidden="true"></div>
 
@@ -262,14 +263,14 @@
   </div>
 </div>
 
-<main id="top">
+<main id="top" tabindex="-1">
 
 <!-- ============ HERO ============ -->
 <section class="atmos relative min-h-[100svh] flex flex-col justify-between overflow-hidden px-5 sm:px-8 pb-10 pt-24 sm:pt-32">
 
   <!-- Soft Plush Leo Fur Atmosphere (moody dark luxury framing) -->
   <div class="pointer-events-none absolute left-0 top-0 w-full lg:w-3/4 h-full opacity-55 overflow-hidden z-0 select-none">
-    <img src="brand_assets/leo_fur.webp" alt="" class="w-full h-full object-cover object-left-top filter contrast-110 brightness-90">
+    <img src="brand_assets/leo_fur.webp" alt="" class="w-full h-full object-cover object-left-top filter brightness-90">
     <div class="absolute inset-0 bg-gradient-to-r from-transparent via-[#14100D]/65 to-[#14100D]"></div>
     <div class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#14100D]"></div>
   </div>
@@ -289,7 +290,7 @@
 
         <!-- MAIN EYE-CATCHER: Giant Signature Script Name -->
         <h1 class="t-script hero-mark text-[clamp(4.2rem,11.5vw,10.5rem)] leading-[0.88] text-chalk hover:text-sand-bronze transition-colors duration-500 my-1 sm:my-2 select-none drop-shadow-[0_4px_24px_rgba(229,20,95,0.12)]">
-          gerberxnails
+          gerberxnails<span class="sr-only"> – Nageldesign in Stuttgart</span>
         </h1>
 
         <!-- what matters most to Sophie: cosy, and everyone is welcome -->
@@ -439,6 +440,11 @@
     <div class="js-rv grid lg:grid-cols-[.34fr_.66fr] gap-10 lg:gap-16">
       <div class="lg:pt-4">
         <span class="t-script text-4xl sm:text-5xl text-sand-bronze block mt-1">mit Liebe zum Detail</span>
+        <!-- who does your nails: the face to the name, before the first price -->
+        <div class="rv about-me">
+          <img src="brand_assets/sophie.webp" alt="Sophie Gerber" width="320" height="320" loading="lazy" decoding="async" class="about-av">
+          <p class="about-name"><span class="t-script">Sophie Gerber</span><span class="about-role">Deine Nageldesignerin in Stuttgart</span></p>
+        </div>
       </div>
       <div>
         <h2 class="t-display text-[clamp(1.8rem,4.6vw,3.6rem)] tracking-[-.035em]" data-split>
@@ -502,16 +508,16 @@
 
         <!-- Design Level -->
         <fieldset class="rounded-[18px] border border-chalk/12 bg-surf-1 p-5">
-          <legend class="t-display text-[.72rem] uppercase tracking-[.18em] text-chalk-mute px-1">Design Level</legend>
+          <legend class="t-display text-[.72rem] uppercase tracking-[.18em] text-chalk-mute px-1">Design Level <a href="#arbeiten" class="lvl-link">Beispiele ansehen</a></legend>
           <div class="mt-3 flex flex-col gap-2" role="radiogroup" aria-label="Design Level">
             <button type="button" class="opt" role="radio" aria-checked="true"  data-lvl="10">
-              <span>Level 1<span class="block opt-sub">Sehr einfaches Design</span></span><span class="t-display">+10&thinsp;&euro;</span></button>
+              <span>Level 1<span class="block opt-sub">Sehr einfaches Design, z.&nbsp;B. einfarbig</span></span><span class="t-display">+10&thinsp;&euro;</span></button>
             <button type="button" class="opt" role="radio" aria-checked="false" data-lvl="20">
-              <span>Level 2<span class="block opt-sub">Einfaches Design</span></span><span class="t-display">+20&thinsp;&euro;</span></button>
+              <span>Level 2<span class="block opt-sub">Einfaches Design, z.&nbsp;B. French</span></span><span class="t-display">+20&thinsp;&euro;</span></button>
             <button type="button" class="opt" role="radio" aria-checked="false" data-lvl="30">
-              <span>Level 3<span class="block opt-sub">Mittelaufwendiges Design</span></span><span class="t-display">+30&thinsp;&euro;</span></button>
+              <span>Level 3<span class="block opt-sub">Mittelaufwendiges Design, z.&nbsp;B. Aqua Shells</span></span><span class="t-display">+30&thinsp;&euro;</span></button>
             <button type="button" class="opt" role="radio" aria-checked="false" data-lvl="40">
-              <span>Level 4<span class="block opt-sub">Sehr aufwendiges Design</span></span><span class="t-display">+40&thinsp;&euro;</span></button>
+              <span>Level 4<span class="block opt-sub">Sehr aufwendiges Design, z.&nbsp;B. Butterfly &amp; Sage</span></span><span class="t-display">+40&thinsp;&euro;</span></button>
           </div>
         </fieldset>
 
@@ -664,7 +670,7 @@
       <li class="rv step">
         <span class="step-n" aria-hidden="true">1</span>
         <h3 class="step-title t-display">Set zusammenstellen</h3>
-        <p class="step-text">Länge, Design und Extras im Preisrechner wählen. Der Preis steht sofort fest.</p>
+        <p class="step-text">Länge, Design und Extras im Preisrechner wählen. Du siehst sofort deinen Preis.</p>
       </li>
       <li class="rv step">
         <span class="step-n" aria-hidden="true">2</span>
@@ -795,6 +801,10 @@
           <p>Ja, „Nur Soak Off“ kostet 20&nbsp;€, ohne neues Set.</p>
         </details>
         <details class="faq">
+          <summary>Was kostet Auffüllen?</summary>
+          <p>Genauso viel wie ein neues Set: Länge plus Design-Level. Schreib in der DM einfach dazu, dass du auffüllen möchtest.</p>
+        </details>
+        <details class="faq">
           <summary>Kann ich ein Inspo-Bild schicken?</summary>
           <p>Gern, schick es einfach mit deiner DM. Dann sehe ich gleich, welches Design-Level passt.</p>
         </details>
@@ -818,7 +828,7 @@
 <!-- ============ KONTAKT ============ -->
 <section id="kontakt" class="relative px-5 sm:px-8 py-[clamp(5rem,14vw,11rem)] scroll-mt-20 overflow-hidden" style="background: url('brand_assets/leo_fur.webp') center/cover;">
   <!-- Soft Warm Silk Ivory Overlay for maximum readability with bright plush fur atmosphere -->
-  <div class="absolute inset-0 bg-gradient-to-b from-void/88 via-void/78 to-void/92 backdrop-blur-[0.5px] pointer-events-none"></div>
+  <div class="absolute inset-0 backdrop-blur-[0.5px] pointer-events-none"></div>
 
   <div class="mx-auto max-w-[88rem] relative z-10">
     <div class="grid lg:grid-cols-[1.1fr_0.9fr] gap-12 items-center">
@@ -857,6 +867,8 @@
             <span class="t-display text-[1.15rem]">Instagram-DM</span>
             <span class="btn-sub">Nachricht wird kopiert &middot; öffnet Instagram &nearr;&#xFE0E;</span>
           </a>
+          <!-- the address stays off the indexed homepage; the imprint has it -->
+          <p class="kontakt-alt">Kein Instagram? Schreib mir eine E-Mail, die Adresse steht im <a href="impressum.html">Impressum</a>.</p>
         </div>
 
       </div>
@@ -1021,6 +1033,6 @@
 </footer>
 
 
-<script src="js/main.js?v=f3eff6dc" defer></script>
+<script src="js/main.js?v=0c20aed3" defer></script>
 </body>
 </html>

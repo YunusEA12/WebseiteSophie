@@ -38,6 +38,11 @@ gesperrt („noindex“), also noch nicht öffentlich teilen.
       sechs unter „Mehr Sets“ (Hände ohne Gesicht sind meist unproblematisch, sicher ist sicher).
 - [ ] **Häufige Fragen** auf der Seite lesen: Stimmt alles? Vor allem, dass Inspo-Bilder per DM
       willkommen sind und es sonntags und an Feiertagen keine Termine gibt.
+- [ ] **Stadtteil** (optional): Darf auf der Seite stehen, in welchem Stadtteil das Studio liegt?
+      Hilft Kundinnen bei der Anfahrt und bei Google. Die Straße bleibt erst in der Bestätigung.
+- [ ] **Vertrauen** (optional): 3 bis 5 Kundinnen um ein kurzes Feedback bitten (Vorname, mit
+      Erlaubnis) und ein Foto von Sophie bei der Arbeit oder vom Studio. Daraus wird ein Abschnitt
+      mit echten Stimmen. Nichts davon wird erfunden.
 - [ ] **Adresse im Impressum** (optional ersetzen): Die Anschrift muss „ladungsfähig“ sein, also
       eine Adresse, unter der Sophie Post und Gerichtsschreiben tatsächlich erreichen. Am
       sichersten: c/o bei einer vertrauten Person, die Post annimmt (schriftliche
@@ -194,8 +199,18 @@ Formulare). Angreifbar sind die Konten, über die sie läuft:
   Arbeitsdateien aus (`*.md`, `*.mjs`, `fuer-sophie/`, die großen Original-Bilder). Neue
   Notizen oder Skripte dort eintragen oder als `.md` / `.mjs` anlegen. Bis Oktober 2026 stand
   hier eine `.nojekyll`, und GitHub lieferte jede Datei aus, auch diese Checkliste.
-- **Vor jedem Veröffentlichen** `node stamp.mjs` ausführen: hängt neue Versionsnummern an
-  CSS und JS, damit Handys keine alte Fassung aus dem Zwischenspeicher zeigen.
+- **Vor jedem Veröffentlichen** `node stamp.mjs` ausführen: prüft zuerst Klassen ohne CSS,
+  fehlende Dateien und den Startpreis, dann hängt es neue Versionsnummern an CSS und JS, damit
+  Handys keine alte Fassung aus dem Zwischenspeicher zeigen.
+- **Wo Preise stehen** (bei einer Änderung alle anpassen; `stamp.mjs` warnt bei Abweichungen
+  des Startpreises und bei Beträgen in den Fragen, die der Rechner nicht kennt):
+  Preisrechner in `index.html` (`data-len`, `data-lvl`, `data-add`, `data-extra`, `data-solo` und
+  die Beschriftungen daneben), „ab 50 €“ im Startbereich, `"priceRange"` in den Daten für Google,
+  die Antworten unter „Häufige Fragen“, die Beispielbilder unter „Arbeiten“ (Level + Preis) und
+  Sophies Preisliste auf Instagram. Spannen wie 35–40 € rechnet die Seite mit dem oberen Wert.
 - Ändert sich das kleine Skript im `<head>` von `index.html`, muss sein Hash in der
   Sicherheitsregel (`Content-Security-Policy`) mitgeändert werden, sonst läuft es nicht.
 - Lokal ansehen: `node serve.mjs`, dann <http://localhost:3000>.
+- Abnahmetest nach größeren Änderungen: bei laufendem Server `node tests/abnahme.js` (braucht
+  Playwright). Rechnet alle 16 Kombinationen aus Länge und Level, Extras und Soak Off durch und
+  bedient Menü, Gutschein, Fragen, AGB, Galerie und Sprung-Link per Tastatur.

@@ -34,6 +34,8 @@
     if (target && !e.defaultPrevented) {
       e.preventDefault();
       target.scrollIntoView({ behavior: 'smooth' });
+      // the skip link must also move the keyboard past the navigation
+      if (a.classList.contains('skip-link')) target.focus({ preventScroll: true });
     }
   });
 
@@ -308,9 +310,9 @@
         flower.classList.add('bloomed');
         setTimeout(function () {
           loader.classList.add('done');
-        }, reduce ? 60 : 480);
+        }, reduce ? 60 : 300);
       }
-    }, reduce ? 18 : 75);
+    }, reduce ? 18 : 45);
   }
 
   /* ==========================================================================
@@ -459,7 +461,7 @@
     var caps = [].slice.call(box.querySelectorAll('.hero-cap'));
     var dots = [].slice.call(box.querySelectorAll('.hero-dot'));
     if (slides.length < 2) return;
-    var at = 0, timer, held = false;
+    var at = 0, timer, held = false, paused = false;
 
     /* Only the first picture comes with the page. Each further one is
        fetched while the one before it is showing - on a phone the browser
@@ -483,10 +485,22 @@
       caps.forEach(function (el, i) { el.classList.toggle('is-on', i === at); });
       dots.forEach(function (el, i) { el.classList.toggle('is-on', i === at); });
       backdropImgs.forEach(function (el, i) { el.classList.toggle('is-on', i === at); });
+      mark();
     }
 
+    // screen readers get only the picture and caption on show, and the dot
+    // of that picture is marked as the current one
+    function mark() {
+      slides.forEach(function (el, i) { el.setAttribute('aria-hidden', i === at ? 'false' : 'true'); });
+      caps.forEach(function (el, i) { el.setAttribute('aria-hidden', i === at ? 'false' : 'true'); });
+      dots.forEach(function (el, i) {
+        if (i === at) el.setAttribute('aria-current', 'true'); else el.removeAttribute('aria-current');
+      });
+    }
+    mark();
+
     function play() {
-      if (reduce || held) return;
+      if (reduce || held || paused) return;
       clearInterval(timer);
       timer = setInterval(function () { go(at + 1); }, 4200);
     }
@@ -512,6 +526,29 @@
     dots.forEach(function (d) {
       d.addEventListener('click', function () { go(+d.getAttribute('data-go')); play(); });
     });
+
+    // the show moves on by itself, so it gets a visible pause (WCAG 2.2.2);
+    // with reduced motion it never starts, and needs none
+    if (!reduce) {
+      var row = box.querySelector('.hero-dots');
+      var pauseBtn = document.createElement('button');
+      pauseBtn.type = 'button';
+      pauseBtn.className = 'hero-pause';
+      pauseBtn.innerHTML =
+        '<svg class="i-pause" viewBox="0 0 12 12" aria-hidden="true"><rect x="2.5" y="2" width="2.4" height="8" rx=".6"/><rect x="7.1" y="2" width="2.4" height="8" rx=".6"/></svg>' +
+        '<svg class="i-play" viewBox="0 0 12 12" aria-hidden="true"><path d="M3.5 2.2v7.6c0 .4.4.6.7.4l6-3.8c.3-.2.3-.6 0-.8l-6-3.8c-.3-.2-.7 0-.7.4z"/></svg>';
+      var label = function () {
+        pauseBtn.setAttribute('aria-label', paused ? 'Diashow fortsetzen' : 'Diashow anhalten');
+        pauseBtn.classList.toggle('is-paused', paused);
+      };
+      label();
+      pauseBtn.addEventListener('click', function () {
+        paused = !paused;
+        label();
+        if (paused) clearInterval(timer); else play();
+      });
+      if (row) row.appendChild(pauseBtn);
+    }
 
     // a swipe moves the card along
     var sx = null;
@@ -1042,7 +1079,17 @@
     var preEl = document.getElementById('total-pre');
     var bubbleEl = document.getElementById('msg-bubble');
     var ctaEl = document.getElementById('cta-label');
+    var noteEl = document.querySelector('#calc-sum .calc-note');
     if (!totalEl || !ctaEl) return;
+
+    // the line under the price says what kind of price it is: charms and 3D
+    // make it an "ab" price, and the 2 to 4 hours are for a set, not for a
+    // soak off alone
+    var NOTES = {
+      set:  'Endpreis · Barzahlung · ca. 2 bis 4 Std.',
+      open: 'Preis ab · Charms und 3D bestätigt Sophie nach deinem Design · Barzahlung · ca. 2 bis 4 Std.',
+      solo: 'Endpreis · Barzahlung'
+    };
 
     var touched = false;
 
@@ -1155,6 +1202,7 @@
       }
 
       if (preEl) preEl.hidden = !s.open;
+      if (noteEl) noteEl.textContent = NOTES[s.solo ? 'solo' : s.open ? 'open' : 'set'];
       ctaEl.textContent = (s.solo ? 'Soak Off' : 'Set') + (s.open ? ' ' : ' für ') +
                           euro([s.min, s.max], s.open) + ' anfragen';
 

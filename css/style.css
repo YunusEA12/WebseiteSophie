@@ -4075,3 +4075,149 @@ main > section:first-of-type.atmos::before {
 @media (prefers-reduced-motion: reduce) {
   .faq[open] p { animation: none; }
 }
+
+/* about: Sophie's face to the name, under "mit Liebe zum Detail" */
+.about-me {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1.4rem;
+}
+
+.about-av {
+  flex: 0 0 auto;
+  width: 5.25rem;
+  height: 5.25rem;
+  border-radius: 999px;
+  object-fit: cover;
+  box-shadow:
+    0 0 0 2px rgba(224, 179, 109, .75),
+    0 0 0 5px #14100D,
+    0 16px 34px -14px rgba(0, 0, 0, .85);
+}
+
+.about-name { margin: 0; }
+
+.about-name .t-script {
+  display: block;
+  font-size: 2rem;
+  line-height: 1;
+  color: #F7F2EA;
+}
+
+.about-role {
+  display: block;
+  margin-top: .3rem;
+  font-size: .9rem;
+  line-height: 1.4;
+  color: #918073;
+}
+
+@media (min-width: 1024px) {
+  .about-me {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.1rem;
+    margin-top: 2rem;
+  }
+
+  .about-av {
+    width: 8.5rem;
+    height: 8.5rem;
+  }
+
+  .about-name .t-script { font-size: 2.3rem; }
+}
+
+/* Design Level: a way to the examples, also on phones where the lines
+   under each level are hidden */
+.lvl-link {
+  margin-left: .5em;
+  font-family: Inter, system-ui, sans-serif;
+  font-size: .72rem;
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: none;
+  color: #E0B36D;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.lvl-link:active { opacity: .7; }
+.lvl-link:focus-visible { outline: 2px solid #FF4D86; outline-offset: 2px; border-radius: 4px; }
+
+/* contact: the way in without Instagram */
+.kontakt-alt {
+  margin-top: .9rem;
+  font-size: .9rem;
+  line-height: 1.6;
+  color: #918073;
+}
+
+.kontakt-alt a {
+  color: #E0B36D;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.kontakt-alt a:active { opacity: .7; }
+.kontakt-alt a:focus-visible { outline: 2px solid #FF4D86; outline-offset: 2px; border-radius: 4px; }
+
+@media (hover: hover) {
+  .lvl-link:hover, .kontakt-alt a:hover { color: #FF4D86; }
+}
+
+/* the first stop for the keyboard: jumps past the navigation */
+.skip-link {
+  position: fixed;
+  top: .75rem;
+  left: .75rem;
+  z-index: 200;
+  padding: .65rem 1.1rem;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #EE2A6E 0%, #CF1059 100%);
+  color: #fff;
+  font-family: "Space Grotesk", sans-serif;
+  font-weight: 600;
+  font-size: .9rem;
+  box-shadow: 0 10px 24px -10px rgba(229, 20, 95, .6);
+  transform: translate3d(0, -180%, 0);
+  transition: transform .3s var(--ease-out);
+}
+
+.skip-link:focus,
+.skip-link:focus-visible {
+  transform: none;
+  outline: 2px solid #E0B36D;
+  outline-offset: 3px;
+}
+
+.skip-link:active { opacity: .85; }
+
+/* main takes the focus only so the next Tab starts there */
+main:focus { outline: none; }
+
+/* pause for the slideshow, beside its dots */
+.hero-pause {
+  display: grid;
+  place-items: center;
+  width: 1.65rem;
+  height: 1.65rem;
+  margin: -.55rem 0 -.55rem .35rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, .4);
+  background: rgba(0, 0, 0, .3);
+  color: #fff;
+  transition: transform .3s var(--ease-spring);
+}
+
+.hero-pause svg { width: .7rem; height: .7rem; fill: currentColor; }
+.hero-pause .i-play,
+.hero-pause.is-paused .i-pause { display: none; }
+.hero-pause.is-paused .i-play { display: block; }
+.hero-pause:active { transform: scale(.92); }
+.hero-pause:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+
+@media (hover: hover) {
+  .hero-pause:hover { transform: scale(1.08); background: rgba(0, 0, 0, .5); }
+}

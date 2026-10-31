@@ -20,4 +20,5 @@ exclude:
   - package-lock.json
   - node_modules
   - scripts
+  - tests
   - temporary screenshots

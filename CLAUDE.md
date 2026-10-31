@@ -52,3 +52,12 @@
 - Do not stop after one screenshot pass
 - Do not use `transition-all`
 - Do not use default Tailwind blue/indigo as primary color
+## Projekt-Hinweise (gerberxnails)
+- Tailwind ist hier vorkompiliert (`css/tailwind-utils.css`), nicht per CDN: Eine Klasse wirkt nur, wenn sie dort steht. Neue Stile kommen in `css/style.css`.
+- Vor jedem Commit `node stamp.mjs`: prüft Klassen ohne CSS, fehlende Dateien und den Startpreis, dann setzt es neue Versionsnummern an CSS und JS.
+- Nach Änderungen am Rechner, an der Bedienung oder an den Abschnitten: `node serve.mjs`, dann `node tests/abnahme.js` (Playwright; prüft alle Preiskombinationen, Nachrichten und die Tastaturbedienung).
+- `screenshot.mjs` nutzt Playwright, wo es installiert ist (Cloud), sonst Puppeteer unter Windows (Pfade über `PUPPETEER_PATH` und `CHROME_PATH`).
+- Auf die Website kommen keine Arbeitsdateien: `_config.yml` schließt `*.md`, `*.mjs` und `fuer-sophie/` aus.
+- Das kleine Skript im `<head>` von `index.html` ist per Hash in der Sicherheitsregel erlaubt; ändert es sich, den Hash mitändern.
+- Der Anfrageweg (Nachricht wird kopiert, Instagram öffnet sich, am Computer nach kurzer Anzeige) ist abgenommen. Ein Umbau davon wurde am 8. Oktober 2026 auf Wunsch zurückgenommen: nicht erneut umbauen, ohne zu fragen.
+- Livegang, offene Fragen an Sophie, Preise und Pflege: `LIVEGANG.md`.
