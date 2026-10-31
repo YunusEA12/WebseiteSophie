@@ -76,7 +76,7 @@
 <link rel="preload" href="fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="fonts/fonts.css?v=6096b837">
 <link rel="stylesheet" href="css/tailwind-base.css?v=07d44d62">
-<link rel="stylesheet" href="css/style.css?v=7e4185b3">
+<link rel="stylesheet" href="css/style.css?v=42f062a1">
 <link rel="stylesheet" href="css/tailwind-utils.css?v=735c9c50">
 </head>
 <body class="antialiased">
@@ -244,6 +244,7 @@
       <a href="#arbeiten"   class="menu-link t-display text-[1.12rem] tracking-[-.01em] text-[#F7F2EA] hover:text-neon-pink transition-colors py-1.5 w-full">Arbeiten</a>
       <a href="#policy"     class="menu-link t-display text-[1.12rem] tracking-[-.01em] text-[#F7F2EA] hover:text-neon-pink transition-colors py-1.5 w-full">Studio Policy</a>
       <a href="#gutschein"  class="menu-link t-display text-[1.12rem] tracking-[-.01em] text-[#F7F2EA] hover:text-neon-pink transition-colors py-1.5 w-full">Gutschein</a>
+      <a href="#faq"        class="menu-link t-display text-[1.12rem] tracking-[-.01em] text-[#F7F2EA] hover:text-neon-pink transition-colors py-1.5 w-full">Häufige Fragen</a>
       <a href="#kontakt"    class="menu-link t-display text-[1.12rem] tracking-[-.01em] text-[#F7F2EA] hover:text-neon-pink transition-colors py-1.5 w-full">Kontakt</a>
     </nav>
 
@@ -317,21 +318,22 @@
     <figure class="hero-pic hero-pic--lg"><img src="brand_assets/sets/gold-gems-close.webp" alt="Nahaufnahme: eckige Nägel mit goldenen Strasssteinen, Goldperlen und brauner French" width="720" height="900" decoding="async"><img class="hero-pic-bloom" src="brand_assets/hibiscus_pink.webp" alt="" width="64" height="64" decoding="async"></figure>
   </div>
 
-  <!-- Stats & Scroll indicator: answers the three things customers ask most in DMs -->
+  <!-- Stats & Scroll indicator: answers the three things customers ask most in DMs;
+       each one leads to the part of the page that says more -->
   <div class="mx-auto w-full max-w-[88rem] relative z-10 mt-8 pt-4 flex items-end justify-between gap-6">
     <div class="js-rv flex justify-between sm:justify-start gap-4 sm:gap-14 w-full sm:w-auto">
-      <div class="rv">
-        <div class="t-display text-[1.65rem] sm:text-[2.4rem] text-chalk"><span class="stat-pre">ab</span>50&thinsp;&euro;</div>
-        <div class="text-[.85rem] sm:text-[.95rem] text-chalk-mute mt-1 whitespace-nowrap">für dein Set</div>
-      </div>
-      <div class="rv">
-        <div class="t-display text-[1.65rem] sm:text-[2.4rem] text-chalk">Neu?</div>
-        <div class="text-[.85rem] sm:text-[.95rem] text-chalk-mute mt-1">Willkommen!</div>
-      </div>
-      <div class="rv">
-        <div class="t-display text-[1.65rem] sm:text-[2.4rem] text-sand-gold">DM</div>
-        <div class="text-[.85rem] sm:text-[.95rem] text-chalk-mute mt-1">für freie Termine</div>
-      </div>
+      <a href="#preise" class="rv stat-link">
+        <span class="block t-display text-[1.65rem] sm:text-[2.4rem] text-chalk"><span class="stat-pre">ab</span>50&thinsp;&euro;</span>
+        <span class="stat-sub block text-[.85rem] sm:text-[.95rem] text-chalk-mute mt-1 whitespace-nowrap">für dein Set</span>
+      </a>
+      <a href="#ablauf" class="rv stat-link">
+        <span class="block t-display text-[1.65rem] sm:text-[2.4rem] text-chalk">Neu?</span>
+        <span class="stat-sub block text-[.85rem] sm:text-[.95rem] text-chalk-mute mt-1 whitespace-nowrap">Willkommen!</span>
+      </a>
+      <a href="#kontakt" class="rv stat-link">
+        <span class="block t-display text-[1.65rem] sm:text-[2.4rem] text-sand-gold">DM</span>
+        <span class="stat-sub block text-[.85rem] sm:text-[.95rem] text-chalk-mute mt-1 whitespace-nowrap">für freie Termine</span>
+      </a>
     </div>
 
     <div class="hidden lg:flex items-center gap-3 text-chalk-mute shrink-0">
@@ -610,12 +612,79 @@
       </button>
     </div>
 
+    <!-- weitere Sets zum Durchwischen (am Computer eine Reihe); Länge und
+         Level hat Sophie bestätigt -->
+    <p class="js-rv t-script details-title more-title text-sand-gold leading-none">Mehr Sets</p>
+    <ul class="js-rv rv more-sets" aria-label="Weitere Arbeiten">
+      <li><button type="button" class="tile" data-view>
+        <span class="media block aspect-[4/5] rounded-[34px] sm:rounded-[38px] overflow-hidden shadow-[0_12px_28px_rgba(70,45,20,0.1)] border border-sand-gold/25"><img src="brand_assets/sets/tropical-lily-sm.webp" srcset="brand_assets/sets/tropical-lily-sm.webp 640w, brand_assets/sets/tropical-lily.webp 1200w" sizes="(min-width: 1024px) 15vw, (min-width: 640px) 38vw, 64vw" data-full="brand_assets/sets/tropical-lily.webp" alt="Mandelnägel mit handgemalten Lilien, 3D-Muschel und Türkis-Akzenten" loading="lazy" decoding="async" width="800" height="1000" class="w-full h-full object-cover">
+          <span class="media-cap"><span class="block t-display text-[1rem]">Tropical Lily</span><span class="block text-[.75rem] text-white/80">Medium · Level 3</span></span></span>
+      </button></li>
+      <li><button type="button" class="tile" data-view>
+        <span class="media block aspect-[4/5] rounded-[34px] sm:rounded-[38px] overflow-hidden shadow-[0_12px_28px_rgba(70,45,20,0.1)] border border-sand-gold/25"><img src="brand_assets/sets/burgundy-french-sm.webp" srcset="brand_assets/sets/burgundy-french-sm.webp 640w, brand_assets/sets/burgundy-french.webp 1200w" sizes="(min-width: 1024px) 15vw, (min-width: 640px) 38vw, 64vw" data-full="brand_assets/sets/burgundy-french.webp" alt="Mandelnägel mit bordeauxroter French und goldenem Stern-Charm" loading="lazy" decoding="async" width="800" height="1000" class="w-full h-full object-cover">
+          <span class="media-cap"><span class="block t-display text-[1rem]">Burgundy French</span><span class="block text-[.75rem] text-white/80">Medium · Level 2</span></span></span>
+      </button></li>
+      <li><button type="button" class="tile" data-view>
+        <span class="media block aspect-[4/5] rounded-[34px] sm:rounded-[38px] overflow-hidden shadow-[0_12px_28px_rgba(70,45,20,0.1)] border border-sand-gold/25"><img src="brand_assets/sets/blueberry-vichy-sm.webp" srcset="brand_assets/sets/blueberry-vichy-sm.webp 640w, brand_assets/sets/blueberry-vichy.webp 1200w" sizes="(min-width: 1024px) 15vw, (min-width: 640px) 38vw, 64vw" data-full="brand_assets/sets/blueberry-vichy.webp" alt="Pastellfarbene Mandelnägel mit 3D-Blaubeeren, Vichy-Muster und Schleife" loading="lazy" decoding="async" width="800" height="1000" class="w-full h-full object-cover">
+          <span class="media-cap"><span class="block t-display text-[1rem]">Blueberry &amp; Vichy</span><span class="block text-[.75rem] text-white/80">Medium · Level 3</span></span></span>
+      </button></li>
+      <li><button type="button" class="tile" data-view>
+        <span class="media block aspect-[4/5] rounded-[34px] sm:rounded-[38px] overflow-hidden shadow-[0_12px_28px_rgba(70,45,20,0.1)] border border-sand-gold/25"><img src="brand_assets/sets/beach-chrome-sm.webp" srcset="brand_assets/sets/beach-chrome-sm.webp 640w, brand_assets/sets/beach-chrome.webp 1200w" sizes="(min-width: 1024px) 15vw, (min-width: 640px) 38vw, 64vw" data-full="brand_assets/sets/beach-chrome.webp" alt="Lange eckige Nägel im Strand-Look mit 3D-Kokosnüssen, Seestern und Silber-Chrome" loading="lazy" decoding="async" width="800" height="1000" class="w-full h-full object-cover">
+          <span class="media-cap"><span class="block t-display text-[1rem]">Beach 3D &amp; Chrome</span><span class="block text-[.75rem] text-white/80">Lang · Level 4</span></span></span>
+      </button></li>
+      <li><button type="button" class="tile" data-view>
+        <span class="media block aspect-[4/5] rounded-[34px] sm:rounded-[38px] overflow-hidden shadow-[0_12px_28px_rgba(70,45,20,0.1)] border border-sand-gold/25"><img src="brand_assets/sets/leo-spots-sm.webp" srcset="brand_assets/sets/leo-spots-sm.webp 640w, brand_assets/sets/leo-spots.webp 1200w" sizes="(min-width: 1024px) 15vw, (min-width: 640px) 38vw, 64vw" data-full="brand_assets/sets/leo-spots.webp" alt="Kurze runde Nägel mit handgemaltem Leo-Print, Punkten und bordeauxroter French" loading="lazy" decoding="async" width="800" height="1000" class="w-full h-full object-cover">
+          <span class="media-cap"><span class="block t-display text-[1rem]">Leo Spots</span><span class="block text-[.75rem] text-white/80">Kurz · handgemalt</span></span></span>
+      </button></li>
+      <li><button type="button" class="tile" data-view>
+        <span class="media block aspect-[4/5] rounded-[34px] sm:rounded-[38px] overflow-hidden shadow-[0_12px_28px_rgba(70,45,20,0.1)] border border-sand-gold/25"><img src="brand_assets/sets/clean-nude-sm.webp" srcset="brand_assets/sets/clean-nude-sm.webp 640w, brand_assets/sets/clean-nude.webp 1200w" sizes="(min-width: 1024px) 15vw, (min-width: 640px) 38vw, 64vw" data-full="brand_assets/sets/clean-nude.webp" alt="Lange Mandelnägel in zartem Nude-Rosa, einfarbig" loading="lazy" decoding="async" width="800" height="1000" class="w-full h-full object-cover">
+          <span class="media-cap"><span class="block t-display text-[1rem]">Clean Girl</span><span class="block text-[.75rem] text-white/80">Level 1 · einfarbig</span></span></span>
+      </button></li>
+    </ul>
+
     <!-- Instagram Discover Button -->
     <div class="mt-10 text-center">
       <a href="https://www.instagram.com/gerberxnails/" target="_blank" rel="noopener noreferrer"
          data-mag class="btn btn-line px-5 sm:px-8 py-3 sm:py-3.5 text-[.84rem] sm:text-[.92rem] max-w-full inline-flex text-center">
         <span>Alle Sets auf Instagram entdecken (@gerberxnails) &nearr;&#xFE0E;</span>
       </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ABLAUF ============ -->
+<!-- for first-timers ("Neu?" in the hero leads here): booking in four steps -->
+<section id="ablauf" class="relative px-5 sm:px-8 py-[clamp(4rem,9vw,7rem)] scroll-mt-20">
+  <div class="mx-auto max-w-[88rem]">
+    <div class="js-rv mb-10">
+      <p class="t-script text-[clamp(2.2rem,6vw,3.6rem)] text-sand-bronze leading-none">So einfach geht&rsquo;s</p>
+      <h2 class="t-display mt-2 text-[clamp(1.8rem,4.5vw,3rem)] tracking-[-.035em]">Dein Termin in 4 Schritten</h2>
+    </div>
+    <ol class="js-rv steps">
+      <li class="rv step">
+        <span class="step-n" aria-hidden="true">1</span>
+        <h3 class="step-title t-display">Set zusammenstellen</h3>
+        <p class="step-text">Länge, Design und Extras im Preisrechner wählen. Der Preis steht sofort fest.</p>
+      </li>
+      <li class="rv step">
+        <span class="step-n" aria-hidden="true">2</span>
+        <h3 class="step-title t-display">Nachricht senden</h3>
+        <p class="step-text">Ein Tipp kopiert deine fertige Nachricht und öffnet Instagram. Einfügen, Wunschtage dazu, senden.</p>
+      </li>
+      <li class="rv step">
+        <span class="step-n" aria-hidden="true">3</span>
+        <h3 class="step-title t-display">Termin bestätigen</h3>
+        <p class="step-text">Du bekommst Datum, Preis und Adresse per DM und sagst kurz „Ja“.</p>
+      </li>
+      <li class="rv step">
+        <span class="step-n" aria-hidden="true">4</span>
+        <h3 class="step-title t-display">Zurücklehnen</h3>
+        <p class="step-text">Ca. 2 bis 4&nbsp;Stunden im Homestudio, russische Maniküre inklusive. Bezahlt wird bar.</p>
+      </li>
+    </ol>
+    <div class="js-rv rv steps-cta">
+      <a href="#preise" data-mag class="btn btn-solid px-8 py-3.5 text-[.94rem]"><span>Set zusammenstellen</span></a>
+      <a href="#faq" data-mag class="btn btn-line px-8 py-3.5 text-[.94rem]"><span>Häufige Fragen</span></a>
     </div>
   </div>
 </section>
@@ -692,6 +761,54 @@
           <span class="btn-sub">Nachricht wird kopiert &middot; öffnet Instagram</span>
         </a>
         <p class="gift-note">Du bekommst ihn als Bild zum Verschenken. Mindestens 3&nbsp;Jahre gültig.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ HÄUFIGE FRAGEN ============ -->
+<!-- only what the site already says elsewhere, in short. Questions that keep
+     coming up in the DMs belong here too (LIVEGANG.md, Pflege). -->
+<section id="faq" class="relative px-5 sm:px-8 pb-[clamp(4rem,9vw,7rem)] scroll-mt-20">
+  <div class="mx-auto max-w-[88rem]">
+    <div class="js-rv faq-wrap">
+      <div class="faq-head">
+        <p class="t-script text-[clamp(2.2rem,6vw,3.6rem)] text-sand-bronze leading-none">Gut zu wissen</p>
+        <h2 class="t-display mt-2 text-[clamp(1.8rem,4.5vw,3rem)] tracking-[-.035em]">Häufige Fragen</h2>
+      </div>
+      <div class="rv faq-list">
+        <details class="faq">
+          <summary>Was ist russische Maniküre?</summary>
+          <p>Eine besonders gründliche Maniküre: Die Nagelhaut wird mit feinen Fräsaufsätzen sanft entfernt, so sitzt die Farbe ganz nah am Nagelrand. Bei mir ist sie bei jedem Set inklusive.</p>
+        </details>
+        <details class="faq">
+          <summary>Was heißt Design Level 1 bis 4?</summary>
+          <p>Level&nbsp;1 ist einfarbig, Level&nbsp;4 sehr aufwendig, zum Beispiel handgemalt mit 3D-Elementen. Unter <a href="#arbeiten">Arbeiten</a> siehst du zu jedem Level ein Beispiel.</p>
+        </details>
+        <details class="faq">
+          <summary>Ich trage noch Nägel aus einem anderen Studio.</summary>
+          <p>Kein Problem: Ich nehme sie für 10&nbsp;€ ab, bevor dein neues Set entsteht. Wähle im <a href="#preise">Preisrechner</a> „Fremde Arbeit entfernen“.</p>
+        </details>
+        <details class="faq">
+          <summary>Kann ich nur ablösen lassen?</summary>
+          <p>Ja, „Nur Soak Off“ kostet 20&nbsp;€, ohne neues Set.</p>
+        </details>
+        <details class="faq">
+          <summary>Kann ich ein Inspo-Bild schicken?</summary>
+          <p>Gern, schick es einfach mit deiner DM. Dann sehe ich gleich, welches Design-Level passt.</p>
+        </details>
+        <details class="faq">
+          <summary>Wo ist das Studio?</summary>
+          <p>In meinem Homestudio in Stuttgart. Die genaue Adresse bekommst du mit der Terminbestätigung.</p>
+        </details>
+        <details class="faq">
+          <summary>Wann hast du Termine frei?</summary>
+          <p>Schreib mir per DM, welche Tage dir passen. Sonntags und an Feiertagen gibt es keine Termine.</p>
+        </details>
+        <details class="faq">
+          <summary>Wie bezahle ich?</summary>
+          <p>Bar nach der Behandlung. Alle Preise sind Endpreise.</p>
+        </details>
       </div>
     </div>
   </div>
@@ -887,6 +1004,7 @@
       <a href="#arbeiten"   class="navlink">Arbeiten</a>
       <a href="#policy"     class="navlink">Studio Policy</a>
       <a href="#gutschein"  class="navlink">Gutschein</a>
+      <a href="#faq"        class="navlink">FAQ</a>
       <a href="#kontakt"    class="navlink">Kontakt</a>
     </nav>
     <div class="text-[.78rem] text-chalk-mute text-center lg:text-right">
