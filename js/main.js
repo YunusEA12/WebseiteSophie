@@ -527,6 +527,13 @@
       d.addEventListener('click', function () { go(+d.getAttribute('data-go')); play(); });
     });
 
+    box.querySelectorAll('.showcase-arrow').forEach(function (button) {
+      button.addEventListener('click', function () {
+        go(at + (button.classList.contains('showcase-next') ? 1 : -1));
+        play();
+      });
+    });
+
     // the show moves on by itself, so it gets a visible pause (WCAG 2.2.2);
     // with reduced motion it never starts, and needs none
     if (!reduce) {

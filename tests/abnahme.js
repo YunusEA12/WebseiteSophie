@@ -124,6 +124,16 @@ function ok(cond, msg) { if (cond) passes++; else { fails++; console.log('  FEHL
   await fresh.close();
 
   // 9. Slideshow: nur das aktive Bild für Screenreader, Pause-Knopf
+  ok(await page.locator('#arbeiten [data-view]').count() === 4, 'Portfolio enthält genau die vier Design-Level');
+  const arrowsWork = await page.evaluate(() => {
+    const active = () => Number(document.querySelector('.hero-dot[aria-current="true"]').getAttribute('data-go'));
+    const before = active();
+    document.querySelector('.showcase-next').click();
+    const next = active();
+    document.querySelector('.showcase-prev').click();
+    return next === (before + 1) % 6 && active() === before;
+  });
+  ok(arrowsWork, 'Slideshow-Pfeile wechseln vor und zurück, auch über das letzte Bild hinaus');
   const aria = await page.evaluate(() => {
     const s = [...document.querySelectorAll('.hero-slide')];
     return { hidden: s.filter(x => x.getAttribute('aria-hidden') === 'true').length, shown: s.filter(x => x.getAttribute('aria-hidden') === 'false').length,

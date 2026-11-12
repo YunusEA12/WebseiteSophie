@@ -4216,3 +4216,69 @@ main:focus { outline: none; }
 @media (hover: hover) {
   .hero-pause:hover { transform: scale(1.08); background: rgba(0, 0, 0, .5); }
 }
+/* Focused first impression and compact supporting sections. */
+#top > .intro { position: relative; padding: 7rem 2rem 4rem; min-height: min(850px, 100svh); display: grid; align-items: center; overflow: hidden; }
+.intro-backdrop { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(20,16,13,.48), rgba(20,16,13,.88)), url('../brand_assets/leo_fur.webp') center/cover; opacity: .7; mask-image: linear-gradient(#000 75%, transparent); }
+.intro-layout { position: relative; z-index: 1; width: 100%; max-width: 78rem; margin: auto; display: grid; grid-template-columns: 1.4fr 1fr; align-items: center; gap: 4rem; }
+.intro-eyebrow { font-size: .72rem; letter-spacing: .14em; color: #E0B36D; line-height: 1.6; }
+.intro-brand { font-size: clamp(5rem, 8.5vw, 8.5rem); line-height: 1.15; color: #F7F2EA; margin: .7rem 0 1rem; }
+.intro-title { font-size: clamp(1.65rem, 3vw, 2.5rem); letter-spacing: -.035em; line-height: 1.2; }
+.intro-text { max-width: 39ch; font-size: 1.05rem; line-height: 1.7; color: #C4B3A3; margin-top: 1rem; }
+.intro-actions { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 1.75rem; }
+.intro-actions .btn { padding: .95rem 1.4rem; font-size: .9rem; }
+.intro-availability { color: #C4B3A3; font-size: .78rem; line-height: 1.5; margin-top: 1rem; }
+.intro-photo { position: relative; width: min(100%, 340px); margin: 0 1rem 0 auto; transform: rotate(3deg); }
+.intro-photo > img:first-child { width: 100%; aspect-ratio: 4/5; object-fit: cover; border-radius: 28px; border: 1px solid rgba(224,179,109,.4); box-shadow: 0 24px 60px -25px #000; }
+.intro-photo .intro-flower { position: absolute; width: 30%; right: -5%; top: -8%; }
+.intro-photo figcaption { font-size: .78rem; color: #E0B36D; text-align: center; margin-top: 1rem; }
+.showcase-intro { position: relative; z-index: 1; margin-bottom: 1.25rem; }
+.showcase-intro h2 { font-size: 1.4rem; letter-spacing: -.025em; }
+.showcase-intro p { font-size: .85rem; color: #C4B3A3; margin-top: .4rem; }
+#showcase .showcase-bloom { display: none; }
+#showcase .showcase-arrow { position: absolute; z-index: 5; top: 44%; width: 44px; height: 44px; border-radius: 50%; border: 1px solid rgba(247,242,234,.4); background: rgba(20,16,13,.75); color: #fff; font-size: 2rem; line-height: 1; cursor: pointer; }
+.showcase-prev { left: .75rem; } .showcase-next { right: .75rem; }
+.showcase-arrow:hover { background: #14100D; } .showcase-arrow:focus-visible { outline: 2px solid #FF4D86; outline-offset: 3px; } .showcase-arrow:active { transform: scale(.94); }
+#kontaktShow #showcase { display: block; }
+#kontaktShow .showcase-intro h2 { font-size: 1.2rem; }
+.service-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 2rem; list-style: none; padding: 0; }
+.service-list li { padding: 1.1rem 0; border-top: 1px solid rgba(224,179,109,.22); }
+.service-list strong { display: block; font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; }
+.service-list span { display: block; color: #C4B3A3; font-size: .95rem; line-height: 1.6; margin-top: .3rem; }
+#leistungen { padding-top: 3.5rem; }
+@media (max-width: 1023px) {
+  #top > .intro { min-height: auto; padding: 5.25rem 1.25rem 2.5rem; }
+  .intro-layout { display: flex; flex-direction: column; gap: 0; text-align: center; }
+  .intro-copy { display: contents; }
+  .intro-eyebrow { order: 1; font-size: .62rem; letter-spacing: .1em; }
+  .intro-brand { order: 2; font-size: clamp(3.6rem, 14vw, 6rem); margin: .35rem 0 .5rem; }
+  .intro-title { order: 3; font-size: 1.6rem; }
+  .intro-text { order: 4; font-size: .92rem; line-height: 1.6; max-width: 36ch; margin-top: .65rem; }
+  .intro-photo { order: 5; width: clamp(190px, 50vw, 235px); margin: 1.5rem auto 0; }
+  .intro-photo figcaption { display: none; }
+  .intro-actions { order: 6; justify-content: center; margin-top: 1.5rem; }
+  .intro-availability { order: 7; font-size: .7rem; margin-top: .8rem; }
+  #showcase { display: block; padding: 1.5rem 1.25rem 2.5rem; }
+  #showcase .showcase-backdrop, #showcase::before { display: none; }
+  #showcase #heroShow { width: min(100%, 380px); margin: auto; aspect-ratio: 4/5; max-height: none; border-radius: 24px; }
+  #showcase .showcase-intro { max-width: 380px; margin: 0 auto 1.25rem; }
+  #showcase #heroShow > .absolute.inset-x-0.top-0, #showcase #heroShow > .absolute.inset-x-0.bottom-0.h-20 { display: none; }
+  #showcase #heroShow > .absolute.inset-0 { background: linear-gradient(to top, rgba(0,0,0,.8), transparent 55%); }
+}
+@media (max-width: 639px) {
+  .intro-actions { width: 100%; max-width: 350px; flex-direction: column; gap: .55rem; }
+  .intro-actions .btn { width: 100%; padding: .8rem 1rem; }
+  .service-list { grid-template-columns: 1fr; }
+  #leistungen .service-bloom { display: none; }
+  #leistungen { padding-top: 2rem; }
+  #leistungen h2 { font-size: 1.85rem; }
+  #leistungen .t-script { font-size: 1.5rem; }
+  #gutschein .gift { grid-template-columns: 105px minmax(0,1fr); gap: .7rem 1rem; padding: 1.1rem; border-radius: 20px; }
+  #gutschein .gift-pic { grid-column: 1; grid-row: 1 / 3; align-self: center; }
+  #gutschein .gift-body { display: contents; }
+  #gutschein .gift-body > p:first-child { grid-column: 2; grid-row: 1; font-family: Inter, sans-serif; font-size: .8rem; line-height: 1.4; align-self: end; }
+  #gutschein h2 { grid-column: 2; grid-row: 2; font-size: 1.65rem; margin: 0; align-self: start; }
+  #gutschein .gift-opts, #gutschein .gift-body > a, #gutschein .gift-note { grid-column: 1 / -1; margin: .2rem 0 0; }
+  #gutschein .gift-opt { min-height: 44px; padding: .6rem .25rem; border-radius: 10px; }
+  #gutschein .gift-body > a { font-size: .85rem; padding: .8rem .5rem; }
+  #gutschein .gift-note { font-size: .75rem; line-height: 1.5; }
+}

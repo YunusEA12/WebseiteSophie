@@ -61,3 +61,11 @@
 - Das kleine Skript im `<head>` von `index.html` ist per Hash in der Sicherheitsregel erlaubt; ändert es sich, den Hash mitändern.
 - Der Anfrageweg (Nachricht wird kopiert, Instagram öffnet sich, am Computer nach kurzer Anzeige) ist abgenommen. Ein Umbau davon wurde am 8. Oktober 2026 auf Wunsch zurückgenommen: nicht erneut umbauen, ohne zu fragen.
 - Livegang, offene Fragen an Sophie, Preise und Pflege: `LIVEGANG.md`.
+
+## Gestaltung und Inhalte (12. November 2026)
+- Einstieg: klare Leistungsbeschreibung, großes Nagelbild rechts am Desktop, am Handy zwischen Text und Anfrage. Kein „ab 50 €“-Werbeblock, kein zweites Profilbild.
+- Das Laufband und der allgemeine „No Gatekeeping“-Abschnitt wurden zugunsten eines kürzeren Wegs zum Rechner entfernt.
+- Leistungen sind erklärende Textzeilen, keine glänzenden Tags oder scheinbaren Buttons.
+- Slideshow: am Handy direkt nach dem Einstieg mit Überschrift, Pfeilen, Wischen und Pause; am Desktop im Kontaktbereich. Das Portfolio bleibt bei genau vier Design-Level-Beispielen, weitere Arbeiten gibt es auf Instagram.
+- Gutschein am Handy kompakt mit kleiner Vorschau. Alle Beträge und Anfragefunktionen bleiben erhalten.
+- Verfügbarkeit anfragen, keine Wunschtage versprechen. Wenige Termine, Stammkundinnen bevorzugt, Neukundinnen nach Kapazität.
