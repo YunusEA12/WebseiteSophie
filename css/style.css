@@ -3039,7 +3039,7 @@ main > section:first-of-type.atmos::before {
   .hero-pic--lg {
     display: block;
     position: absolute;
-    right: clamp(.75rem, calc(6vw - 40px), 4rem);
+    right: 0;
     bottom: 0;
     width: clamp(200px, 19vw, 300px);
   }
