@@ -74,10 +74,10 @@
 <link rel="preload" href="fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/pinyon-script-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="fonts/fonts.css?v=6096b837">
-<link rel="stylesheet" href="css/tailwind-base.css?v=07d44d62">
-<link rel="stylesheet" href="css/style.css?v=991df60d">
-<link rel="stylesheet" href="css/tailwind-utils.css?v=735c9c50">
+<link rel="stylesheet" href="fonts/fonts.css?v=95a13c99">
+<link rel="stylesheet" href="css/tailwind-base.css?v=2ad88993">
+<link rel="stylesheet" href="css/style.css?v=dcdd8db8">
+<link rel="stylesheet" href="css/tailwind-utils.css?v=35bec283">
 </head>
 <body class="antialiased">
 <a href="#top" class="skip-link">Zum Inhalt springen</a>
@@ -209,7 +209,7 @@
     </nav>
 
     <div class="flex items-center gap-2 sm:gap-3">
-      <a href="#kontakt" data-mag class="btn btn-solid hidden sm:inline-flex text-[.78rem] px-4 py-1.5"><span>Termin anfragen</span></a>
+      <a href="#kontakt" data-mag class="btn btn-solid hidden sm:inline-flex text-[.78rem] px-4 py-1.5"><span>Verfügbarkeit anfragen</span></a>
       <button id="burger" type="button" aria-label="Menü öffnen" aria-expanded="false" aria-controls="menu"
               class="lg:hidden relative w-8 h-8 rounded-full border border-sand-gold/25 bg-black/40 backdrop-blur-sm
                      transition-transform duration-300 hover:scale-105 active:scale-95 flex items-center justify-center
@@ -254,7 +254,7 @@
     <div class="mt-2.5 flex flex-col items-center gap-1.5 w-full">
       <a href="https://ig.me/m/gerberxnails" target="_blank" rel="noopener noreferrer" data-send="general"
          class="btn btn-solid w-full text-center !py-2.5 !text-[.82rem] flex-col !gap-0.5 shadow-[0_6px_20px_rgba(229,20,95,0.3)]">
-        <span>Termin anfragen</span>
+        <span>Verfügbarkeit anfragen</span>
         <span class="btn-sub">Nachricht wird kopiert &middot; öffnet Instagram</span>
       </a>
         <a href="https://www.instagram.com/gerberxnails/" target="_blank" rel="noopener noreferrer"
@@ -306,7 +306,7 @@
         <div class="rv mt-7 hero-cta">
           <div class="flex flex-wrap items-center gap-3.5">
             <a href="https://ig.me/m/gerberxnails" target="_blank" rel="noopener noreferrer" data-send="general"
-               data-mag class="btn btn-solid px-8 py-3.5 text-[.94rem] shadow-lg shadow-neon-pink/25"><span>Termin anfragen</span></a>
+               data-mag class="btn btn-solid px-8 py-3.5 text-[.94rem] shadow-lg shadow-neon-pink/25"><span>Verfügbarkeit anfragen</span></a>
             <a href="#preise" data-mag class="btn btn-line px-8 py-3.5 text-[.94rem]"><span>Preis berechnen</span></a>
           </div>
           <!-- Sophies Lieblingsset gleich oben: der Goldglitzer in Nahaufnahme -->
@@ -323,17 +323,13 @@
        each one leads to the part of the page that says more -->
   <div class="mx-auto w-full max-w-[88rem] relative z-10 mt-8 pt-4 flex items-end justify-between gap-6">
     <div class="js-rv flex justify-between sm:justify-start gap-4 sm:gap-14 w-full sm:w-auto">
-      <a href="#preise" class="rv stat-link">
-        <span class="block t-display text-[1.65rem] sm:text-[2.4rem] text-chalk"><span class="stat-pre">ab</span>50&thinsp;&euro;</span>
-        <span class="stat-sub block text-[.85rem] sm:text-[.95rem] text-chalk-mute mt-1 whitespace-nowrap">für dein Set</span>
-      </a>
-      <a href="#ablauf" class="rv stat-link">
+      <a href="#kontakt" class="rv stat-link">
         <span class="block t-display text-[1.65rem] sm:text-[2.4rem] text-chalk">Neu?</span>
-        <span class="stat-sub block text-[.85rem] sm:text-[.95rem] text-chalk-mute mt-1 whitespace-nowrap">Willkommen!</span>
+        <span class="stat-sub block text-[.85rem] sm:text-[.95rem] text-chalk-mute mt-1 whitespace-nowrap">Nur begrenzte Plätze</span>
       </a>
       <a href="#kontakt" class="rv stat-link">
         <span class="block t-display text-[1.65rem] sm:text-[2.4rem] text-sand-gold">DM</span>
-        <span class="stat-sub block text-[.85rem] sm:text-[.95rem] text-chalk-mute mt-1 whitespace-nowrap">für freie Termine</span>
+        <span class="stat-sub block text-[.85rem] sm:text-[.95rem] text-chalk-mute mt-1 whitespace-nowrap">Verfügbarkeit anfragen</span>
       </a>
     </div>
 
@@ -440,11 +436,6 @@
     <div class="js-rv grid lg:grid-cols-[.34fr_.66fr] gap-10 lg:gap-16">
       <div class="lg:pt-4">
         <span class="t-script text-4xl sm:text-5xl text-sand-bronze block mt-1">mit Liebe zum Detail</span>
-        <!-- who does your nails: the face to the name, before the first price -->
-        <div class="rv about-me">
-          <img src="brand_assets/sophie.webp" alt="Sophie Gerber" width="320" height="320" loading="lazy" decoding="async" class="about-av">
-          <p class="about-name"><span class="t-script">Sophie Gerber</span><span class="about-role">Deine Nageldesignerin in Stuttgart</span></p>
-        </div>
       </div>
       <div>
         <h2 class="t-display text-[clamp(1.8rem,4.6vw,3.6rem)] tracking-[-.035em]" data-split>
@@ -474,7 +465,7 @@
 
     <!-- just the keywords; the prices live in the calculator right below -->
     <ul class="js-rv rv srv-tags">
-      <li class="srv-tag is-main">Gel-X</li>
+      <li class="srv-tag">Gel-X</li>
       <li class="srv-tag">Gel-Auffüllen</li>
       <li class="srv-tag">Russische Maniküre <span class="srv-incl">inklusive</span></li>
       <li class="srv-tag">Handgemalte Designs</li>
@@ -601,54 +592,6 @@
       </button>
     </div>
 
-    <!-- Nahaufnahmen, wie Sophie sie mag -->
-    <p class="js-rv t-script details-title text-sand-gold leading-none">Details</p>
-    <div class="js-rv rv grid gap-3 sm:gap-5 details-grid">
-      <button type="button" class="tile" data-view data-par="-10">
-        <span class="media block aspect-square media-sq overflow-hidden shadow-[0_12px_28px_rgba(70,45,20,0.1)] border border-sand-gold/25"><img src="brand_assets/sets/tortoise-gold-close.webp" data-full="brand_assets/sets/tortoise-gold-close.webp" alt="Nahaufnahme: Mandelnägel mit goldenen Glitzer-Wellen, Schildpatt-Optik und Steinchen" loading="lazy" decoding="async" width="800" height="800" class="w-full h-full object-cover">
-          <span class="media-cap"><span class="block t-display text-[1rem]">Gold &amp; Glitzer</span><span class="block text-[.75rem] text-white/80">Detail</span></span></span>
-      </button>
-      <button type="button" class="tile" data-view data-par="10">
-        <span class="media block aspect-square media-sq overflow-hidden shadow-[0_12px_28px_rgba(70,45,20,0.1)] border border-sand-gold/25"><img src="brand_assets/sets/sage-detail-sm.webp" data-full="brand_assets/sets/sage-detail.webp" alt="Nahaufnahme: salbeigrüne Chrome-Nägel mit Silberranken und 3D-Blüte" loading="lazy" decoding="async" width="800" height="800" class="w-full h-full object-cover">
-          <span class="media-cap"><span class="block t-display text-[1rem]">Sage Chrome</span><span class="block text-[.75rem] text-white/80">Detail</span></span></span>
-      </button>
-      <button type="button" class="tile" data-view data-par="-10">
-        <span class="media block aspect-square media-sq overflow-hidden shadow-[0_12px_28px_rgba(70,45,20,0.1)] border border-sand-gold/25"><img src="brand_assets/sets/mint-ombre-sm.webp" data-full="brand_assets/sets/mint-ombre.webp" alt="Nahaufnahme: kurze eckige Nägel mit Ombré von Rosa zu Mint, weißen Linien und 3D-Tropfen" loading="lazy" decoding="async" width="800" height="800" class="w-full h-full object-cover">
-          <span class="media-cap"><span class="block t-display text-[1rem]">Mint Drops</span><span class="block text-[.75rem] text-white/80">Detail</span></span></span>
-      </button>
-    </div>
-
-    <!-- weitere Sets zum Durchwischen (am Computer eine Reihe); Länge und
-         Level hat Sophie bestätigt -->
-    <p class="js-rv t-script details-title more-title text-sand-gold leading-none">Mehr Sets</p>
-    <ul class="js-rv rv more-sets" aria-label="Weitere Arbeiten">
-      <li><button type="button" class="tile" data-view>
-        <span class="media block aspect-[4/5] rounded-[34px] sm:rounded-[38px] overflow-hidden shadow-[0_12px_28px_rgba(70,45,20,0.1)] border border-sand-gold/25"><img src="brand_assets/sets/tropical-lily-sm.webp" srcset="brand_assets/sets/tropical-lily-sm.webp 640w, brand_assets/sets/tropical-lily.webp 1200w" sizes="(min-width: 1024px) 15vw, (min-width: 640px) 38vw, 64vw" data-full="brand_assets/sets/tropical-lily.webp" alt="Mandelnägel mit handgemalten Lilien, 3D-Muschel und Türkis-Akzenten" loading="lazy" decoding="async" width="800" height="1000" class="w-full h-full object-cover">
-          <span class="media-cap"><span class="block t-display text-[1rem]">Tropical Lily</span><span class="block text-[.75rem] text-white/80">Medium · Level 3</span></span></span>
-      </button></li>
-      <li><button type="button" class="tile" data-view>
-        <span class="media block aspect-[4/5] rounded-[34px] sm:rounded-[38px] overflow-hidden shadow-[0_12px_28px_rgba(70,45,20,0.1)] border border-sand-gold/25"><img src="brand_assets/sets/burgundy-french-sm.webp" srcset="brand_assets/sets/burgundy-french-sm.webp 640w, brand_assets/sets/burgundy-french.webp 1200w" sizes="(min-width: 1024px) 15vw, (min-width: 640px) 38vw, 64vw" data-full="brand_assets/sets/burgundy-french.webp" alt="Mandelnägel mit bordeauxroter French und goldenem Stern-Charm" loading="lazy" decoding="async" width="800" height="1000" class="w-full h-full object-cover">
-          <span class="media-cap"><span class="block t-display text-[1rem]">Burgundy French</span><span class="block text-[.75rem] text-white/80">Medium · Level 2</span></span></span>
-      </button></li>
-      <li><button type="button" class="tile" data-view>
-        <span class="media block aspect-[4/5] rounded-[34px] sm:rounded-[38px] overflow-hidden shadow-[0_12px_28px_rgba(70,45,20,0.1)] border border-sand-gold/25"><img src="brand_assets/sets/blueberry-vichy-sm.webp" srcset="brand_assets/sets/blueberry-vichy-sm.webp 640w, brand_assets/sets/blueberry-vichy.webp 1200w" sizes="(min-width: 1024px) 15vw, (min-width: 640px) 38vw, 64vw" data-full="brand_assets/sets/blueberry-vichy.webp" alt="Pastellfarbene Mandelnägel mit 3D-Blaubeeren, Vichy-Muster und Schleife" loading="lazy" decoding="async" width="800" height="1000" class="w-full h-full object-cover">
-          <span class="media-cap"><span class="block t-display text-[1rem]">Blueberry &amp; Vichy</span><span class="block text-[.75rem] text-white/80">Medium · Level 3</span></span></span>
-      </button></li>
-      <li><button type="button" class="tile" data-view>
-        <span class="media block aspect-[4/5] rounded-[34px] sm:rounded-[38px] overflow-hidden shadow-[0_12px_28px_rgba(70,45,20,0.1)] border border-sand-gold/25"><img src="brand_assets/sets/beach-chrome-sm.webp" srcset="brand_assets/sets/beach-chrome-sm.webp 640w, brand_assets/sets/beach-chrome.webp 1200w" sizes="(min-width: 1024px) 15vw, (min-width: 640px) 38vw, 64vw" data-full="brand_assets/sets/beach-chrome.webp" alt="Lange eckige Nägel im Strand-Look mit 3D-Kokosnüssen, Seestern und Silber-Chrome" loading="lazy" decoding="async" width="800" height="1000" class="w-full h-full object-cover">
-          <span class="media-cap"><span class="block t-display text-[1rem]">Beach 3D &amp; Chrome</span><span class="block text-[.75rem] text-white/80">Lang · Level 4</span></span></span>
-      </button></li>
-      <li><button type="button" class="tile" data-view>
-        <span class="media block aspect-[4/5] rounded-[34px] sm:rounded-[38px] overflow-hidden shadow-[0_12px_28px_rgba(70,45,20,0.1)] border border-sand-gold/25"><img src="brand_assets/sets/leo-spots-sm.webp" srcset="brand_assets/sets/leo-spots-sm.webp 640w, brand_assets/sets/leo-spots.webp 1200w" sizes="(min-width: 1024px) 15vw, (min-width: 640px) 38vw, 64vw" data-full="brand_assets/sets/leo-spots.webp" alt="Kurze runde Nägel mit handgemaltem Leo-Print, Punkten und bordeauxroter French" loading="lazy" decoding="async" width="800" height="1000" class="w-full h-full object-cover">
-          <span class="media-cap"><span class="block t-display text-[1rem]">Leo Spots</span><span class="block text-[.75rem] text-white/80">Kurz · handgemalt</span></span></span>
-      </button></li>
-      <li><button type="button" class="tile" data-view>
-        <span class="media block aspect-[4/5] rounded-[34px] sm:rounded-[38px] overflow-hidden shadow-[0_12px_28px_rgba(70,45,20,0.1)] border border-sand-gold/25"><img src="brand_assets/sets/clean-nude-sm.webp" srcset="brand_assets/sets/clean-nude-sm.webp 640w, brand_assets/sets/clean-nude.webp 1200w" sizes="(min-width: 1024px) 15vw, (min-width: 640px) 38vw, 64vw" data-full="brand_assets/sets/clean-nude.webp" alt="Lange Mandelnägel in zartem Nude-Rosa, einfarbig" loading="lazy" decoding="async" width="800" height="1000" class="w-full h-full object-cover">
-          <span class="media-cap"><span class="block t-display text-[1rem]">Clean Girl</span><span class="block text-[.75rem] text-white/80">Level 1 · einfarbig</span></span></span>
-      </button></li>
-    </ul>
-
-    <!-- Instagram Discover Button -->
     <div class="mt-10 text-center">
       <a href="https://www.instagram.com/gerberxnails/" target="_blank" rel="noopener noreferrer"
          data-mag class="btn btn-line px-5 sm:px-8 py-3 sm:py-3.5 text-[.84rem] sm:text-[.92rem] max-w-full inline-flex text-center">
@@ -659,7 +602,7 @@
 </section>
 
 <!-- ============ ABLAUF ============ -->
-<!-- for first-timers ("Neu?" in the hero leads here): booking in four steps -->
+<!-- Ablauf einer Terminanfrage, vorbehaltlich freier Kapazitäten -->
 <section id="ablauf" class="relative px-5 sm:px-8 py-[clamp(4rem,9vw,7rem)] scroll-mt-20">
   <div class="mx-auto max-w-[88rem]">
     <div class="js-rv mb-10">
@@ -675,12 +618,12 @@
       <li class="rv step">
         <span class="step-n" aria-hidden="true">2</span>
         <h3 class="step-title t-display">Nachricht senden</h3>
-        <p class="step-text">Ein Tipp kopiert deine fertige Nachricht und öffnet Instagram. Einfügen, Wunschtage dazu, senden.</p>
+        <p class="step-text">Ein Tipp kopiert deine fertige Nachricht und öffnet Instagram. Einfügen und senden, um die Verfügbarkeit anzufragen.</p>
       </li>
       <li class="rv step">
         <span class="step-n" aria-hidden="true">3</span>
         <h3 class="step-title t-display">Termin bestätigen</h3>
-        <p class="step-text">Du bekommst Datum, Preis und Adresse per DM und sagst kurz „Ja“.</p>
+        <p class="step-text">Wenn ein Termin frei ist, bekommst du Datum, Preis und Adresse per DM und sagst kurz „Ja“.</p>
       </li>
       <li class="rv step">
         <span class="step-n" aria-hidden="true">4</span>
@@ -814,7 +757,7 @@
         </details>
         <details class="faq">
           <summary>Wann hast du Termine frei?</summary>
-          <p>Schreib mir per DM, welche Tage dir passen. Sonntags und an Feiertagen gibt es keine Termine.</p>
+          <p>Es gibt nur wenige freie Termine. Stammkundinnen werden bei der Vergabe bevorzugt; Neukundinnen kann ich deshalb nur begrenzt annehmen. Frag die aktuelle Verfügbarkeit per DM an. Sonntags und an Feiertagen gibt es keine Termine.</p>
         </details>
         <details class="faq">
           <summary>Wie bezahle ich?</summary>
@@ -838,14 +781,15 @@
           <div class="w-14 sm:w-16 aspect-square shrink-0 drop-shadow-[0_10px_20px_rgba(229,20,95,0.35)]">
             <img src="brand_assets/hibiscus_pink.webp" alt="" aria-hidden="true" class="w-full h-full object-contain flower-bloom">
           </div>
-          <p class="t-script text-[clamp(2.6rem,7.5vw,5.2rem)] text-sand-bronze leading-none">Sichere dir deinen Termin</p>
+          <p class="t-script text-[clamp(2.6rem,7.5vw,5.2rem)] text-sand-bronze leading-none">Verfügbarkeit anfragen</p>
         </div>
 
         <h2 class="t-editorial mt-3 text-[clamp(2.2rem,7vw,5.2rem)] tracking-[-.02em] font-bold uppercase text-chalk max-w-[20ch]">
           LET'S DO YOUR NAILS
         </h2>
         <p class="rv mt-5 max-w-[34rem] text-[1.12rem] text-chalk-dim leading-relaxed">
-          Die Nachricht ist vorbereitet. Schreib nur noch, welche Tage dir passen.
+          Es gibt nur wenige freie Termine. Stammkundinnen werden bevorzugt;
+          Neukundinnen kann ich nur begrenzt annehmen. Frag per Nachricht die aktuelle Verfügbarkeit an.
           Die genaue Adresse bekommst du mit der Terminbestätigung.
         </p>
 
@@ -1033,6 +977,6 @@
 </footer>
 
 
-<script src="js/main.js?v=0c20aed3" defer></script>
+<script src="js/main.js?v=52561543" defer></script>
 </body>
 </html>

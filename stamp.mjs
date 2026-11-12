@@ -111,7 +111,7 @@ const lvls = [...index.matchAll(/data-lvl="([^"]+)"/g)].map(m => upper(m[1]));
 const start = Math.min(...lens) + Math.min(...lvls);
 const hero = (index.match(/<span class="stat-pre">ab<\/span>(\d+)/) || [])[1];
 const google = (index.match(/"priceRange":\s*"ab (\d+)/) || [])[1];
-if (String(start) !== hero || String(start) !== google) {
+if ((hero !== undefined && String(start) !== hero) || String(start) !== google) {
   problems.push(`Startpreis passt nicht zusammen: Rechner ${start} €, Startseite ${hero} €, Google-Daten ${google} €.`);
 }
 

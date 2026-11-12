@@ -2913,7 +2913,7 @@ main > section:first-of-type.atmos::before {
 /* ==========================================================================
    LEISTUNGEN ALS STICHWORTE
    Nur die Schlagworte - die Preise stehen im Rechner direkt darunter.
-   Gel-X ist ihr Hauptding und steht deshalb vorne und in Pink.
+   Alle Leistungen sind statische Stichworte, keine Schaltflächen.
    ========================================================================== */
 .srv-tags {
   display: flex;
@@ -2942,16 +2942,6 @@ main > section:first-of-type.atmos::before {
   letter-spacing: -.02em;
   line-height: 1.2;
   color: #F7F2EA;
-}
-
-.srv-tag.is-main {
-  border-color: transparent;
-  background: linear-gradient(135deg, #E5145F, #FF4D86);
-  box-shadow:
-    0 1px 0 rgba(255, 255, 255, .18) inset,
-    0 14px 30px -14px rgba(229, 20, 95, .7),
-    0 4px 10px -6px rgba(142, 10, 60, .5);
-  color: #fff;
 }
 
 .srv-incl {
@@ -2988,7 +2978,7 @@ main > section:first-of-type.atmos::before {
   position: relative;
   margin: 0;
   flex: 0 0 auto;
-  width: clamp(104px, 31vw, 140px);
+  width: clamp(180px, 55vw, 260px);
   aspect-ratio: 4 / 5;
   border-radius: 22px;
   transform: rotate(5deg);
@@ -3038,6 +3028,11 @@ main > section:first-of-type.atmos::before {
 
 .hero-pic--lg { display: none; }
 
+@media (max-width: 1023px) {
+  .hero-cta { flex-direction: column-reverse; gap: 2rem; }
+  .hero-cta > .flex-wrap { justify-content: center; }
+}
+
 @media (min-width: 1024px) {
   .hero-cta { justify-content: center; }
   .hero-pic--sm { display: none; }
@@ -3046,7 +3041,7 @@ main > section:first-of-type.atmos::before {
     position: absolute;
     right: clamp(.75rem, calc(6vw - 40px), 4rem);
     bottom: 0;
-    width: clamp(150px, 15vw, 240px);
+    width: clamp(200px, 19vw, 300px);
   }
 }
 

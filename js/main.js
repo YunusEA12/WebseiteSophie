@@ -1240,10 +1240,10 @@
     function buildInquiryText(s) {
       if (s.solo) {
         return 'Hi Sophie! 💅 Ich möchte gerne einen Termin für reines Soak Off (Ablösen ohne neues Set, ' +
-               euro([s.min, s.max]) + ') anfragen. Wann hättest du Zeit?';
+               euro([s.min, s.max]) + ') anfragen. Hast du aktuell Kapazität für einen Termin?';
       }
       return ['Hi Sophie! 💅 Ich habe mir auf deiner Website mein Wunsch-Set zusammengestellt:']
-        .concat(setLines(s), ['', 'Welche Termine hast du demnächst frei?'])
+        .concat(setLines(s), ['', 'Hast du aktuell Kapazität für einen Termin?'])
         .join('\n');
     }
 

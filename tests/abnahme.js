@@ -19,7 +19,13 @@ function ok(cond, msg) { if (cond) passes++; else { fails++; console.log('  FEHL
   const total = () => page.evaluate(() => (document.getElementById('total-pre').hidden ? '' : 'ab ') + document.getElementById('total').textContent.trim());
   const note = () => page.evaluate(() => document.querySelector('#calc-sum .calc-note').textContent);
   const msg = () => page.evaluate(() => document.getElementById('msg-bubble').innerText);
-  const settle = () => page.waitForTimeout(260);
+  const settle = async () => {
+    await page.waitForTimeout(300);
+    await page.waitForFunction(() => {
+      const total = document.getElementById('total').textContent.trim();
+      return document.getElementById('cta-label').textContent.includes(' ' + total + ' €');
+    });
+  };
 
   // 1. alle 16 Kombinationen Länge x Level
   const lens = { 40: 'Kurz (S)', 45: 'Medium (M)', 50: 'Lang (L)', 60: 'Extra Lang (XL)' };
@@ -98,12 +104,12 @@ function ok(cond, msg) { if (cond) passes++; else { fails++; console.log('  FEHL
   ok(await page.evaluate(() => !document.getElementById('dlg-policy').open && document.activeElement.matches('[data-open="dlg-policy"]')), 'AGB: Escape schließt, Fokus zurück auf den Knopf');
 
   // 7. Galerie: öffnen, Pfeile, Escape, Fokus zurück
-  await page.focus('.more-sets li:nth-child(1) .tile');
+  await page.focus('#arbeiten .tile');
   await page.keyboard.press('Enter'); await page.waitForTimeout(500);
   ok(await page.evaluate(() => document.getElementById('lightbox').classList.contains('on') && document.activeElement.id === 'lbClose'), 'Galerie öffnet, Fokus auf Schließen');
   await page.keyboard.press('ArrowRight'); await settle();
   await page.keyboard.press('Escape'); await settle();
-  ok(await page.evaluate(() => !document.getElementById('lightbox').classList.contains('on') && document.activeElement.closest('.more-sets') !== null), 'Galerie: Escape schließt, Fokus zurück aufs Bild');
+  ok(await page.evaluate(() => !document.getElementById('lightbox').classList.contains('on') && document.activeElement.matches('#arbeiten .tile')), 'Galerie: Escape schließt, Fokus zurück aufs Bild');
 
   // 8. Sprung-Link: erster Tab-Stopp, springt in den Inhalt
   const fresh = await ctx.newPage();
